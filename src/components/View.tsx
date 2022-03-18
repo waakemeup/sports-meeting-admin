@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
 import Dashboard from "../views/dashboard/Dashboard";
+import AppLayout from "./layout/AppLayout";
 
 interface Props {}
 
@@ -25,7 +26,7 @@ const View = (props: Props) => {
                 path={r.path}
                 index={r.index}
                 key={r.key}
-                element={r.component}
+                element={<AppLayout>{r.component}</AppLayout>}
               />
             );
           })}

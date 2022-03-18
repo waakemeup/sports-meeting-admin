@@ -1,7 +1,4 @@
-import React, { lazy, Suspense } from "react";
-import { Button } from "antd";
-// import Login from "./views/login/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { Suspense } from "react";
 import View from "./components/View";
 // import Page404 from "./views/404/Page404";
 

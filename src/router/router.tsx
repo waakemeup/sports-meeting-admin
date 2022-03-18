@@ -13,6 +13,7 @@ interface ARouter {
 const Login = lazy(() => import("../views/login/Login"));
 const Page404 = lazy(() => import("../views/404/Page404"));
 const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
+// const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
   {
@@ -28,6 +29,12 @@ const router: ARouter[] = [
     key: "login",
     component: <Login />,
   },
+  // {
+  //   path: "test",
+  //   title: "test",
+  //   key: "test",
+  //   component: <Test />,
+  // },
   {
     path: "*",
     title: "404",
