@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Checkbox, Form, Input, Divider } from "antd";
+import { Button, Checkbox, Form, Input, Divider, message } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 
@@ -26,8 +26,9 @@ const Login = (props: Props) => {
           An information management system for university sports meeting
         </p>
         <Form
+          layout="vertical"
           name="normal_login"
-          className="bg-gradient-to-r from-cyan-200 to-teal-200 p-5 rounded-lg drop-shadow-2xl mt-12 lg:w-1/3 lg:h-1/3 md:w-2/5"
+          className="bg-gradient-to-r from-cyan-100 to-teal-100 p-5 rounded-lg drop-shadow-2xl mt-12 lg:w-1/3 lg:h-2/5 md:w-2/5"
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
@@ -68,12 +69,16 @@ const Login = (props: Props) => {
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-sky-500 w-2/3 mx-auto"
+              className="bg-sky-500 w-full h-12 mx-auto"
+              onClick={() => {
+                // TODO: 根据返回信息判断
+                message.success("登陆成功");
+              }}
             >
               Log in
             </Button>
-            <br />
-            Or <a href="">register now!</a>
+            {/* <br />
+            Or <a href="">register now!</a> */}
           </Form.Item>
         </Form>
       </div>
