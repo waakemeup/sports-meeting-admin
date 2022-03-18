@@ -16,14 +16,29 @@ const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
 
 const router: ARouter[] = [
   {
-    path: "/",
-    index: true,
+    path: "/admin/dashboard",
+    // index: true,
     title: "仪表盘",
     key: "dashboard",
     component: <Dashboard />,
   },
   {
-    path: "/login",
+    path: "login",
+    title: "登陆",
+    key: "login",
+    component: <Login />,
+  },
+  {
+    path: "*",
+    title: "404",
+    key: "404",
+    component: <Page404 />,
+  },
+];
+
+export const unAuthRoutes: ARouter[] = [
+  {
+    path: "login",
     title: "登陆",
     key: "login",
     component: <Login />,

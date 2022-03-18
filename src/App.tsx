@@ -12,15 +12,9 @@ import View from "./components/View";
 function App() {
   return (
     <>
-      <Router>
-        <Suspense fallback={<></>}>
-          {/* <Routes>
-            <Route path="/login" element={<Login />} key="login"></Route>
-            <Route path="*" element={<Page404 />} key="404"></Route>
-          </Routes> */}
-          <View />
-        </Suspense>
-      </Router>
+      <Suspense fallback={<></>}>
+        <View />
+      </Suspense>
     </>
   );
 }
