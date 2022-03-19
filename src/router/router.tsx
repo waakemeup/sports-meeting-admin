@@ -7,6 +7,15 @@ import {
   NotificationOutlined,
   UserOutlined,
   KeyOutlined,
+  TableOutlined,
+  CheckCircleTwoTone,
+  HourglassTwoTone,
+  ReconciliationTwoTone,
+  HddTwoTone,
+  RobotFilled,
+  IdcardFilled,
+  TeamOutlined,
+  HddFilled,
 } from "@ant-design/icons";
 
 export interface ARouter {
@@ -25,6 +34,15 @@ const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
 const Main = lazy(() => import("../views/main/Main"));
 const MeInfo = lazy(() => import("../views/user/MeInfo"));
 const ChangePassword = lazy(() => import("../views/user/ChangePassword"));
+const Opening = lazy(() => import("../views/sports/SportOpening"));
+const Event = lazy(() => import("../views/sports/Event"));
+const MatchResult = lazy(() => import("../views/sports/MatchResult"));
+const StudentsInfo = lazy(() => import("../views/departments/StudentsInfo"));
+const TeachersInfo = lazy(() => import("../views/departments/TeachersInfo"));
+const ClassInfo = lazy(() => import("../views/departments/ClassInfo"));
+const DepartmentInfo = lazy(
+  () => import("../views/departments/DepartmentInfo")
+);
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -64,6 +82,71 @@ const router: ARouter[] = [
         key: "changepassword",
         component: <ChangePassword />,
         icon: <KeyOutlined />,
+      },
+    ],
+  },
+  {
+    path: "/admin/sportsinfo",
+    title: "运动信息",
+    key: "sportsinfo",
+    icon: <TableOutlined />,
+    children: [
+      {
+        path: "/admin/sportsinfo/openinginfo",
+        title: "开幕信息",
+        key: "opening",
+        icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
+        component: <Opening />,
+      },
+      {
+        path: "/admin/sportsinfo/event",
+        title: "比赛项目信息",
+        key: "event",
+        icon: <HourglassTwoTone twoToneColor="#eb2f96" />,
+        component: <Event />,
+      },
+      {
+        path: "/admin/sportsinfo/matches",
+        title: "比赛成绩信息",
+        key: "matchresult",
+        icon: <ReconciliationTwoTone twoToneColor="#57cbd3" />,
+        component: <MatchResult />,
+      },
+    ],
+  },
+  {
+    path: "/admin/departments",
+    title: "院系人员",
+    key: "departmentpeople",
+    icon: <HddTwoTone />,
+    children: [
+      {
+        path: "/admin/departments/students",
+        title: "学生信息",
+        key: "studentsinfo",
+        icon: <RobotFilled />,
+        component: <StudentsInfo />,
+      },
+      {
+        path: "/admin/departments/teachers",
+        title: "教师信息",
+        key: "teachersinfo",
+        icon: <IdcardFilled />,
+        component: <TeachersInfo />,
+      },
+      {
+        path: "/admin/departments/classes",
+        title: "班级信息",
+        key: "classinfo",
+        icon: <TeamOutlined />,
+        component: <ClassInfo />,
+      },
+      {
+        path: "/admin/departments/department",
+        title: "院系信息",
+        key: "departmentinfo",
+        icon: <HddFilled />,
+        component: <DepartmentInfo />,
       },
     ],
   },
