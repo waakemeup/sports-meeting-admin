@@ -2,6 +2,11 @@
   height: 32px;
   margin: 16px;
   background: rgba(255, 255, 255, 0.2);
+  color: white;
+  text-align: center;
+  font-size: medium;
+  font-weight: bold;
+  line-height: 32px;
 }
 
 .site-layout-sub-header-background {

@@ -49,7 +49,7 @@ const SideBar = (props: Props) => {
         console.log(collapsed, type);
       }}
     >
-      <div className="logo" />
+      <div className="logo">运动会信息管理</div>
       <Menu
         mode="inline"
         defaultSelectedKeys={["1"]}

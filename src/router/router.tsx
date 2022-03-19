@@ -6,6 +6,7 @@ import {
   LaptopOutlined,
   NotificationOutlined,
   UserOutlined,
+  KeyOutlined,
 } from "@ant-design/icons";
 
 export interface ARouter {
@@ -23,6 +24,7 @@ const Page404 = lazy(() => import("../views/404/Page404"));
 const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
 const Main = lazy(() => import("../views/main/Main"));
 const MeInfo = lazy(() => import("../views/user/MeInfo"));
+const ChangePassword = lazy(() => import("../views/user/ChangePassword"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -55,6 +57,13 @@ const router: ARouter[] = [
         key: "myinfodetail",
         component: <MeInfo />,
         icon: <UserOutlined />,
+      },
+      {
+        path: "/admin/me/changepassword",
+        title: "修改密码",
+        key: "changepassword",
+        component: <ChangePassword />,
+        icon: <KeyOutlined />,
       },
     ],
   },

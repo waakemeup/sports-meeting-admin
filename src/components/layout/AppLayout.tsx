@@ -1,4 +1,4 @@
-import { Layout, Menu } from "antd";
+import { Layout, Menu, Avatar, Popover, Button } from "antd";
 import "antd/dist/antd.css";
 import React from "react";
 import SideBar from "../sidebar/SideBar";
@@ -8,15 +8,44 @@ const { Header, Content, Footer, Sider } = Layout;
 
 interface Props {}
 
+const content = (
+  <div className="">
+    <div>Hello</div>
+    <div className="flex flex-wrap items-center justify-between gap-2 sm:flex-row">
+      <Button type="primary" className="p-1 text-center rounded-md bg-cyan-500">
+        修改密码
+      </Button>
+      <Button className="p-1 text-center bg-yellow-400 rounded-md">登出</Button>
+    </div>
+  </div>
+);
+
 const AppLayout: React.FC<Props> = ({ children }) => {
   return (
     <Layout>
       <SideBar />
       <Layout>
         <Header
-          className="site-layout-sub-header-background"
-          style={{ padding: 0 }}
-        />
+          className="flex items-center justify-end site-layout-sub-header-background"
+          style={{ padding: 0, backgroundColor: "skyblue" }}
+        >
+          <Popover
+            placement="bottom"
+            trigger={"click"}
+            // title="title"
+            content={content}
+          >
+            <div
+              id="popover"
+              className="flex items-center justify-center hover:bg-sky-800 xxm:hidden"
+            >
+              <Avatar className="ml-2" />
+              {/* TODO: pass username */}
+              <div className="pr-2 ml-2 text-white">username</div>
+            </div>
+          </Popover>
+        </Header>
+        {/* <div>HAHHA</div> */}
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             className="site-layout-background"
