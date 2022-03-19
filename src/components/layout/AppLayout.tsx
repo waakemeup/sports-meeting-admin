@@ -5,10 +5,16 @@ import SideBar from "../sidebar/SideBar";
 import "./index.css";
 import { useNavigate } from "react-router-dom";
 import MyContent from "../popover/MyContent";
+import ContentHeader from "../contentheader/CotentHeader";
+
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 interface Props {}
+
+interface children {
+  title: string;
+}
 
 // const content = (
 //   <div className="">
@@ -59,6 +65,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
             className="site-layout-background"
             style={{ padding: 24, minHeight: "100%" }}
           >
+            {/* <ContentHeader info={"test"} /> */}
             {children}
           </div>
         </Content>

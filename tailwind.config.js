@@ -4,6 +4,7 @@ module.exports = {
     extend: {},
     screens: {
       xxm: { max: "312px" }, //verysmall
+      mdm: { max: "880px" }, //md small
     },
   },
   plugins: [],
