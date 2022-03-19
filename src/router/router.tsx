@@ -13,7 +13,7 @@ export interface ARouter {
   path: string;
   key: string;
   index?: boolean;
-  component: ReactNode;
+  component?: ReactNode;
   children?: ARouter[];
   icon?: ReactNode;
 }
@@ -22,6 +22,7 @@ const Login = lazy(() => import("../views/login/Login"));
 const Page404 = lazy(() => import("../views/404/Page404"));
 const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
 const Main = lazy(() => import("../views/main/Main"));
+const MeInfo = lazy(() => import("../views/user/MeInfo"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -39,6 +40,23 @@ const router: ARouter[] = [
     key: "main",
     component: <Main />,
     icon: <HomeOutlined />,
+  },
+  {
+    path: "/admin/me",
+    title: "我的信息",
+    key: "myinfo",
+    // component: <MeInfo />,
+    icon: <UserOutlined />,
+    // index: true,
+    children: [
+      {
+        path: "/admin/me/info",
+        title: "我的信息",
+        key: "myinfodetail",
+        component: <MeInfo />,
+        icon: <UserOutlined />,
+      },
+    ],
   },
   // {
   //   path: "login",

@@ -21,6 +21,16 @@ const View = (props: Props) => {
         />
         <Route path="/admin">
           {router.map((r) => {
+            if (r.children) {
+              return r.children.map((child) => (
+                <Route
+                  path={child.path}
+                  index={child.index}
+                  key={child.key}
+                  element={<AppLayout>{child.component}</AppLayout>}
+                />
+              ));
+            }
             return (
               <Route
                 path={r.path}
