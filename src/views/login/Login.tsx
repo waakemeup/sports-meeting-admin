@@ -18,19 +18,21 @@ const Login = (props: Props) => {
       <div
         className={`flex flex-col items-center  justify-center w-screen h-screen bg-sky-300 ${styles["bgImg"]}`}
       >
-        <p className="top-0 font-mono font-bold text-5xl text-rose-400">
+        <p className="top-0 font-mono text-5xl font-bold text-rose-400">
           运动会信息管理系统
         </p>
         <Divider />
-        <p className="top-0 font-mono font-bold text-xl text-fuchsia-600 mb-8">
+        <p className="top-0 mb-8 font-mono text-xl font-bold text-fuchsia-600">
           An information management system for university sports meeting
         </p>
         <Form
           layout="vertical"
           name="normal_login"
-          className="bg-gradient-to-r from-cyan-100 to-teal-100 p-5 rounded-lg drop-shadow-2xl mt-12 lg:w-1/3 lg:h-2/5 md:w-2/5"
+          // className="p-5 mt-12 rounded-lg bg-gradient-to-r from-cyan-100 to-teal-100 drop-shadow-2xl lg:w-screen lg:h-2/5 md:w-2/5"
+          className="w-1/3 p-5 mt-12 rounded-lg bg-gradient-to-r from-cyan-100 to-teal-100 drop-shadow-2xl ldm:w-72 xxm:w-screen"
           initialValues={{ remember: true }}
           onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
         >
           <Form.Item
             label="账号"
@@ -55,27 +57,37 @@ const Login = (props: Props) => {
               placeholder="Password"
             />
           </Form.Item>
-          <Form.Item className="flex items-center justify-center">
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-            {/* <br /> */}
-            <a className="login-form-forgot" href="">
-              Forgot password
-            </a>
+          <Form.Item>
+            <div className="flex flex-row items-center justify-between mdm:flex-col">
+              <div>
+                <Form.Item
+                  name="remember"
+                  valuePropName="checked"
+                  className="mr-6"
+                  noStyle
+                >
+                  <Checkbox>Remember me</Checkbox>
+                </Form.Item>
+              </div>
+              <div>
+                <a className="login-form-forgot" href="/register">
+                  还没有账号?注册一个
+                </a>
+              </div>
+            </div>
           </Form.Item>
 
           <Form.Item>
             <Button
               type="primary"
               htmlType="submit"
-              className="bg-sky-500 w-full h-12 mx-auto"
+              className="w-full h-12 mx-auto bg-sky-500 rounded-xl drop-shadow-2xl"
               onClick={() => {
                 // TODO: 根据返回信息判断
                 message.success("登陆成功");
               }}
             >
-              Log in
+              登陆
             </Button>
             {/* <br />
             Or <a href="">register now!</a> */}
