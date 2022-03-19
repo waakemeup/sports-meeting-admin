@@ -24,6 +24,7 @@ import {
   SkinFilled,
   UserSwitchOutlined,
 } from "@ant-design/icons";
+import Register from "../views/register/Register";
 
 export interface ARouter {
   title: string;
@@ -240,6 +241,12 @@ export const unAuthRoutes: ARouter[] = [
     title: "登陆",
     key: "login",
     component: <Login />,
+  },
+  {
+    path: "register",
+    title: "注册",
+    key: "register",
+    component: <Register />,
   },
   {
     path: "*",
