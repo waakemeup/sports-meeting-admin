@@ -22,7 +22,7 @@ const content = (
 
 const AppLayout: React.FC<Props> = ({ children }) => {
   return (
-    <Layout>
+    <Layout className="h-screen">
       <SideBar />
       <Layout>
         <Header
@@ -49,7 +49,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
         <Content style={{ margin: "24px 16px 0" }}>
           <div
             className="site-layout-background"
-            style={{ padding: 24, minHeight: 360 }}
+            style={{ padding: 24, minHeight: "100%" }}
           >
             {children}
           </div>
