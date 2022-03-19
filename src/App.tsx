@@ -1,4 +1,5 @@
 import React, { Suspense } from "react";
+import { Link } from "react-router-dom";
 import View from "./components/View";
 // import Page404 from "./views/404/Page404";
 
@@ -9,7 +10,21 @@ import View from "./components/View";
 function App() {
   return (
     <>
-      <Suspense fallback={<></>}>
+      <Suspense
+        fallback={
+          <>
+            <div className="flex items-center justify-center">
+              Page is Loading... |{"  "}
+              <a
+                className="text-blue-200"
+                href="https://www.bilibili.com/video/BV1GJ411x7h7?from=search&seid=7540959031706207336&spm_id_from=333.337.0.0"
+              >
+                这里有好康的🤪
+              </a>
+            </div>
+          </>
+        }
+      >
         <View />
       </Suspense>
     </>
