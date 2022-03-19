@@ -21,6 +21,8 @@ import {
   BarChartOutlined,
   OrderedListOutlined,
   PlusSquareOutlined,
+  SkinFilled,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
 
 export interface ARouter {
@@ -52,6 +54,8 @@ const ManageOpening = lazy(() => import("../views/manage/Opening"));
 const ManageProjects = lazy(() => import("../views/manage/Projects"));
 const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
 const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
+const User = lazy(() => import("../views/manage/system/User"));
+const Role = lazy(() => import("../views/manage/system/Role"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -191,6 +195,28 @@ const router: ARouter[] = [
         key: "scorerecord",
         component: <ScoreRecord />,
         icon: <PlusSquareOutlined />,
+      },
+    ],
+  },
+  {
+    path: "/admin/manage/system",
+    title: "系统管理",
+    key: "systemdesign",
+    icon: <LaptopOutlined />,
+    children: [
+      {
+        path: "/admin/manage/system/user",
+        key: "systemuser",
+        title: "用户管理",
+        component: <User />,
+        icon: <SkinFilled />,
+      },
+      {
+        path: "/admin/manage/system/role",
+        key: "systemuserrole",
+        title: "角色管理",
+        component: <Role />,
+        icon: <UserSwitchOutlined />,
       },
     ],
   },
