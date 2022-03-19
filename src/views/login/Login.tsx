@@ -2,16 +2,19 @@ import React from "react";
 import { Button, Checkbox, Form, Input, Divider, message } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
+import axios from "axios";
 
 interface Props {}
 
 const Login = (props: Props) => {
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    message.success("登录成功");
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+    message.error("登录失败");
   };
   return (
     <>
@@ -84,10 +87,10 @@ const Login = (props: Props) => {
               className="w-full h-12 mx-auto bg-sky-500 rounded-xl drop-shadow-2xl"
               onClick={() => {
                 // TODO: 根据返回信息判断
-                message.success("登陆成功");
+                // message.success("登陆成功");
               }}
             >
-              登陆
+              登录
             </Button>
             {/* <br />
             Or <a href="">register now!</a> */}

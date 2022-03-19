@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Checkbox, Form, Input, Divider, message, Select } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined, IdcardOutlined } from "@ant-design/icons";
+import axios from "../../api";
 
 const { Option } = Select;
 
@@ -9,11 +10,27 @@ interface Props {}
 
 const Register = (props: Props) => {
   const onFinish = (values: any) => {
-    console.log("Success:", values);
+    const { confirm, ...data } = values;
+    console.log("Success:", data);
+    axios
+      .post(`/register`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          message.success("注册成功");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        message.error("出了一些小问题...");
+      });
   };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
+    message.error("注册失败");
+    setTimeout(() => {
+      message.warn("请填写必填项");
+    }, 800);
   };
 
   return (
@@ -35,7 +52,7 @@ const Register = (props: Props) => {
           </div>
           <Form.Item
             label="学号"
-            name="请输入学号"
+            name="no"
             rules={[{ required: true, message: "请输入学号!" }]}
           >
             <Input
@@ -59,12 +76,40 @@ const Register = (props: Props) => {
             label="密码"
             name="password"
             rules={[{ required: true, message: "请输入密码!" }]}
+            hasFeedback
           >
             <Input
               className="border-none focus:border focus:border-teal-300"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
+            />
+          </Form.Item>
+          <Form.Item
+            name="confirm"
+            label="确认密码"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "请确认你的密码!",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(new Error("两次输入的密码不匹配!"));
+                },
+              }),
+            ]}
+          >
+            <Input
+              className="border-none focus:border focus:border-teal-300"
+              prefix={<LockOutlined className="site-form-item-icon" />}
+              type="password"
+              placeholder="Password_Confirm"
             />
           </Form.Item>
           <Form.Item
@@ -107,7 +152,7 @@ const Register = (props: Props) => {
               className="w-full h-12 mx-auto bg-sky-500 rounded-xl drop-shadow-2xl"
               onClick={() => {
                 // TODO: 根据返回信息判断
-                message.success("注册成功");
+                // message.success("注册成功");
               }}
             >
               注册
