@@ -3,24 +3,31 @@ import { Button, Checkbox, Form, Input, Divider, message, Select } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined, IdcardOutlined } from "@ant-design/icons";
 import axios from "../../api";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 interface Props {}
 
 const Register = (props: Props) => {
-  const onFinish = (values: any) => {
+  const navigate = useNavigate();
+  const onFinish = async (values: any) => {
     const { confirm, ...data } = values;
     console.log("Success:", data);
-    axios
+    await axios
       .post(`/register`, data)
       .then((res) => {
         if (res.status === 200) {
           message.success("注册成功");
+          setTimeout(() => {
+            navigate("/login");
+          }, 2000);
+        } else {
+          message.error("出了一些问题...");
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
         message.error("出了一些小问题...");
       });
   };
@@ -75,10 +82,17 @@ const Register = (props: Props) => {
           <Form.Item
             label="密码"
             name="password"
-            rules={[{ required: true, message: "请输入密码!" }]}
+            rules={[
+              { required: true, message: "请输入密码!" },
+              {
+                min: 8,
+                max: 16,
+                message: "密码长度在8到16之间",
+              },
+            ]}
             hasFeedback
           >
-            <Input
+            <Input.Password
               className="border-none focus:border focus:border-teal-300"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
@@ -95,6 +109,11 @@ const Register = (props: Props) => {
                 required: true,
                 message: "请确认你的密码!",
               },
+              {
+                min: 8,
+                max: 16,
+                message: "验证密码长度也在8到16之间",
+              },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("password") === value) {
@@ -105,7 +124,7 @@ const Register = (props: Props) => {
               }),
             ]}
           >
-            <Input
+            <Input.Password
               className="border-none focus:border focus:border-teal-300"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
@@ -144,6 +163,12 @@ const Register = (props: Props) => {
               {/* <Option value="other">Other</Option> */}
             </Select>
           </Form.Item>
+
+          <div className="mb-2 text-center ">
+            <a href="/login" className="font-mono text-red-500">
+              已经有账号了,前去登录
+            </a>
+          </div>
 
           <Form.Item>
             <Button

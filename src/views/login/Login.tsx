@@ -2,14 +2,33 @@ import React from "react";
 import { Button, Checkbox, Form, Input, Divider, message } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import axios from "axios";
+import axios from "../../api";
+import { useNavigate } from "react-router-dom";
 
 interface Props {}
 
 const Login = (props: Props) => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
-    message.success("登录成功");
+  const navigate = useNavigate();
+  const onFinish = async (values: any) => {
+    const { remember, ...data } = values;
+    console.log("Success:", data);
+    await axios
+      .post(`/login`, data)
+      .then((res) => {
+        if (res.status === 200) {
+          message.success("登录成功", 1);
+          setTimeout(() => {
+            navigate("/admin/main");
+          }, 2200);
+        } else {
+          message.error("出了一些问题...");
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        message.error("出了一些小问题...");
+      });
+    // message.success("登录成功");
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -53,7 +72,7 @@ const Login = (props: Props) => {
             name="password"
             rules={[{ required: true, message: "Please input your Password!" }]}
           >
-            <Input
+            <Input.Password
               className="border-none focus:border focus:border-teal-300"
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
@@ -85,10 +104,6 @@ const Login = (props: Props) => {
               type="primary"
               htmlType="submit"
               className="w-full h-12 mx-auto bg-sky-500 rounded-xl drop-shadow-2xl"
-              onClick={() => {
-                // TODO: 根据返回信息判断
-                // message.success("登陆成功");
-              }}
             >
               登录
             </Button>
