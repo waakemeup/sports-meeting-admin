@@ -7,7 +7,7 @@ import {
 } from "@ant-design/icons";
 import { Layout, Menu } from "antd";
 import React, { ReactNode } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import router, { ARouter } from "../../router/router";
 
 const { SubMenu } = Menu;

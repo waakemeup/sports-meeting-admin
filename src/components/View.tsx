@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
 import Dashboard from "../views/dashboard/Dashboard";
@@ -15,11 +16,8 @@ const View = (props: Props) => {
   return (
     <Router>
       <Routes>
-        <Route
-          path="/"
-          element={<Navigate replace to={"/admin/dashboard"} />}
-        />
-        <Route path="/admin">
+        <Route path="/" element={<Navigate replace to={"admin/dashboard"} />} />
+        <Route path="admin">
           {router.map((r) => {
             if (r.children) {
               return r.children.map((child) => (

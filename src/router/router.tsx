@@ -16,6 +16,11 @@ import {
   IdcardFilled,
   TeamOutlined,
   HddFilled,
+  SnippetsOutlined,
+  ApartmentOutlined,
+  BarChartOutlined,
+  OrderedListOutlined,
+  PlusSquareOutlined,
 } from "@ant-design/icons";
 
 export interface ARouter {
@@ -43,6 +48,10 @@ const ClassInfo = lazy(() => import("../views/departments/ClassInfo"));
 const DepartmentInfo = lazy(
   () => import("../views/departments/DepartmentInfo")
 );
+const ManageOpening = lazy(() => import("../views/manage/Opening"));
+const ManageProjects = lazy(() => import("../views/manage/Projects"));
+const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
+const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -67,7 +76,6 @@ const router: ARouter[] = [
     key: "myinfo",
     // component: <MeInfo />,
     icon: <UserOutlined />,
-    // index: true,
     children: [
       {
         path: "/admin/me/info",
@@ -147,6 +155,42 @@ const router: ARouter[] = [
         key: "departmentinfo",
         icon: <HddFilled />,
         component: <DepartmentInfo />,
+      },
+    ],
+  },
+  {
+    path: "/admin/manage/opening",
+    title: "开幕管理",
+    key: "manageopening",
+    component: <ManageOpening />,
+    icon: <SnippetsOutlined />,
+  },
+  {
+    path: "/admin/manage/projects",
+    title: "项目管理",
+    key: "manageprojects",
+    component: <ManageProjects />,
+    icon: <ApartmentOutlined />,
+  },
+  {
+    path: "/admin/manage/score",
+    title: "成绩管理",
+    key: "managescore",
+    icon: <BarChartOutlined />,
+    children: [
+      {
+        path: "/admin/manage/score/list",
+        title: "成绩列表",
+        key: "scorelist",
+        component: <ScoreList />,
+        icon: <OrderedListOutlined />,
+      },
+      {
+        path: "/admin/manage/score/record",
+        title: "成绩录入",
+        key: "scorerecord",
+        component: <ScoreRecord />,
+        icon: <PlusSquareOutlined />,
       },
     ],
   },
