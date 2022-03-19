@@ -3,24 +3,32 @@ import "antd/dist/antd.css";
 import React from "react";
 import SideBar from "../sidebar/SideBar";
 import "./index.css";
+import { useNavigate } from "react-router-dom";
+import MyContent from "../popover/MyContent";
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 interface Props {}
 
-const content = (
-  <div className="">
-    <div>Hello</div>
-    <div className="flex flex-wrap items-center justify-between gap-2 sm:flex-row">
-      <Button type="primary" className="p-1 text-center rounded-md bg-cyan-500">
-        修改密码
-      </Button>
-      <Button className="p-1 text-center bg-yellow-400 rounded-md">登出</Button>
-    </div>
-  </div>
-);
+// const content = (
+//   <div className="">
+//     <div>Hello</div>
+//     <div className="flex flex-wrap items-center justify-between gap-2 sm:flex-row">
+//       <Button
+//         type="primary"
+//         className="p-1 text-center rounded-md bg-cyan-500"
+//         onClick={() => {}}
+//       >
+//         修改密码
+//       </Button>
+//       <Button className="p-1 text-center bg-yellow-400 rounded-md">登出</Button>
+//     </div>
+//   </div>
+// );
 
 const AppLayout: React.FC<Props> = ({ children }) => {
+  const navigate = useNavigate();
+
   return (
     <Layout className="h-screen">
       <SideBar />
@@ -33,7 +41,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
             placement="bottom"
             trigger={"click"}
             // title="title"
-            content={content}
+            content={<MyContent navigate={navigate} />}
           >
             <div
               id="popover"
