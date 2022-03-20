@@ -16,7 +16,7 @@ const View = (props: Props) => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate replace to={"admin/dashboard"} />} />
+        <Route path="/" element={<Navigate replace to={"admin/main"} />} />
         <Route path="admin">
           {router.map((r) => {
             if (r.children) {

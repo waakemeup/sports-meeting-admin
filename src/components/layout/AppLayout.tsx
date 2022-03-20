@@ -69,7 +69,8 @@ const AppLayout: React.FC<Props> = ({ children }) => {
           {/* <div>HAHHA</div> */}
           <Content style={{ margin: "24px 16px 0" }}>
             <div
-              className="site-layout-background"
+              // TODO: maybe this need to change
+              className=" !bg-system-gray border drop-shadow-2xl rounded-2xl"
               style={{ padding: 24, minHeight: "100%" }}
             >
               {/* <ContentHeader info={"test"} /> */}
