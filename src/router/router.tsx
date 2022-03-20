@@ -60,14 +60,6 @@ const Role = lazy(() => import("../views/manage/system/Role"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
-  // {
-  //   path: "/admin/dashboard",
-  //   // index: true,
-  //   title: "仪表盘",
-  //   key: "dashboard",
-  //   component: <Dashboard />,
-  //   icon: <DashboardOutlined />,
-  // },
   {
     path: "/admin/main",
     title: "首页",

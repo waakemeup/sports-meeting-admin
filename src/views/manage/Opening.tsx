@@ -1,7 +1,8 @@
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
-import { Table, Tag, Space, Card } from "antd";
+import { Table, Tag, Space, Card, Button } from "antd";
+import { FileTextOutlined } from "@ant-design/icons";
 
 const { Column, ColumnGroup } = Table;
 
@@ -37,7 +38,12 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
       <Card
         title="开幕信息记录"
         className="border-t-4 rounded-sm border-t-blue-300"
-      ></Card>
+      >
+        <div id="buttons">
+          <Button icon={<FileTextOutlined />}>新建</Button>
+          <Button></Button>
+        </div>
+      </Card>
     </>
   );
 };
