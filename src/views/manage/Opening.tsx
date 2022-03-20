@@ -3,6 +3,7 @@ import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Table, Tag, Space, Card, Button } from "antd";
 import { FileTextOutlined } from "@ant-design/icons";
+import FormModal from "../../components/modal/FormModal";
 
 const { Column, ColumnGroup } = Table;
 
@@ -40,8 +41,15 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <div id="buttons">
-          <Button icon={<FileTextOutlined />}>新建</Button>
-          <Button></Button>
+          {/* TODO: add a new File to handle the modal */}
+          <FormModal />
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            刷新
+          </Button>
         </div>
       </Card>
     </>
