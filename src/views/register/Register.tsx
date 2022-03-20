@@ -69,9 +69,9 @@ const Register = (props: Props) => {
             />
           </Form.Item>
           <Form.Item
-            label="账号"
-            name="username"
-            rules={[{ required: true, message: "请输入用户名!" }]}
+            label="姓名"
+            name="name"
+            rules={[{ required: true, message: "请输入姓名!" }]}
           >
             <Input
               className="border-none focus:border focus:border-teal-300"
@@ -138,16 +138,26 @@ const Register = (props: Props) => {
           >
             <Select placeholder="选择你所在的院系">
               {/* TODO: 这里要把value换成0或者1 */}
-              <Option value="学院1">学院1</Option>
-              <Option value="学院2">学院2</Option>
-              <Option value="学院3">学院3</Option>
-              <Option value="学院4">学院4</Option>
-              <Option value="学院5">学院5</Option>
-              <Option value="学院6">学院6</Option>
-              <Option value="学院7">学院7</Option>
-              <Option value="学院8">学院8</Option>
-              <Option value="学院9">学院9</Option>
-              <Option value="学院10">学院10</Option>
+              <Option value={0}>宜宾校区</Option>
+              <Option value={1}>地球科学学院</Option>
+              <Option value={2}>能源学院</Option>
+              <Option value={3}>环境与土木工程学院</Option>
+              <Option value={4}>地球物理学院</Option>
+              <Option value={5}>核技术与自动化工程学院</Option>
+              <Option value={6}>材料与化学化工学院</Option>
+              <Option value={7}>管理科学学院</Option>
+              <Option value={8}>马克思主义学院</Option>
+              <Option value={9}>外国语学院</Option>
+              <Option value={10}>文法学院</Option>
+              <Option value={11}>商学院</Option>
+              <Option value={12}>传播科学与艺术学院</Option>
+              <Option value={13}>体育学院</Option>
+              <Option value={14}>计算机与网络安全学院(牛津布鲁克斯学院)</Option>
+              <Option value={15}>旅游与城乡规划学院</Option>
+              <Option value={16}>生态环境学院</Option>
+              <Option value={17}>数理学院</Option>
+              <Option value={18}>机电工程学院</Option>
+              <Option value={19}>研究生院</Option>
               {/* <Option value="other">Other</Option> */}
             </Select>
           </Form.Item>
@@ -158,8 +168,8 @@ const Register = (props: Props) => {
           >
             <Select placeholder="选择你的性别">
               {/* TODO: 这里要把value换成0或者1 */}
-              <Option value="male">Male</Option>
-              <Option value="female">Female</Option>
+              <Option value={0}>男</Option>
+              <Option value={1}>女</Option>
               {/* <Option value="other">Other</Option> */}
             </Select>
           </Form.Item>

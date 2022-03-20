@@ -3,8 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./index.css";
-
-// console.log(process.env.REACT_APP_API_URL);  TODO: it works
+import "antd/dist/antd.min.css";
 
 ReactDOM.render(
   // <React.StrictMode>

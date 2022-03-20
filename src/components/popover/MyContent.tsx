@@ -20,7 +20,12 @@ const MyContent = ({ navigate }: Props) => {
         >
           修改密码
         </Button>
-        <Button className="p-1 text-center bg-yellow-400 rounded-md">
+        <Button
+          className="p-1 text-center bg-yellow-400 rounded-md"
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
           登出
         </Button>
       </div>

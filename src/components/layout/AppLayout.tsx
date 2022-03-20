@@ -1,5 +1,6 @@
 import { Layout, Menu, Avatar, Popover, Button } from "antd";
-import "antd/dist/antd.css";
+// import "antd/dist/antd.css";
+import "antd/dist/antd.min.css";
 import React from "react";
 import SideBar from "../sidebar/SideBar";
 import "./index.css";
@@ -51,7 +52,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
           >
             <div
               id="popover"
-              className="flex items-center justify-center hover:bg-sky-800 xxm:hidden"
+              className="flex items-center justify-center hover:bg-sky-800 xxm:hidden hover:cursor-pointer"
             >
               <Avatar className="ml-2" />
               {/* TODO: pass username */}
