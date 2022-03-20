@@ -70,16 +70,14 @@ const AppLayout: React.FC<Props> = ({ children }) => {
           <Content style={{ margin: "24px 16px 0" }}>
             <div
               // TODO: maybe this need to change
-              className=" !bg-system-gray border-gray-200 drop-shadow-2xl rounded-2xl"
+              className=" !bg-system-gray border-gray-200 drop-shadow-2xl rounded-2xl p-12"
               style={{ padding: 24, minHeight: "100%" }}
             >
               {/* <ContentHeader info={"test"} /> */}
               {children}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>
-            Ant Design ©2018 Created by Ant UED
-          </Footer>
+          <Footer style={{ textAlign: "center" }}>This is a Footer</Footer>
         </Layout>
       </Layout>
     </>
