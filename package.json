@@ -16,6 +16,7 @@
     "qier-progress": "^1.0.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-helmet": "^6.1.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.0",
     "typescript": "^4.4.2",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@ant-design/icons": "^4.7.0",
+    "@types/react-helmet": "^6.1.5",
     "autoprefixer": "^10.4.4",
     "fs": "^0.0.1-security",
     "less": "^4.1.2",

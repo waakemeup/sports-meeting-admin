@@ -4,6 +4,7 @@ import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "../../api";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 interface Props {}
 
@@ -37,6 +38,10 @@ const Login = (props: Props) => {
   };
   return (
     <>
+      <Helmet>
+        <title>运动会-登录</title>
+        <meta name="description" content="运动会用户登录" />
+      </Helmet>
       <div
         className={`flex flex-col items-center  justify-center w-screen h-screen bg-sky-300 ${styles["bgImg"]}`}
       >

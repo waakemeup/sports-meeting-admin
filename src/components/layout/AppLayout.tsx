@@ -7,6 +7,7 @@ import "./index.css";
 import { useNavigate } from "react-router-dom";
 import MyContent from "../popover/MyContent";
 import ContentHeader from "../contentheader/CotentHeader";
+import { Helmet } from "react-helmet";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -37,44 +38,50 @@ const AppLayout: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
 
   return (
-    <Layout className="h-screen">
-      <SideBar />
-      <Layout>
-        <Header
-          className="flex items-center justify-end site-layout-sub-header-background"
-          style={{ padding: 0, backgroundColor: "skyblue" }}
-        >
-          <Popover
-            placement="bottom"
-            trigger={"click"}
-            // title="title"
-            content={<MyContent navigate={navigate} />}
+    <>
+      <Helmet>
+        <title>运动会信息管理</title>
+        <meta name="description" content="运动会信息管理主页" />
+      </Helmet>
+      <Layout className="h-screen">
+        <SideBar />
+        <Layout>
+          <Header
+            className="flex items-center justify-end site-layout-sub-header-background"
+            style={{ padding: 0, backgroundColor: "skyblue" }}
           >
-            <div
-              id="popover"
-              className="flex items-center justify-center hover:bg-sky-800 xxm:hidden hover:cursor-pointer"
+            <Popover
+              placement="bottom"
+              trigger={"click"}
+              // title="title"
+              content={<MyContent navigate={navigate} />}
             >
-              <Avatar className="ml-2" />
-              {/* TODO: pass username */}
-              <div className="pr-2 ml-2 text-white">username</div>
+              <div
+                id="popover"
+                className="flex items-center justify-center hover:bg-sky-800 xxm:hidden hover:cursor-pointer"
+              >
+                <Avatar className="ml-2" />
+                {/* TODO: pass username */}
+                <div className="pr-2 ml-2 text-white">username</div>
+              </div>
+            </Popover>
+          </Header>
+          {/* <div>HAHHA</div> */}
+          <Content style={{ margin: "24px 16px 0" }}>
+            <div
+              className="site-layout-background"
+              style={{ padding: 24, minHeight: "100%" }}
+            >
+              {/* <ContentHeader info={"test"} /> */}
+              {children}
             </div>
-          </Popover>
-        </Header>
-        {/* <div>HAHHA</div> */}
-        <Content style={{ margin: "24px 16px 0" }}>
-          <div
-            className="site-layout-background"
-            style={{ padding: 24, minHeight: "100%" }}
-          >
-            {/* <ContentHeader info={"test"} /> */}
-            {children}
-          </div>
-        </Content>
-        <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
+          </Content>
+          <Footer style={{ textAlign: "center" }}>
+            Ant Design ©2018 Created by Ant UED
+          </Footer>
+        </Layout>
       </Layout>
-    </Layout>
+    </>
   );
 };
 
