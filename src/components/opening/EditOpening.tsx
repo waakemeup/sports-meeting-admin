@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, message, Form, Input, DatePicker } from "antd";
 import axios from "../../api";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
-interface Props {}
+interface Props {
+  id: number;
+  theme: string;
+  startDate: string;
+  endDate: string;
+  name: string;
+}
 
-const FormModal = (props: Props) => {
+const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -14,6 +20,10 @@ const FormModal = (props: Props) => {
   const [form] = Form.useForm();
 
   const { RangePicker } = DatePicker;
+
+  // useEffect(() => {
+  //   console.log("test", moment(startDate, "YYYY-MM-DD"));
+  // }, []);
 
   function onChange(dates: any, dateStrings: any) {
     // console.log("From: ", dates[0], ", to: ", dates[1]);
@@ -64,9 +74,9 @@ const FormModal = (props: Props) => {
 
   return (
     <>
-      <Button onClick={showModal}>新建</Button>
+      <Button onClick={showModal}>编辑</Button>
       <Modal
-        title="新建开幕式"
+        title="编辑开幕式"
         visible={visible}
         confirmLoading={confirmLoading}
         onCancel={handleCancel}
@@ -74,7 +84,7 @@ const FormModal = (props: Props) => {
           <Button key={"cancel"} onClick={() => setVisible(false)}>
             取消
           </Button>,
-          <Button form="createopening" key="submit" htmlType="submit">
+          <Button form="editopening" key="submit" htmlType="submit">
             提交
           </Button>,
         ]}
@@ -90,6 +100,7 @@ const FormModal = (props: Props) => {
             label="名称"
             name="name"
             rules={[{ required: true, message: "请输入开幕式名称!" }]}
+            initialValue={name}
           >
             <Input placeholder="开幕式名称" />
           </Form.Item>
@@ -97,6 +108,7 @@ const FormModal = (props: Props) => {
             label="主题"
             name="theme"
             rules={[{ required: true, message: "请输入开幕式主题!" }]}
+            initialValue={theme}
           >
             <Input placeholder="开幕式主题" />
           </Form.Item>
@@ -104,6 +116,10 @@ const FormModal = (props: Props) => {
             label="选择运动会日期:"
             name="dates"
             rules={[{ required: true, message: "请选择运动会时间段!" }]}
+            initialValue={[
+              moment(startDate, "YYYY-MM-DD HH:mm:ss"),
+              moment(endDate, "YYYY-MM-DD HH:mm:ss"),
+            ]}
           >
             <RangePicker
               ranges={{
@@ -124,4 +140,4 @@ const FormModal = (props: Props) => {
   );
 };
 
-export default FormModal;
+export default EditOpening;

@@ -6,6 +6,8 @@ import { FileTextOutlined } from "@ant-design/icons";
 import FormModal from "../../components/modal/FormModal";
 import clsx from "clsx";
 import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
+import EditOpening from "../../components/opening/EditOpening";
+import DeleteOpening from "../../components/opening/DeleteOpening";
 
 const { Column, ColumnGroup } = Table;
 
@@ -30,24 +32,24 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
       id: 1,
       name: "第一届",
       theme: "快乐运动会",
-      startDate: "一个开始时间",
-      endDate: "一个结束时间",
+      startDate: "2022-03-01 21:09:32",
+      endDate: "2022-03-18 21:09:33",
     },
     {
       key: 2,
       id: 2,
       name: "第二届",
       theme: "快乐运动会",
-      startDate: "一个开始时间",
-      endDate: "一个结束时间",
+      startDate: "2022-03-01 21:09:32",
+      endDate: "2022-03-19 21:09:33",
     },
     {
       key: 3,
       id: 3,
       name: "第三届",
       theme: "快乐运动会",
-      startDate: "一个开始时间",
-      endDate: "一个结束时间",
+      startDate: "2022-03-01 21:09:32",
+      endDate: "2022-03-20 21:09:33",
     },
   ];
 
@@ -75,6 +77,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
         <Table
           dataSource={openingList}
           rowKey={"key"}
+          scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
             pageSize: 5,
@@ -89,6 +92,21 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
             title={"状态"}
             render={(openingItem: OpeningInfo) => (
               <ChangeOpeningState id={openingItem.id} />
+            )}
+          />
+          <Table.Column
+            title={"操作"}
+            render={(openingItem: OpeningInfo) => (
+              <Space>
+                <EditOpening
+                  id={openingItem.id}
+                  name={openingItem.name}
+                  endDate={openingItem.endDate}
+                  startDate={openingItem.startDate}
+                  theme={openingItem.theme}
+                />
+                <DeleteOpening id={openingItem.id} />
+              </Space>
             )}
           />
         </Table>

@@ -27,6 +27,7 @@ const ChangeOpeningState = (props: Props) => {
       onCancel={cancel}
       okText="Yes"
       cancelText="No"
+      okType="ghost"
     >
       <Button
         className={clsx(
