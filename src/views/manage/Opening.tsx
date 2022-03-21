@@ -1,4 +1,4 @@
-import { Button, Card, Space, Table } from "antd";
+import { Button, Card, Form, FormInstance, Space, Table } from "antd";
 import axios from "../../api";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
@@ -16,7 +16,7 @@ interface OpeningInfo {
   startDate: string;
   endDate: string;
   id: number;
-  key: number;
+  key?: number; //TODO:也许应该把这个删了
 }
 
 interface Props {
@@ -38,7 +38,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
  */
   openingList = [
     {
-      key: 1,
+      // key: 1,
       id: 1,
       name: "第一届",
       theme: "快乐运动会",
@@ -46,7 +46,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
       endDate: "2022-03-18 21:09:33",
     },
     {
-      key: 2,
+      // key: 2,
       id: 2,
       name: "第二届",
       theme: "快乐运动会",
@@ -54,7 +54,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
       endDate: "2022-03-19 21:09:33",
     },
     {
-      key: 3,
+      // key: 3,
       id: 3,
       name: "第三届",
       theme: "快乐运动会",
@@ -86,7 +86,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
         </div>
         <Table
           dataSource={openingList}
-          rowKey={"key"}
+          rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],

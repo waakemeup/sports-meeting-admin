@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, memo } from "react";
 import { Modal, Button, message, Form, Input, DatePicker } from "antd";
 import axios from "../../api";
 import moment from "moment";
@@ -17,13 +17,9 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
-  const [form] = Form.useForm();
+  let [form] = Form.useForm();
 
   const { RangePicker } = DatePicker;
-
-  // useEffect(() => {
-  //   console.log("test", moment(startDate, "YYYY-MM-DD"));
-  // }, []);
 
   function onChange(dates: any, dateStrings: any) {
     // console.log("From: ", dates[0], ", to: ", dates[1]);
@@ -43,9 +39,10 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
     let [startDate, endDate] = dates;
     startDate = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
     endDate = moment(endDate).format("YYYY-MM-DD HH:mm:ss");
-    console.log({ name, theme, startDate, endDate }); // TODO: it's ok
+    console.log({ name, theme, startDate, endDate, id }); // TODO: it's ok
     await axios
-      .post(`/createsport`, {
+      .post(`/updatesport`, {
+        id,
         name,
         theme,
         startDate,
@@ -53,14 +50,14 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
       })
       .then((res) => {
         if (res.status === 200) {
-          message.success("发布成功", 1);
+          message.success("修改成功", 1);
           setTimeout(() => {
             setVisible(false);
-            form.resetFields();
           }, 1500);
         } else {
           message.error("发生了意外的错误...");
         }
+        console.log("修改的ID:", id);
       })
       .catch((err) => {
         console.log(err);
@@ -84,15 +81,15 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
           <Button key={"cancel"} onClick={() => setVisible(false)}>
             取消
           </Button>,
-          <Button form="editopening" key="submit" htmlType="submit">
+          <Button form={`editopening${id}`} key="submit" htmlType="submit">
             提交
           </Button>,
         ]}
       >
         <Form
-          form={form}
+          form={form} //TODO: 3个组件共用了一个Form实例，问题所在
           layout="horizontal"
-          id="createopening"
+          id={`editopening${id}`}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
@@ -140,4 +137,4 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
   );
 };
 
-export default EditOpening;
+export default memo(EditOpening);
