@@ -33,7 +33,7 @@ const CotentHeader = ({ info, info2, function1, canFunction1 }: Props) => {
           onClick={function1}
           className={clsx([
             canFunction1 &&
-              "transition-colors hover:text-red-400 hover:cursor-pointer",
+              "transition-colors hover:text-cyan-300 hover:cursor-pointer",
           ])}
         >
           {info}
