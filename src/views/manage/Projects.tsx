@@ -1,8 +1,9 @@
-import { Button, Card, Table } from "antd";
+import { Button, Card, Space, Table } from "antd";
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ProjectModal from "../../components/modal/ProjectModal";
+import DetailProject from "../../components/project/DetailProject";
 
 interface ProjectInfo {
   sport_id: string;
@@ -97,6 +98,14 @@ const Projects = (props: Props) => {
             )}
           />
           <Table.Column title={"项目举办日期"} dataIndex={"start"} />
+          <Table.Column
+            title={"操作"}
+            render={(project: ProjectInfo) => (
+              <Space>
+                <DetailProject id={project.id} />
+              </Space>
+            )}
+          />
         </Table>
       </Card>
     </>

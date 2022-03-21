@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
 import Dashboard from "../views/dashboard/Dashboard";
+import ProjectDetail from "../views/detail/ProjectDetail";
 import AppLayout from "./layout/AppLayout";
 
 interface Props {}
@@ -17,6 +18,18 @@ const View = (props: Props) => {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate replace to={"admin/main"} />} />
+        <Route path="/admin/detail">
+          <Route path="project">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <ProjectDetail />
+                </AppLayout>
+              }
+            />
+          </Route>
+        </Route>
         <Route path="admin">
           {router.map((r) => {
             if (r.children) {
