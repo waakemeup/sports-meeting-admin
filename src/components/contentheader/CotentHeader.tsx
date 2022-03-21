@@ -1,13 +1,16 @@
 import { DashboardTwoTone, RightOutlined } from "@ant-design/icons";
+import clsx from "clsx";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
   info?: string;
   info2?: string;
+  function1?: () => void;
+  canFunction1?: boolean;
 }
 
-const CotentHeader = ({ info, info2 }: Props) => {
+const CotentHeader = ({ info, info2, function1, canFunction1 }: Props) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between mb-5 mdm:flex-col mdm:items-start mdm:gap-4">
@@ -26,7 +29,15 @@ const CotentHeader = ({ info, info2 }: Props) => {
           首页
         </div>
         <RightOutlined className="text-neutral-300" />
-        <div>{info}</div>
+        <div
+          onClick={function1}
+          className={clsx([
+            canFunction1 &&
+              "transition-colors hover:text-red-400 hover:cursor-pointer",
+          ])}
+        >
+          {info}
+        </div>
         {info2 && (
           <>
             <RightOutlined className="text-neutral-300" />
