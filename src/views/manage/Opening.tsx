@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { Button, Card, Space, Table } from "antd";
+import axios from "../../api";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
-import { Table, Tag, Space, Card, Button, Popconfirm, message } from "antd";
-import { FileTextOutlined } from "@ant-design/icons";
 import FormModal from "../../components/modal/FormModal";
-import clsx from "clsx";
 import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
-import EditOpening from "../../components/opening/EditOpening";
 import DeleteOpening from "../../components/opening/DeleteOpening";
+import EditOpening from "../../components/opening/EditOpening";
 
 const { Column, ColumnGroup } = Table;
 
@@ -26,6 +25,17 @@ interface Props {
 
 const Opening: React.FC<Props> = ({ openingList }: Props) => {
   // TODO: 先仿照数据,之后把它删了
+
+  // TODO: 应该是这个模板
+  /*   const [data, setData] = useState<OpeningInfo[]>([]);
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios.get(`/getsportlist`).then((res) => res.data);
+    };
+    FetchData();
+  }, []);
+ */
   openingList = [
     {
       key: 1,

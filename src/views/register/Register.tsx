@@ -172,10 +172,8 @@ const Register = (props: Props) => {
             rules={[{ required: true, message: "请选择你的性别!" }]}
           >
             <Select placeholder="选择你的性别">
-              {/* TODO: 这里要把value换成0或者1 */}
               <Option value={0}>男</Option>
               <Option value={1}>女</Option>
-              {/* <Option value="other">Other</Option> */}
             </Select>
           </Form.Item>
 
