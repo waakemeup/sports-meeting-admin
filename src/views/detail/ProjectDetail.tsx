@@ -2,7 +2,8 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useNavigate } from "react-router-dom";
 import ContentHeader from "../../components/contentheader/CotentHeader";
-import { Card, Descriptions } from "antd";
+import { Card, Descriptions, Button, Table } from "antd";
+import ProjectUserList from "../../components/project/ProjectUserList";
 
 interface ProjectInfo {
   sport_id: string;
@@ -26,6 +27,13 @@ const tabListNoTitle = [
   },
 ];
 
+const _tabListNoTitle = [
+  {
+    key: "项目参赛名单",
+    tab: "项目参赛名单",
+  },
+];
+
 const ProjectDetail = (props: Props) => {
   // TODO: 此处应该改为Axios
   const project: ProjectInfo = {
@@ -43,7 +51,8 @@ const ProjectDetail = (props: Props) => {
 
   const navigate = useNavigate();
 
-  // const { id } = useParams();
+  let { id } = useParams();
+
   return (
     <>
       <Helmet>
@@ -58,7 +67,7 @@ const ProjectDetail = (props: Props) => {
         canFunction1={true}
       />
       <Card
-        className="border-t-4 rounded-sm border-t-blue-300"
+        className="my-8 border-t-4 rounded-sm border-t-blue-300"
         tabList={tabListNoTitle}
       >
         <Descriptions bordered>
@@ -85,6 +94,20 @@ const ProjectDetail = (props: Props) => {
             {project.refereeId}
           </Descriptions.Item>
         </Descriptions>
+      </Card>
+      <Card
+        className="border-t-4 rounded-sm border-t-blue-300"
+        tabList={_tabListNoTitle}
+      >
+        {/* <FormModal /> */}
+        <Button
+          onClick={() => {
+            window.location.reload();
+          }}
+        >
+          刷新
+        </Button>
+        <ProjectUserList id={id as string} />
       </Card>
     </>
   );

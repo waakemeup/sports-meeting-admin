@@ -32,6 +32,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
   useEffect(() => {
     const FetchData = async () => {
       const result = await axios.get(`/getsportlist`).then((res) => res.data);
+      setData(result);
     };
     FetchData();
   }, []);
