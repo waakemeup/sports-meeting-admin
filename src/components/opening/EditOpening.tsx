@@ -71,7 +71,9 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
 
   return (
     <>
-      <Button onClick={showModal}>编辑</Button>
+      <Button className="bg-cyan-300" onClick={showModal}>
+        编辑
+      </Button>
       <Modal
         title="编辑开幕式"
         visible={visible}

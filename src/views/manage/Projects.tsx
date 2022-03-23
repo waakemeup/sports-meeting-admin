@@ -5,6 +5,7 @@ import ContentHeader from "../../components/contentheader/CotentHeader";
 import ProjectModal from "../../components/modal/ProjectModal";
 import DeleteProject from "../../components/project/DeleteProject";
 import DetailProject from "../../components/project/DetailProject";
+import EditProject from "../../components/project/EditProject";
 
 interface ProjectInfo {
   sport_id: string;
@@ -16,6 +17,7 @@ interface ProjectInfo {
   refereeId: string;
   unit: string;
   id: number; //TODO:也许要把这个改名 eventId 或者 event_id
+  location: string;
 }
 
 interface Props {}
@@ -32,6 +34,7 @@ const Projects = (props: Props) => {
       signEnd: "2022-03-25 00:33:00",
       refereeId: "1",
       unit: "秒",
+      location: "西区操场",
     },
     {
       id: 1,
@@ -43,17 +46,19 @@ const Projects = (props: Props) => {
       signEnd: "2022-03-25 00:33:00",
       refereeId: "1",
       unit: "分",
+      location: "西区操场",
     },
     {
       id: 2,
       limit: 0,
       sport_id: "2022",
       name: "三级跳远",
-      start: "2022-03-23 00:00:00",
+      start: "2022-03-23 00:00:01",
       signStart: "2022-04-10 13:28:01",
       signEnd: "2022-04-22 00:33:00",
       refereeId: "1",
       unit: "米",
+      location: "东区操场",
     },
   ];
 
@@ -104,6 +109,18 @@ const Projects = (props: Props) => {
             render={(project: ProjectInfo) => (
               <Space>
                 <DetailProject id={project.id} />
+                <EditProject
+                  id={project.id}
+                  sport_id={project.sport_id}
+                  limit={project.limit}
+                  name={project.name}
+                  refereeId={project.refereeId}
+                  signEnd={project.signEnd}
+                  signStart={project.signStart}
+                  start={project.start}
+                  unit={project.unit}
+                  location={project.location}
+                />
                 <DeleteProject eventId={project.id} />
               </Space>
             )}
