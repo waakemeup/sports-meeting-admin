@@ -100,13 +100,15 @@ const ProjectDetail = (props: Props) => {
         tabList={_tabListNoTitle}
       >
         {/* <FormModal /> */}
-        <Button
-          onClick={() => {
-            window.location.reload();
-          }}
-        >
-          刷新
-        </Button>
+        <div className="mb-4">
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            刷新
+          </Button>
+        </div>
         <ProjectUserList id={id as string} />
       </Card>
     </>

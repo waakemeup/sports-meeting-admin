@@ -3,6 +3,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ProjectModal from "../../components/modal/ProjectModal";
+import DeleteProject from "../../components/project/DeleteProject";
 import DetailProject from "../../components/project/DetailProject";
 
 interface ProjectInfo {
@@ -103,6 +104,7 @@ const Projects = (props: Props) => {
             render={(project: ProjectInfo) => (
               <Space>
                 <DetailProject id={project.id} />
+                <DeleteProject eventId={project.id} />
               </Space>
             )}
           />
