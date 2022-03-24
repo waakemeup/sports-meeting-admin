@@ -11,3 +11,14 @@ export interface OpeningInfo {
   theme?: string;
   location?: string;
 }
+
+export interface PlayerGrade {
+  //运动员成绩
+  id: number;
+  sport_id: string;
+  card_id: string; //学号
+  name: string;
+  event_name: string;
+  location: string;
+  grade: string;
+}

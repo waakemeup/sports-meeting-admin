@@ -9,6 +9,7 @@ import {
 import router, { unAuthRoutes } from "../router/router";
 import Dashboard from "../views/dashboard/Dashboard";
 import OpeningDetail from "../views/detail/OpeningDetail";
+import PlayerGradeDetail from "../views/detail/PlayerGradeDetail";
 import ProjectDetail from "../views/detail/ProjectDetail";
 import AppLayout from "./layout/AppLayout";
 
@@ -36,6 +37,16 @@ const View = (props: Props) => {
               element={
                 <AppLayout>
                   <OpeningDetail />
+                </AppLayout>
+              }
+            />
+          </Route>
+          <Route path="grade">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <PlayerGradeDetail />
                 </AppLayout>
               }
             />
