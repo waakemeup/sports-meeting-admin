@@ -57,7 +57,6 @@ const ProjectDetail = (props: Props) => {
     <>
       <Helmet>
         <title>项目详细信息</title>
-        {/* TODO:这里content 应该根据返回数据更具体一点*/}
         <meta name="description" content="项目详细信息" />
       </Helmet>
       <ContentHeader
