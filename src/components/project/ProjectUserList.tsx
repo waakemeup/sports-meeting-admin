@@ -14,9 +14,10 @@ interface PlayerInfo {
 
 interface Props {
   id: string;
+  operation?: boolean;
 }
 
-const ProjectUserList = ({ id }: Props) => {
+const ProjectUserList = ({ id, operation = true }: Props) => {
   // const [data, setData] = useState();
 
   // useEffect(() => {
@@ -90,12 +91,16 @@ const ProjectUserList = ({ id }: Props) => {
               <Button className="bg-teal-300 rounded-2xl hover:bg-teal-500 hover:text-white">
                 详细
               </Button>
-              <Button className="bg-cyan-300 hover:bg-cyan-500 hover:text-white rounded-2xl">
-                修改
-              </Button>
-              <Button className="bg-red-300 hover:bg-red-500 hover:text-white rounded-2xl">
-                删除
-              </Button>
+              {operation && (
+                <>
+                  <Button className="bg-cyan-300 hover:bg-cyan-500 hover:text-white rounded-2xl">
+                    修改
+                  </Button>
+                  <Button className="bg-red-300 hover:bg-red-500 hover:text-white rounded-2xl">
+                    删除
+                  </Button>
+                </>
+              )}
             </Space>
           )}
         />
