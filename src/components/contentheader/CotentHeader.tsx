@@ -8,14 +8,21 @@ interface Props {
   info2?: string;
   function1?: () => void;
   canFunction1?: boolean;
+  replace?: boolean;
 }
 
-const CotentHeader = ({ info, info2, function1, canFunction1 }: Props) => {
+const CotentHeader = ({
+  info,
+  info2,
+  function1,
+  canFunction1,
+  replace,
+}: Props) => {
   const navigate = useNavigate();
   return (
     <div className="flex items-center justify-between mb-5 mdm:flex-col mdm:items-start mdm:gap-4">
       <div className="text-3xl font-bold" id="info">
-        {info}
+        {replace ? info2 : info}
       </div>
       <div
         id="right"

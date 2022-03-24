@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
 import Dashboard from "../views/dashboard/Dashboard";
+import OpeningDetail from "../views/detail/OpeningDetail";
 import ProjectDetail from "../views/detail/ProjectDetail";
 import AppLayout from "./layout/AppLayout";
 
@@ -25,6 +26,16 @@ const View = (props: Props) => {
               element={
                 <AppLayout>
                   <ProjectDetail />
+                </AppLayout>
+              }
+            />
+          </Route>
+          <Route path="opening">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <OpeningDetail />
                 </AppLayout>
               }
             />
