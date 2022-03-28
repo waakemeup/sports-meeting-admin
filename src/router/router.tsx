@@ -132,7 +132,7 @@ const router: ARouter[] = [
         icon: <RobotFilled />,
         component: <StudentsInfo />,
       },
-      {
+      /*       {
         path: "/admin/departments/teachers",
         title: "教师信息",
         key: "teachersinfo",
@@ -145,7 +145,7 @@ const router: ARouter[] = [
         key: "classinfo",
         icon: <TeamOutlined />,
         component: <ClassInfo />,
-      },
+      }, */
       {
         path: "/admin/departments/department",
         title: "院系信息",
