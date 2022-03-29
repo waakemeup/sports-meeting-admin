@@ -1,9 +1,10 @@
-import { Button, Card, Space, Table } from "antd";
+import { Button, Card, Input, Space, Table } from "antd";
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { PlayerGrade } from "../../types.d";
 import { useNavigate } from "react-router-dom";
+import { SearchOutlined } from "@ant-design/icons";
 
 interface Props {}
 
@@ -142,7 +143,32 @@ const MatchResult = (props: Props) => {
             total: playerGrades.length,
           }}
         >
-          <Table.Column title={"序号"} dataIndex={"id"} />
+          <Table.Column
+            title={"序号"}
+            dataIndex={"id"}
+            filterDropdown={({ setSelectedKeys, selectedKeys, confirm }) => {
+              return (
+                <Input
+                  autoFocus
+                  placeholder="Type Text Here"
+                  value={selectedKeys[0]}
+                  onChange={(e) => {
+                    setSelectedKeys(e.target.value ? [e.target.value] : []);
+                  }}
+                  onPressEnter={() => {
+                    confirm();
+                  }}
+                  onBlur={() => {
+                    confirm();
+                  }}
+                ></Input>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.id === Number(value);
+            }}
+          />
           <Table.Column title={"届时"} dataIndex={"sport_id"} />
           <Table.Column title={"参赛人学号"} dataIndex={"card_id"} />
           <Table.Column title={"参赛人"} dataIndex={"name"} />
