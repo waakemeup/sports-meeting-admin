@@ -1,3 +1,4 @@
+import { Button, Card } from "antd";
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../../components/contentheader/CotentHeader";
@@ -12,7 +13,20 @@ const Role = (props: Props) => {
         <meta name="description" content="系统管理角色管理" />
       </Helmet>
       <ContentHeader info={"系统管理"} info2={"角色管理"} />
-      <div>角色管理</div>
+      <Card
+        title="角色列表"
+        className="border-t-4 rounded-sm border-t-blue-300"
+      >
+        <div id="buttons" className="mb-4">
+          <Button
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            刷新
+          </Button>
+        </div>
+      </Card>
     </>
   );
 };
