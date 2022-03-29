@@ -1,10 +1,11 @@
-import { Button, Card, Space, Table } from "antd";
+import { Button, Card, Input, Space, Table } from "antd";
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
 import { useNavigate } from "react-router-dom";
 import { OpeningInfo } from "../../types.d";
+import { SearchOutlined } from "@ant-design/icons";
 
 // interface OpeningInfo {
 //   name: string;
@@ -70,8 +71,116 @@ const SportOpening = ({ openingList }: Props) => {
             total: openingList.length,
           }}
         >
-          <Table.Column title={"序号"} dataIndex={"id"} />
-          <Table.Column title={"运动会名称"} dataIndex={"name"} />
+          <Table.Column
+            title={"序号"}
+            dataIndex={"id"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.id === Number(value);
+            }}
+          />
+          <Table.Column
+            title={"运动会名称"}
+            dataIndex={"name"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.name.toLowerCase().includes(value.toLowerCase());
+            }}
+          />
           <Table.Column title={"运动会主题"} dataIndex={"theme"} />
           <Table.Column title={"举办时间"} dataIndex={"startDate"} />
           <Table.Column

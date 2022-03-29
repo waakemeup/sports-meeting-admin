@@ -1,4 +1,5 @@
-import { Button, Card, Space, Table } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import { Button, Card, Input, Space, Table } from "antd";
 import React from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
@@ -94,9 +95,173 @@ const Projects = (props: Props) => {
             total: projectList.length,
           }}
         >
-          <Table.Column title={"序号"} dataIndex={"id"} />
-          <Table.Column title={"届时"} dataIndex={"sport_id"} />
-          <Table.Column title={"项目名称"} dataIndex={"name"} />
+          <Table.Column
+            title={"序号"}
+            dataIndex={"id"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.id === Number(value);
+            }}
+          />
+          <Table.Column
+            title={"届时"}
+            dataIndex={"sport_id"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.sport_id
+                .toLowerCase()
+                .includes(value.toLowerCase());
+            }}
+          />
+          <Table.Column
+            title={"项目名称"}
+            dataIndex={"name"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.name.toLowerCase().includes(value.toLowerCase());
+            }}
+          />
           <Table.Column
             title={"项目性别限制"}
             render={(project: ProjectInfo) => (
