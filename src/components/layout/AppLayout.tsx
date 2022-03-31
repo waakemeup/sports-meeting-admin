@@ -45,7 +45,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
       </Helmet>
       <Layout className="h-screen">
         <SideBar />
-        <Layout>
+        <Layout className="h-screen">
           <Header
             className="flex items-center justify-end site-layout-sub-header-background"
             style={{ padding: 0, backgroundColor: "skyblue" }}
@@ -77,7 +77,7 @@ const AppLayout: React.FC<Props> = ({ children }) => {
               {children}
             </div>
           </Content>
-          <Footer style={{ textAlign: "center" }}>This is a Footer</Footer>
+          <Footer style={{ textAlign: "center" }} className="h-full"></Footer>
         </Layout>
       </Layout>
     </>
