@@ -11,6 +11,7 @@ import { Helmet } from "react-helmet";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../store/AdminStore";
 import { AuthStoreContext } from "../../store/AuthStore";
+import UnAuth from "../unauth/UnAuth";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
@@ -46,7 +47,7 @@ const AppLayout: React.FC<Props> = observer(({ children }) => {
   console.log(authStore);
 
   if (authStore.isAuth === false) {
-    return <>这不能看</>;
+    return <UnAuth />;
   }
 
   return (

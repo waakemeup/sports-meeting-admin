@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Checkbox, Form, Input, Divider, message } from "antd";
 import styles from "./index.module.scss";
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import axios from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import { AuthStoreContext } from "../../store/AuthStore";
 
 interface Props {}
 
 const Login = (props: Props) => {
   const navigate = useNavigate();
+
+  const authStore = useContext(AuthStoreContext);
+
   const onFinish = async (values: any) => {
     const { remember, ...data } = values;
     console.log("Success:", data);
@@ -18,6 +22,8 @@ const Login = (props: Props) => {
       .then((res) => {
         if (res.status === 200) {
           message.success("登录成功", 1);
+          // TODO:也许这不对???
+          authStore.isAuth = true;
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);
