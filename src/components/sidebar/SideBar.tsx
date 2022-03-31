@@ -46,7 +46,7 @@ const SideBar = (props: Props) => {
         // console.log(broken);
       }}
       onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
+        // console.log(collapsed, type);
       }}
     >
       <div className="logo">运动会信息管理</div>

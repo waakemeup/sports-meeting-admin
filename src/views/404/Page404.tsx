@@ -16,7 +16,7 @@ const Page404 = (props: Props) => {
           type="primary"
           className="bg-sky-500"
           onClick={() => {
-            navigate("/admin/dashboard");
+            navigate("/admin/main");
           }}
         >
           Back Home

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../../components/contentheader/CotentHeader";
+import { observer } from "mobx-react-lite";
+import { UserStoreContext } from "../../../store/UserStore";
+import { Button } from "antd";
+import { AdminStoreContext } from "../../../store/AdminStore";
 
 interface Props {}
 
-const User = (props: Props) => {
+const User = observer((props: Props) => {
+  const userStore = useContext(UserStoreContext);
+  const adminStore = useContext(AdminStoreContext);
+
   return (
     <>
       <Helmet>
@@ -12,9 +19,17 @@ const User = (props: Props) => {
         <meta name="description" content="系统管理用户管理" />
       </Helmet>
       <ContentHeader info={"系统管理"} info2={"用户管理"} />
-      <div>系统用户管理</div>
+      <div>用户管理</div>
+      <Button
+        onClick={() => {
+          adminStore.logout();
+          console.log(adminStore.admin.username);
+        }}
+      >
+        Logout
+      </Button>
     </>
   );
-};
+});
 
 export default User;
