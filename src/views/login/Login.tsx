@@ -6,6 +6,8 @@ import axios from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import { AuthStoreContext } from "../../store/AuthStore";
+import { AdminStoreContext } from "../../store/AdminStore";
+import qs from "qs";
 
 interface Props {}
 
@@ -13,27 +15,31 @@ const Login = (props: Props) => {
   const navigate = useNavigate();
 
   const authStore = useContext(AuthStoreContext);
+  const adminStore = useContext(AdminStoreContext);
 
   const onFinish = async (values: any) => {
     const { remember, ...data } = values;
     console.log("Success:", data);
+    const postData = qs.stringify(data);
     await axios
-      .post(`/login`, data)
+      .post(`/login`, postData)
       .then((res) => {
         if (res.status === 200) {
           message.success("登录成功", 1);
           // TODO:也许这不对???
-          authStore.isAuth = true;
+
+          localStorage.setItem("token", res.data.data.token);
+          authStore.isAuth = localStorage.getItem("token") !== null;
+          adminStore.admin.username = data.username;
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);
         } else {
-          message.error("出了一些问题...");
+          message.warn("学号或密码错误");
         }
       })
       .catch((err) => {
-        console.error(err);
-        message.error("出了一些小问题...");
+        message.warn("学号或者密码错误");
       });
     // message.success("登录成功");
   };
@@ -68,8 +74,8 @@ const Login = (props: Props) => {
           onFinishFailed={onFinishFailed}
         >
           <Form.Item
-            label="账号"
-            name="username"
+            label="账号(12位学号)"
+            name="userName"
             rules={[{ required: true, message: "Please input your Username!" }]}
           >
             <Input

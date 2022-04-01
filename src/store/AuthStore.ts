@@ -5,7 +5,7 @@ class AuthStore {
   @observable
   isAuth: boolean = false;
 
-  constructor(isAuth: boolean = false) {
+  constructor(isAuth: boolean = localStorage.getItem("token") !== null) {
     this.isAuth = isAuth;
     makeAutoObservable(this);
   }

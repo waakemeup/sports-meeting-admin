@@ -44,7 +44,7 @@ const AppLayout: React.FC<Props> = observer(({ children }) => {
   const adminStore = useContext(AdminStoreContext);
   const authStore = useContext(AuthStoreContext);
 
-  console.log(authStore);
+  // console.log(authStore);
 
   if (authStore.isAuth === false) {
     return <UnAuth />;

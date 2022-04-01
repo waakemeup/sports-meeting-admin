@@ -5,6 +5,7 @@ import { UserOutlined, LockOutlined, IdcardOutlined } from "@ant-design/icons";
 import axios from "../../api";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet";
+import qs from "qs";
 
 const { Option } = Select;
 
@@ -15,16 +16,25 @@ const Register = (props: Props) => {
   const onFinish = async (values: any) => {
     const { confirm, ...data } = values;
     console.log("Success:", data);
+    const postData = qs.stringify(data);
+    console.log(postData);
     await axios
-      .post(`/register`, data)
+      .post(`/register`, postData)
       .then((res) => {
-        if (res.status === 200) {
-          message.success("注册成功");
+        console.log(res.data.message, res.data.data);
+        // if (res.status === 200) {
+        //   message.success("注册成功");
+        //   setTimeout(() => {
+        //     navigate("/login");
+        //   }, 2000);
+        // }
+        if (res.data?.code === 200) {
+          message.success(res.data?.message ?? "注册成功");
           setTimeout(() => {
             navigate("/login");
           }, 2000);
         } else {
-          message.error("出了一些问题...");
+          message.error(`${res.data?.data ?? "发生了未知错误"}`);
         }
       })
       .catch((err) => {
@@ -65,7 +75,10 @@ const Register = (props: Props) => {
           <Form.Item
             label="学号"
             name="no"
-            rules={[{ required: true, message: "请输入学号!" }]}
+            rules={[
+              { required: true, message: "请输入学号!" },
+              // { len: 12, message: "学号长度应为12位" },
+            ]}
           >
             <Input
               className="border-none focus:border focus:border-teal-300"
