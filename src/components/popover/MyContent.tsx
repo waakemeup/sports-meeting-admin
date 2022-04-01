@@ -1,12 +1,15 @@
 import { Button } from "antd";
-import React from "react";
+import React, { useContext } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { AuthStoreContext } from "../../store/AuthStore";
 
 type Props = {
   navigate: NavigateFunction;
 };
 
 const MyContent = ({ navigate }: Props) => {
+  const authStore = useContext(AuthStoreContext);
+
   return (
     <div className="">
       <div>Hello</div>
@@ -23,6 +26,9 @@ const MyContent = ({ navigate }: Props) => {
         <Button
           className="p-1 text-center bg-yellow-400 rounded-md"
           onClick={() => {
+            // localStorage.removeItem("token");
+            localStorage.clear();
+            authStore.isAuth = localStorage.getItem("token") !== null;
             navigate("/login");
           }}
         >

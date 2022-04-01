@@ -30,7 +30,7 @@ const Login = (props: Props) => {
 
           localStorage.setItem("token", res.data.data.token);
           authStore.isAuth = localStorage.getItem("token") !== null;
-          adminStore.admin.username = data.username;
+          adminStore.admin.username = res.data.data.user.nikName;
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);
