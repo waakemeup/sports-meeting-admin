@@ -20,14 +20,6 @@ const User = observer((props: Props) => {
       </Helmet>
       <ContentHeader info={"系统管理"} info2={"用户管理"} />
       <div>用户管理</div>
-      <Button
-        onClick={() => {
-          adminStore.logout();
-          console.log(adminStore.admin.username);
-        }}
-      >
-        Logout
-      </Button>
     </>
   );
 });

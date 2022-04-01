@@ -4,14 +4,14 @@ import { createContext } from "react";
 
 interface AAdmin {
   username: string;
-  role: 0 | 1; //权限 0:普通 1:超级
+  role: 1 | 2 | 3 | 4; //权限 4没用
 }
 
 class AdminStore {
   @observable
-  public admin: AAdmin = { role: 0, username: "Ruby" };
+  public admin: AAdmin = { role: 3, username: "username" };
 
-  constructor(admin: AAdmin = { username: "Ruby", role: 0 }) {
+  constructor(admin: AAdmin = { username: "username", role: 3 }) {
     this.admin = admin;
     makeAutoObservable(this);
 
@@ -23,10 +23,10 @@ class AdminStore {
     });
   }
 
-  @action
-  logout() {
-    this.admin.username = "null";
-  }
+  // @action
+  // logout() {
+  //   this.admin.username = "null";
+  // }
 }
 
 export const AdminStoreContext = createContext(new AdminStore());

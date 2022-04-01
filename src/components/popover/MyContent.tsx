@@ -1,6 +1,7 @@
 import { Button } from "antd";
 import React, { useContext } from "react";
 import { NavigateFunction } from "react-router-dom";
+import { AdminStoreContext } from "../../store/AdminStore";
 import { AuthStoreContext } from "../../store/AuthStore";
 
 type Props = {
@@ -9,6 +10,7 @@ type Props = {
 
 const MyContent = ({ navigate }: Props) => {
   const authStore = useContext(AuthStoreContext);
+  const adminStore = useContext(AdminStoreContext);
 
   return (
     <div className="">
@@ -29,6 +31,7 @@ const MyContent = ({ navigate }: Props) => {
             // localStorage.removeItem("token");
             localStorage.clear();
             authStore.isAuth = localStorage.getItem("token") !== null;
+            adminStore.admin = { role: 4, username: "anyuser" };
             navigate("/login");
           }}
         >
