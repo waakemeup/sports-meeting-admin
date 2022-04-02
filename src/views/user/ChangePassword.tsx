@@ -7,7 +7,9 @@ import ContentHeader from "../../components/contentheader/CotentHeader";
 interface Props {}
 
 const ChangePassword = (props: Props) => {
-  const onFinish = async (values: any) => {};
+  const onFinish = async (values: any) => {
+    message.warn(Math.random() > 0.5 ? "此功能尚未开发" : "非常抱歉");
+  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
@@ -94,7 +96,7 @@ const ChangePassword = (props: Props) => {
               <Button
                 type="primary"
                 htmlType="submit"
-                className="w-full h-12 mx-auto text-black bg-gray-300 rounded-xl drop-shadow-2xl"
+                className="w-full h-12 mx-auto bg-sky-500 rounded-xl drop-shadow-2xl"
                 onClick={() => {
                   // TODO: 根据返回信息判断
                   // message.success("注册成功");

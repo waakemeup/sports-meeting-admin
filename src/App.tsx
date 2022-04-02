@@ -1,11 +1,6 @@
+import { observer } from "mobx-react-lite";
 import React, { Suspense } from "react";
-import { Link } from "react-router-dom";
 import View from "./components/View";
-// import Page404 from "./views/404/Page404";
-
-// const Login = lazy(() => import("./views/login/Login"));
-// const Page404 = lazy(() => import("./views/404/Page404"));
-// const Dashboard = lazy(() => import("./views/dashboard/Dashboard"));
 
 function App() {
   return (
@@ -13,7 +8,7 @@ function App() {
       <Suspense
         fallback={
           <>
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center w-screen h-screen text-2xl font-bold bg-cool-gray-400">
               Page is Loading... |{"  "}
               <a
                 className="text-blue-200"
@@ -31,4 +26,4 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);

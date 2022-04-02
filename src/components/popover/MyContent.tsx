@@ -30,13 +30,9 @@ const MyContent = observer(({ navigate }: Props) => {
         <Button
           className="p-1 text-center bg-yellow-400 rounded-md"
           onClick={() => {
-            // localStorage.removeItem("token");
             localStorage.clear();
-            authStore.isAuth = localStorage.getItem("token") !== null;
-            adminStore.admin = {
-              role: bcrypt.hashSync("4", 12),
-              username: "unAuthUser",
-            };
+            authStore.changeAuth();
+            adminStore.logout();
             navigate("/login");
           }}
         >

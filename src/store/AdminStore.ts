@@ -30,6 +30,28 @@ class AdminStore {
     });
   }
 
+  @action
+  logout() {
+    this.admin = {
+      role: bcrypt.hashSync("4", 12),
+      // role: null,
+      username: "unAuthUser",
+    };
+  }
+
+  @action
+  login(nikName: string, hashed: string) {
+    this.admin.username = nikName;
+    this.admin.role = hashed;
+  }
+
+  // @action
+  // get getTheRoleId(): number {
+  //   for (let id in ["0", "1", "2", "3", "4"]) {
+  //     if(bcrypt.compareSync(id,))
+  //   }
+  // }
+
   // @action
   // logout() {
   //   this.admin.username = "null";

@@ -9,14 +9,17 @@ import { AuthStoreContext } from "../../store/AuthStore";
 import { AdminStoreContext } from "../../store/AdminStore";
 import qs from "qs";
 import * as bcrypt from "bcryptjs";
+import { observer } from "mobx-react-lite";
 
 interface Props {}
 
-const Login = (props: Props) => {
+const Login = observer((props: Props) => {
   const navigate = useNavigate();
 
   const authStore = useContext(AuthStoreContext);
   const adminStore = useContext(AdminStoreContext);
+
+  // console.log(bcrypt.compareSync("4", adminStore.admin.role as string));
 
   const onFinish = async (values: any) => {
     const { remember, ...data } = values;
@@ -29,15 +32,20 @@ const Login = (props: Props) => {
           message.success("登录成功", 1);
 
           localStorage.setItem("token", res.data.data.token);
-          authStore.isAuth = localStorage.getItem("token") !== null;
+          // authStore.isAuth = localStorage.getItem("token") !== null;
+          authStore.changeAuth();
           // console.log(res.data.data.user.nikName);
-          console.log(res.data.data.user.role);
-          adminStore.admin.username = res.data.data.user.nikName;
-          adminStore.admin.role = bcrypt.hashSync(res.data.data.user.role, 12);
-          console.log(
-            "This should always be true",
-            bcrypt.compareSync(res.data.data.user.role, adminStore.admin.role)
+          // console.log(res.data.data.user.role);
+          // adminStore.admin.username = res.data.data.user.nikName;
+          // adminStore.admin.role = bcrypt.hashSync(res.data.data.user.role, 12);
+          adminStore.login(
+            res.data.data.user.nikName,
+            bcrypt.hashSync(res.data.data.user.role, 12)
           );
+          // console.log(
+          //   "This should always be true",
+          //   bcrypt.compareSync(res.data.data.user.role, adminStore.admin.role)
+          // );
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);
@@ -138,6 +146,6 @@ const Login = (props: Props) => {
       </div>
     </>
   );
-};
+});
 
 export default Login;

@@ -4,7 +4,6 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
 import OpeningDetail from "../views/detail/OpeningDetail";
@@ -19,7 +18,7 @@ interface Props {}
 
 const View = observer((props: Props) => {
   const adminStore = useContext(AdminStoreContext);
-  const arr: string[] = ["0", "1", "2", "3"];
+  const arr: string[] = ["0", "1", "2", "3", "4"];
 
   let adminRole: undefined | string = undefined;
 
@@ -30,7 +29,7 @@ const View = observer((props: Props) => {
     }
   }
 
-  console.log(adminRole);
+  console.log("adminRole:", adminRole);
 
   return (
     <Router>
@@ -71,6 +70,9 @@ const View = observer((props: Props) => {
         <Route path="admin">
           {router.map((r) => {
             if (r.children) {
+              if (!r.limit?.includes(adminRole)) {
+                return null;
+              }
               return r.children.map((child) => (
                 <Route
                   path={child.path}
@@ -81,15 +83,24 @@ const View = observer((props: Props) => {
               ));
             }
             return (
-              <Route
-                path={r.path}
-                index={r.index}
-                key={r.key}
-                element={<AppLayout>{r.component}</AppLayout>}
-              />
+              r.limit?.includes(adminRole) && (
+                <Route
+                  path={r.path}
+                  index={r.index}
+                  key={r.key}
+                  element={<AppLayout>{r.component}</AppLayout>}
+                />
+              )
             );
           })}
         </Route>
+        {/* {unAuthRoutes.map((r) =>
+          r.key === "404" && adminRole === "4" ? (
+            <Route key={"unAuth"} path={r.path} element={<UnAuth />} />
+          ) : (
+            <Route key={r.key} path={r.path} element={r.component} />
+          )
+        )} */}
         {unAuthRoutes.map((r) => (
           <Route key={r.key} path={r.path} element={r.component} />
         ))}
