@@ -13,6 +13,7 @@ import AppLayout from "./layout/AppLayout";
 import * as bcrypt from "bcryptjs";
 import { AdminStoreContext } from "../store/AdminStore";
 import { observer } from "mobx-react-lite";
+import UnAuth from "./unauth/UnAuth";
 
 interface Props {}
 
@@ -29,7 +30,7 @@ const View = observer((props: Props) => {
     }
   }
 
-  console.log("adminRole:", adminRole);
+  // console.log("adminRole:", adminRole);
 
   return (
     <Router>

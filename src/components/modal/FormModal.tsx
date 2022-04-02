@@ -3,6 +3,7 @@ import { Modal, Button, message, Form, Input, DatePicker } from "antd";
 import axios from "../../api";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import qs from "qs";
 
 interface Props {}
 
@@ -29,27 +30,32 @@ const FormModal = (props: Props) => {
 
   const onFinish = async (values: any) => {
     console.log("Success:", values);
-    const { name, theme, dates } = values;
+    const { name, them, dates } = values;
     let [startDate, endDate] = dates;
-    startDate = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
-    endDate = moment(endDate).format("YYYY-MM-DD HH:mm:ss");
-    console.log({ name, theme, startDate, endDate }); // TODO: it's ok
+    startDate = moment(startDate).format("yyyy-MM-DD HH:mm:ss");
+    endDate = moment(endDate).format("yyyy-MM-DD HH:mm:ss");
+    console.log({ name, them, startDate, endDate }); // TODO: it's ok
+
+    const postData = qs.stringify({ name, them, startDate, endDate });
+    console.log(postData);
+
     await axios
-      .post(`/createsport`, {
-        name,
-        theme,
-        startDate,
-        endDate,
+      .post(`/createsport`, postData, {
+        headers: {
+          // @ts-ignore
+          token: localStorage.getItem("token"),
+        },
       })
       .then((res) => {
         if (res.status === 200) {
+          console.log(res);
           message.success("发布成功", 1);
           setTimeout(() => {
             setVisible(false);
             form.resetFields();
           }, 1500);
         } else {
-          message.error("发生了意外的错误...");
+          message.error(res.data.message ?? "发生了意外的错误...");
         }
       })
       .catch((err) => {
@@ -95,7 +101,7 @@ const FormModal = (props: Props) => {
           </Form.Item>
           <Form.Item
             label="主题"
-            name="theme"
+            name="them"
             rules={[{ required: true, message: "请输入开幕式主题!" }]}
           >
             <Input placeholder="开幕式主题" />

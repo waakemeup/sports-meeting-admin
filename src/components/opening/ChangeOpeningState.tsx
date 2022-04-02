@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import clsx from "clsx";
 
 interface Props {
-  id: number;
+  id: string;
 }
 
 const ChangeOpeningState = (props: Props) => {

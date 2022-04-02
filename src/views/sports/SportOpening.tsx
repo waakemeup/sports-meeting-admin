@@ -26,7 +26,7 @@ const SportOpening = ({ openingList }: Props) => {
   openingList = [
     {
       // key: 1,
-      id: 1,
+      id: "1",
       name: "第一届",
       theme: "快乐运动会",
       startDate: "2022-03-01 21:09:32",
@@ -34,7 +34,7 @@ const SportOpening = ({ openingList }: Props) => {
     },
     {
       // key: 2,
-      id: 2,
+      id: "2",
       name: "第二届",
       theme: "快乐运动会",
       startDate: "2022-03-01 21:09:32",
@@ -42,7 +42,7 @@ const SportOpening = ({ openingList }: Props) => {
     },
     {
       // key: 3,
-      id: 3,
+      id: "3",
       name: "第三届",
       theme: "快乐运动会",
       startDate: "2022-03-01 21:09:32",

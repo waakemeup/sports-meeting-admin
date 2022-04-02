@@ -23,7 +23,6 @@ const Login = observer((props: Props) => {
 
   const onFinish = async (values: any) => {
     const { remember, ...data } = values;
-    console.log("Success:", data);
     const postData = qs.stringify(data);
     await axios
       .post(`/login`, postData)
@@ -32,20 +31,12 @@ const Login = observer((props: Props) => {
           message.success("登录成功", 1);
 
           localStorage.setItem("token", res.data.data.token);
-          // authStore.isAuth = localStorage.getItem("token") !== null;
           authStore.changeAuth();
-          // console.log(res.data.data.user.nikName);
-          // console.log(res.data.data.user.role);
-          // adminStore.admin.username = res.data.data.user.nikName;
-          // adminStore.admin.role = bcrypt.hashSync(res.data.data.user.role, 12);
           adminStore.login(
             res.data.data.user.nikName,
             bcrypt.hashSync(res.data.data.user.role, 12)
           );
-          // console.log(
-          //   "This should always be true",
-          //   bcrypt.compareSync(res.data.data.user.role, adminStore.admin.role)
-          // );
+
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);

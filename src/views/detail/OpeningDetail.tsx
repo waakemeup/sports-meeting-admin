@@ -18,7 +18,7 @@ const OpeningDetail = (props: Props) => {
   const navigate = useNavigate();
 
   const opening: OpeningInfo = {
-    id: 1,
+    id: "1",
     endDate: "2022-03-25 00:33:00",
     startDate: "2022-03-10 00:33:00",
     location: "体育馆",

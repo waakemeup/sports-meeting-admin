@@ -8,62 +8,40 @@ import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
 import DeleteOpening from "../../components/opening/DeleteOpening";
 import EditOpening from "../../components/opening/EditOpening";
 import { SearchOutlined } from "@ant-design/icons";
+import { AxiosResponse } from "axios";
 
 const { Column, ColumnGroup } = Table;
 
 interface OpeningInfo {
   name: string;
-  theme: string;
+  them: string;
   startDate: string;
   endDate: string;
-  id: number;
-  key?: number; //TODO:也许应该把这个删了
+  id: string;
 }
 
-interface Props {
-  openingList?: OpeningInfo[];
-}
+interface Props {}
 
-const Opening: React.FC<Props> = ({ openingList }: Props) => {
-  // TODO: 先仿照数据,之后把它删了
-
-  // TODO: 应该是这个模板
-  /*   const [data, setData] = useState<OpeningInfo[]>([]);
+const Opening: React.FC<Props> = (props: Props) => {
+  const [data, setData] = useState<OpeningInfo[]>([]);
 
   useEffect(() => {
     const FetchData = async () => {
-      const result = await axios.get(`/getsportlist`).then((res) => res.data);
-      setData(result);
+      const result = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setData(result.data);
+
+      console.log(data);
     };
     FetchData();
   }, []);
- */
-  openingList = [
-    {
-      // key: 1,
-      id: 1,
-      name: "第一届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-18 21:09:33",
-    },
-    {
-      // key: 2,
-      id: 2,
-      name: "第二届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-19 21:09:33",
-    },
-    {
-      // key: 3,
-      id: 3,
-      name: "第三届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-20 21:09:33",
-    },
-  ];
 
   return (
     <>
@@ -87,13 +65,13 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
           </Button>
         </div>
         <Table
-          dataSource={openingList}
+          dataSource={data}
           rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
             pageSize: 5,
-            total: openingList.length,
+            total: data.length,
           }}
         >
           <Table.Column
@@ -261,7 +239,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
               return record.theme.toLowerCase().includes(value.toLowerCase());
             }}
           />
-          <Table.Column title={"举办时间"} dataIndex={"startDate"} />
+          <Table.Column title={"举办时间"} dataIndex={"startdate"} />
           <Table.Column
             title={"状态"}
             render={(openingItem: OpeningInfo) => (
@@ -277,7 +255,7 @@ const Opening: React.FC<Props> = ({ openingList }: Props) => {
                   name={openingItem.name}
                   endDate={openingItem.endDate}
                   startDate={openingItem.startDate}
-                  theme={openingItem.theme}
+                  theme={openingItem.them}
                 />
                 <DeleteOpening id={openingItem.id} />
               </Space>

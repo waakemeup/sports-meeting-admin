@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "../../api";
 
 interface Props {
-  id: number;
+  id: string;
 }
 
 const DeleteOpening = ({ id }: Props) => {

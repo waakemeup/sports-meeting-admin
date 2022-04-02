@@ -1,4 +1,4 @@
-import { action, makeAutoObservable, observable } from "mobx";
+import { action, makeAutoObservable, observable, computed } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 import { createContext } from "react";
 import * as bcrypt from "bcryptjs";
@@ -28,6 +28,10 @@ class AdminStore {
       stringify: true,
       storage: window.localStorage,
     });
+  }
+
+  @computed get role() {
+    return this.admin.role;
   }
 
   @action

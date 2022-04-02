@@ -3,7 +3,7 @@ export interface OpeningInfo {
   theme: string;
   startDate: string;
   endDate: string;
-  id: number;
+  id: string;
   // key?: number; //TODO:也许应该把这个删了
   sport_id?: string;
   status?: boolean;
