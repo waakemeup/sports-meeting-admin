@@ -34,7 +34,7 @@ export interface ARouter {
   component?: ReactNode;
   children?: ARouter[];
   icon?: ReactNode;
-  limit?: number; //权限
+  limit?: [string?, string?, string?, string?]; //权限 0管理员 1裁判 2｜3学生或学院
 }
 
 const Login = lazy(() => import("../views/login/Login"));
@@ -67,6 +67,7 @@ const router: ARouter[] = [
     key: "main",
     component: <Main />,
     icon: <HomeOutlined />,
+    limit: ["0", "1", "2", "3"],
   },
   {
     path: "/admin/me",
@@ -74,6 +75,7 @@ const router: ARouter[] = [
     key: "myinfo",
     // component: <MeInfo />,
     icon: <UserOutlined />,
+    limit: ["0", "1", "2", "3"],
     children: [
       {
         path: "/admin/me/info",
@@ -81,7 +83,7 @@ const router: ARouter[] = [
         key: "myinfodetail",
         component: <MeInfo />,
         icon: <UserOutlined />,
-        limit: 1 | 2, //TODO:先测试一下
+        limit: ["0", "1", "2", "3"],
       },
       {
         path: "/admin/me/changepassword",
@@ -89,6 +91,7 @@ const router: ARouter[] = [
         key: "changepassword",
         component: <ChangePassword />,
         icon: <KeyOutlined />,
+        limit: ["0", "1", "2", "3"],
       },
     ],
   },
@@ -97,6 +100,7 @@ const router: ARouter[] = [
     title: "运动信息",
     key: "sportsinfo",
     icon: <TableOutlined />,
+    limit: ["0", "1", "2", "3"],
     children: [
       {
         path: "/admin/sportsinfo/openinginfo",
@@ -104,6 +108,7 @@ const router: ARouter[] = [
         key: "opening",
         icon: <CheckCircleTwoTone twoToneColor="#52c41a" />,
         component: <Opening />,
+        limit: ["0", "1", "2", "3"],
       },
       {
         path: "/admin/sportsinfo/event",
@@ -111,6 +116,7 @@ const router: ARouter[] = [
         key: "event",
         icon: <HourglassTwoTone twoToneColor="#eb2f96" />,
         component: <Event />,
+        limit: ["0", "1", "2", "3"],
       },
       {
         path: "/admin/sportsinfo/matches",
@@ -118,6 +124,7 @@ const router: ARouter[] = [
         key: "matchresult",
         icon: <ReconciliationTwoTone twoToneColor="#57cbd3" />,
         component: <MatchResult />,
+        limit: ["0", "1", "2", "3"],
       },
     ],
   },
@@ -126,6 +133,7 @@ const router: ARouter[] = [
     title: "院系人员",
     key: "departmentpeople",
     icon: <HddTwoTone />,
+    limit: ["0"],
     children: [
       {
         path: "/admin/departments/students",
@@ -133,6 +141,7 @@ const router: ARouter[] = [
         key: "studentsinfo",
         icon: <RobotFilled />,
         component: <StudentsInfo />,
+        limit: ["0"],
       },
       /*       {
         path: "/admin/departments/teachers",
@@ -154,6 +163,7 @@ const router: ARouter[] = [
         key: "departmentinfo",
         icon: <HddFilled />,
         component: <DepartmentInfo />,
+        limit: ["0"],
       },
     ],
   },
@@ -163,6 +173,7 @@ const router: ARouter[] = [
     key: "manageopening",
     component: <ManageOpening />,
     icon: <SnippetsOutlined />,
+    limit: ["0"],
   },
   {
     path: "/admin/manage/projects",
@@ -170,12 +181,14 @@ const router: ARouter[] = [
     key: "manageprojects",
     component: <ManageProjects />,
     icon: <ApartmentOutlined />,
+    limit: ["0"],
   },
   {
     path: "/admin/manage/score",
     title: "成绩管理",
     key: "managescore",
     icon: <BarChartOutlined />,
+    limit: ["0", "1"],
     children: [
       {
         path: "/admin/manage/score/list",
@@ -183,6 +196,7 @@ const router: ARouter[] = [
         key: "scorelist",
         component: <ScoreList />,
         icon: <OrderedListOutlined />,
+        limit: ["0", "1"],
       },
       {
         path: "/admin/manage/score/record",
@@ -190,6 +204,7 @@ const router: ARouter[] = [
         key: "scorerecord",
         component: <ScoreRecord />,
         icon: <PlusSquareOutlined />,
+        limit: ["0", "1"],
       },
     ],
   },
@@ -198,6 +213,7 @@ const router: ARouter[] = [
     title: "系统管理",
     key: "systemdesign",
     icon: <LaptopOutlined />,
+    limit: ["0"],
     children: [
       {
         path: "/admin/manage/system/user",
@@ -205,6 +221,7 @@ const router: ARouter[] = [
         title: "用户管理",
         component: <User />,
         icon: <SkinFilled />,
+        limit: ["0"],
       },
       {
         path: "/admin/manage/system/role",
@@ -212,6 +229,7 @@ const router: ARouter[] = [
         title: "角色管理",
         component: <Role />,
         icon: <UserSwitchOutlined />,
+        limit: ["0"],
       },
     ],
   },

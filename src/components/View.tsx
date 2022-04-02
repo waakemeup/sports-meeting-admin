@@ -19,6 +19,18 @@ interface Props {}
 
 const View = observer((props: Props) => {
   const adminStore = useContext(AdminStoreContext);
+  const arr: string[] = ["0", "1", "2", "3"];
+
+  let adminRole: undefined | string = undefined;
+
+  for (let item of arr) {
+    if (bcrypt.compareSync(item, adminStore.admin.role as string)) {
+      adminRole = item;
+      break;
+    }
+  }
+
+  console.log(adminRole);
 
   return (
     <Router>

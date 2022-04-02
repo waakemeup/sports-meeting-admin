@@ -25,6 +25,7 @@ const ChangePassword = (props: Props) => {
         title={<div className="text-center">修改密码</div>}
         className="border-t-4 rounded-sm border-t-blue-300"
       >
+        <div className="text-2xl text-center">非常抱歉🥺此功能尚未完善</div>
         <div className="flex items-center justify-center">
           <Form
             layout="vertical"

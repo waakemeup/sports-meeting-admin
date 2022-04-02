@@ -30,7 +30,8 @@ const Login = (props: Props) => {
 
           localStorage.setItem("token", res.data.data.token);
           authStore.isAuth = localStorage.getItem("token") !== null;
-          console.log(res.data.data.user.nikName);
+          // console.log(res.data.data.user.nikName);
+          console.log(res.data.data.user.role);
           adminStore.admin.username = res.data.data.user.nikName;
           adminStore.admin.role = bcrypt.hashSync(res.data.data.user.role, 12);
           console.log(
