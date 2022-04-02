@@ -8,6 +8,7 @@ import { Helmet } from "react-helmet";
 import { AuthStoreContext } from "../../store/AuthStore";
 import { AdminStoreContext } from "../../store/AdminStore";
 import qs from "qs";
+import * as bcrypt from "bcryptjs";
 
 interface Props {}
 
@@ -26,12 +27,16 @@ const Login = (props: Props) => {
       .then((res) => {
         if (res.status === 200) {
           message.success("登录成功", 1);
-          // TODO:也许这不对???
 
           localStorage.setItem("token", res.data.data.token);
           authStore.isAuth = localStorage.getItem("token") !== null;
           console.log(res.data.data.user.nikName);
           adminStore.admin.username = res.data.data.user.nikName;
+          adminStore.admin.role = bcrypt.hashSync(res.data.data.user.role, 12);
+          console.log(
+            "This should always be true",
+            bcrypt.compareSync(res.data.data.user.role, adminStore.admin.role)
+          );
           setTimeout(() => {
             navigate("/admin/main");
           }, 2200);

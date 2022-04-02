@@ -34,6 +34,7 @@ export interface ARouter {
   component?: ReactNode;
   children?: ARouter[];
   icon?: ReactNode;
+  limit?: number; //权限
 }
 
 const Login = lazy(() => import("../views/login/Login"));
@@ -80,6 +81,7 @@ const router: ARouter[] = [
         key: "myinfodetail",
         component: <MeInfo />,
         icon: <UserOutlined />,
+        limit: 1 | 2, //TODO:先测试一下
       },
       {
         path: "/admin/me/changepassword",

@@ -9,13 +9,14 @@ import { Layout, Menu } from "antd";
 import React, { ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import router, { ARouter } from "../../router/router";
+import { observer } from "mobx-react-lite";
 
 const { SubMenu } = Menu;
 const { Header, Content, Footer, Sider } = Layout;
 
 interface Props {}
 
-const SideBar = (props: Props) => {
+const SideBar = observer((props: Props) => {
   const generateMenu = (routerList?: ARouter[]) => {
     return (
       <>
@@ -60,6 +61,6 @@ const SideBar = (props: Props) => {
       </Menu>
     </Sider>
   );
-};
+});
 
 export default SideBar;

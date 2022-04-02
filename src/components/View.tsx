@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -7,15 +7,19 @@ import {
   useNavigate,
 } from "react-router-dom";
 import router, { unAuthRoutes } from "../router/router";
-import Dashboard from "../views/dashboard/Dashboard";
 import OpeningDetail from "../views/detail/OpeningDetail";
 import PlayerGradeDetail from "../views/detail/PlayerGradeDetail";
 import ProjectDetail from "../views/detail/ProjectDetail";
 import AppLayout from "./layout/AppLayout";
+import * as bcrypt from "bcryptjs";
+import { AdminStoreContext } from "../store/AdminStore";
+import { observer } from "mobx-react-lite";
 
 interface Props {}
 
-const View = (props: Props) => {
+const View = observer((props: Props) => {
+  const adminStore = useContext(AdminStoreContext);
+
   return (
     <Router>
       <Routes>
@@ -80,6 +84,6 @@ const View = (props: Props) => {
       </Routes>
     </Router>
   );
-};
+});
 
 export default View;

@@ -3,12 +3,14 @@ import React, { useContext } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { AdminStoreContext } from "../../store/AdminStore";
 import { AuthStoreContext } from "../../store/AuthStore";
+import * as bcrypt from "bcryptjs";
+import { observer } from "mobx-react-lite";
 
 type Props = {
   navigate: NavigateFunction;
 };
 
-const MyContent = ({ navigate }: Props) => {
+const MyContent = observer(({ navigate }: Props) => {
   const authStore = useContext(AuthStoreContext);
   const adminStore = useContext(AdminStoreContext);
 
@@ -31,7 +33,10 @@ const MyContent = ({ navigate }: Props) => {
             // localStorage.removeItem("token");
             localStorage.clear();
             authStore.isAuth = localStorage.getItem("token") !== null;
-            adminStore.admin = { role: 4, username: "anyuser" };
+            adminStore.admin = {
+              role: bcrypt.hashSync("4", 12),
+              username: "unAuthUser",
+            };
             navigate("/login");
           }}
         >
@@ -40,6 +45,6 @@ const MyContent = ({ navigate }: Props) => {
       </div>
     </div>
   );
-};
+});
 
 export default MyContent;
