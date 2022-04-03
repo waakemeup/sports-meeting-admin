@@ -1,67 +1,48 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Card, Input, Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useNavigate } from "react-router-dom";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import DetailProject from "../../components/project/DetailProject";
-
-interface EventInfo {
-  sport_id: string;
-  name: string;
-  limit: number; //性别限制 0男 1女
-  start: string;
-  signStart: string;
-  signEnd: string;
-  refereeId: string;
-  unit: string;
-  id: number; //TODO:也许要把这个改名 eventId 或者 event_id
-  location: string;
-}
+import { OpeningInfo, ProjectInfo } from "../../types.d";
+import axios from "../../api";
 
 interface Props {}
 
 const Event = (props: Props) => {
+  const [data, setData] = useState<ProjectInfo[]>([]);
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+
   const navigate = useNavigate();
 
-  const eventList: EventInfo[] = [
-    {
-      id: 0,
-      limit: 0,
-      sport_id: "2022",
-      name: "100m接力赛",
-      start: "2022-03-23 00:00:00",
-      signStart: "2022-03-15 13:28:01",
-      signEnd: "2022-03-25 00:33:00",
-      refereeId: "1",
-      unit: "秒",
-      location: "西区操场",
-    },
-    {
-      id: 1,
-      limit: 1,
-      sport_id: "2022",
-      name: "射击",
-      start: "2022-03-23 00:00:00",
-      signStart: "2022-03-15 13:28:01",
-      signEnd: "2022-03-25 00:33:00",
-      refereeId: "1",
-      unit: "分",
-      location: "西区操场",
-    },
-    {
-      id: 2,
-      limit: 0,
-      sport_id: "2022",
-      name: "三级跳远",
-      start: "2022-03-23 00:00:01",
-      signStart: "2022-04-10 13:28:01",
-      signEnd: "2022-04-22 00:33:00",
-      refereeId: "1",
-      unit: "米",
-      location: "东区操场",
-    },
-  ];
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result2 = await axios
+        .get<ProjectInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setData(result.data);
+
+      // @ts-ignore
+      setOpeningData(result2.data);
+    };
+    FetchData();
+  }, []);
 
   return (
     <>
@@ -75,126 +56,39 @@ const Event = (props: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <Table
-          dataSource={eventList}
+          dataSource={data}
           rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
-            pageSize: 10,
-            total: eventList.length,
+            pageSize: 5,
+            total: data.length,
           }}
         >
           <Table.Column
             title={"序号"}
             dataIndex={"id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
+            render={(value): JSX.Element => {
               return (
                 <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
+                  {(() => {
+                    const selected = data.filter((item) => item.id === value);
+
+                    return data.indexOf(selected[0]) + 1;
+                  })()}
                 </>
               );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.id === Number(value);
             }}
           />
           <Table.Column
             title={"届时"}
-            dataIndex={"sport_id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
-              return (
-                <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                </>
-              );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.sport_id
-                .toLowerCase()
-                .includes(value.toLowerCase());
-            }}
+            dataIndex={"sportId"}
+            render={(value) => (
+              <>
+                {openingData.filter((single) => single.id === value)[0]?.name ??
+                  "未找到运动会"}
+              </>
+            )}
           />
           <Table.Column
             title={"项目名称"}
@@ -252,14 +146,15 @@ const Event = (props: Props) => {
             }}
           />
           <Table.Column
-            title={"性别限制"}
-            render={(event: EventInfo) => <>{event.limit ? "女" : "男"}</>}
+            title={"项目性别限制"}
+            dataIndex={"limit"}
+            render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
           />
           <Table.Column title={"项目举办地点"} dataIndex={"location"} />
           <Table.Column title={"项目举办日期"} dataIndex={"start"} />
           <Table.Column
             title={"操作"}
-            render={(eventInfo: EventInfo) => (
+            render={(eventInfo: ProjectInfo) => (
               <DetailProject id={eventInfo.id} />
             )}
           />
