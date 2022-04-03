@@ -57,7 +57,7 @@ const Projects = (props: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <div id="buttons" className="mb-4">
-          <ProjectModal />
+          <ProjectModal setPostData={(data2) => setData(data2)} />
           <Button
             onClick={() => {
               window.location.reload();

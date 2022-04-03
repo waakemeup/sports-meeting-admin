@@ -7,6 +7,8 @@ import { OpeningInfo } from "../manage/Opening";
 import axios from "../../api";
 import { observer } from "mobx-react-lite";
 
+// TODO: 还差项目信息
+
 interface Props {}
 
 const tabListNoTitle = [

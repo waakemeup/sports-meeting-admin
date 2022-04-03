@@ -1,14 +1,50 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, message, Form, Input, DatePicker, Select } from "antd";
 import axios from "../../api";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import qs from "qs";
+import { OpeningInfo } from "../../views/manage/Opening";
+import { ProjectInfo, RefereeInfo } from "../../types";
 
 const { Option } = Select;
 
-interface Props {}
+interface Props {
+  setPostData: (data2: ProjectInfo[]) => void;
+}
 
-const ProjectModal = (props: Props) => {
+const ProjectModal = ({ setPostData }: Props) => {
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+  const [refereeData, setRefereeData] = useState<RefereeInfo[]>([]);
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result2 = await axios
+        .get<RefereeInfo[]>(`/referee/referees`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setOpeningData(result.data);
+      // @ts-ignore
+      setRefereeData(result2.data);
+      // console.log(data);
+    };
+    FetchData();
+  }, []);
+
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -32,42 +68,73 @@ const ProjectModal = (props: Props) => {
   const onFinish = async (values: any) => {
     console.log("Success:", values);
     // TODO: 这里假设了裁判长和单位不是必须的
-    let { name, sport_id, limit, location, dates, start, refereeId, unit } =
-      values;
+    let {
+      name,
+      sport_id,
+      limit,
+      location,
+      dates,
+      start,
+      refereeId,
+      unit,
+      rule,
+    } = values;
     let [signStart, signEnd] = dates;
 
-    sport_id = moment(sport_id).year().toString();
     start = moment(start).format("YYYY-MM-DD HH:mm:ss");
     signStart = moment(signStart).format("YYYY-MM-DD HH:mm:ss");
     signEnd = moment(signEnd).format("YYYY-MM-DD HH:mm:ss");
 
-    console.log(sport_id, start, signStart, signEnd);
+    // console.log(sport_id, start, signStart, signEnd);
+
+    const postData = qs.stringify({
+      sport_id,
+      name,
+      limit,
+      location,
+      start,
+      signStart,
+      signEnd,
+      refereeId,
+      unit,
+      rule,
+    });
+
     await axios
-      .post(`/addevent`, {
-        sport_id,
-        name,
-        limit,
-        location,
-        start,
-        signStart,
-        signEnd,
-        refereeId,
-        unit,
+      .post(`/addEvent`, postData, {
+        headers: {
+          // @ts-ignore
+          token: localStorage.getItem("token"),
+        },
       })
       .then((res) => {
-        if (res.status === 200) {
+        console.log(res);
+        if (res.data.code === 200) {
+          console.log(res);
           message.success("项目发布成功", 1);
           setTimeout(() => {
             setVisible(false);
             form.resetFields();
           }, 1500);
         } else {
-          message.error("发生了意外的错误...");
+          message.error(res.data.message);
         }
       })
       .catch((err) => {
         console.log(err);
         message.error("出了一些小问题...");
+      })
+      .finally(async () => {
+        const result = await axios
+          .get<ProjectInfo[]>(`/getevents`, {
+            headers: {
+              // @ts-ignore
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((res) => res.data);
+        // @ts-ignore
+        setPostData(result.data);
       });
   };
 
@@ -102,9 +169,15 @@ const ProjectModal = (props: Props) => {
           <Form.Item
             label="届时"
             name="sport_id"
-            rules={[{ required: true, message: "请输入选择届时!" }]}
+            rules={[{ required: true, message: "请选择你的性别!" }]}
           >
-            <DatePicker onChange={onChange} picker="year" />
+            <Select placeholder="选择运动会届时">
+              {openingData.map((singleData) => (
+                <Option key={singleData.id} value={singleData.id}>
+                  {singleData.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="项目"
@@ -164,7 +237,13 @@ const ProjectModal = (props: Props) => {
             name="refereeId"
             rules={[{ required: true, message: "请输入裁判长ID!" }]}
           >
-            <Input placeholder="裁判长ID" />
+            <Select placeholder="选择裁判长">
+              {refereeData.map((singleData) => (
+                <Option key={singleData.id} value={singleData.id}>
+                  {singleData.name}
+                </Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item
             label="比赛结果单位(如米、秒...)"
@@ -172,6 +251,13 @@ const ProjectModal = (props: Props) => {
             rules={[{ required: true, message: "请输入比赛结果单位!" }]}
           >
             <Input placeholder="比赛单位" />
+          </Form.Item>
+          <Form.Item
+            label="比赛规则简介"
+            name="rule"
+            rules={[{ required: true, message: "请输入比赛规则简介!" }]}
+          >
+            <Input placeholder="比赛规则简单介绍..." />
           </Form.Item>
         </Form>
       </Modal>
