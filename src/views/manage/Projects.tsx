@@ -195,7 +195,10 @@ const Projects = (props: Props) => {
                   rule={project.rule}
                   setChangeData={(data2) => setData(data2)}
                 />
-                <DeleteProject eventId={project.id} />
+                <DeleteProject
+                  eventId={project.id}
+                  setDeleteData={(data2) => setData(data2)}
+                />
               </Space>
             )}
           />
