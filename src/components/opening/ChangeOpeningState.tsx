@@ -1,19 +1,32 @@
 import { Button, message, Popconfirm } from "antd";
 import React, { useState } from "react";
+import axios from "../../api";
 import clsx from "clsx";
+import qs from "qs";
 
 interface Props {
   id: string;
+  status: number;
 }
 
-const ChangeOpeningState = (props: Props) => {
-  const [openingState, setOpeningState] = useState<boolean>(true);
+const ChangeOpeningState = ({ id, status }: Props) => {
+  const [status1, setStatus1] = useState<number>(status);
 
-  function confirm(e: any) {
+  const confirm = async (e: any) => {
     // console.log(e);
-    setOpeningState(!openingState);
+    // setOpeningState(!openingState);
+    status = status ? 0 : 1;
+    const changeStatusData = qs.stringify({ id, status });
+
+    await axios.post("meetupdate", changeStatusData, {
+      headers: {
+        // @ts-ignore
+        token: localStorage.getItem("token"),
+      },
+    });
     message.success("修改成功");
-  }
+    setStatus1(status1 ? 0 : 1);
+  };
 
   function cancel(e: any) {
     console.log(e);
@@ -31,13 +44,13 @@ const ChangeOpeningState = (props: Props) => {
     >
       <Button
         className={clsx(
-          openingState && ["bg-teal-400", "hover:bg-teal-600"],
-          !openingState && ["bg-red-400", "hover:bg-red-600"],
+          !status1 && ["bg-teal-400", "hover:bg-teal-600"],
+          status1 && ["bg-red-400", "hover:bg-red-600"],
           "rounded-2xl",
           "font-bold"
         )}
       >
-        {openingState ? "开启" : "关闭"}
+        {status1 ? "关闭" : "开启"}
       </Button>
     </Popconfirm>
   );

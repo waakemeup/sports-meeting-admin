@@ -15,6 +15,7 @@ export interface OpeningInfo {
   startDate: string;
   endDate: string;
   id: string;
+  status: number;
 }
 
 interface Props {}
@@ -200,7 +201,10 @@ const Opening: React.FC<Props> = (props: Props) => {
           <Table.Column
             title={"状态"}
             render={(openingItem: OpeningInfo) => (
-              <ChangeOpeningState id={openingItem.id} />
+              <ChangeOpeningState
+                id={openingItem.id}
+                status={openingItem.status}
+              />
             )}
           />
           <Table.Column

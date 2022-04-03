@@ -186,6 +186,8 @@ const SportOpening = ({ openingList }: Props) => {
           <Table.Column
             title={"状态"}
             render={(openingItem: OpeningInfo) => (
+              // TODO: 修改
+              // @ts-ignore
               <ChangeOpeningState id={openingItem.id} />
             )}
           />
