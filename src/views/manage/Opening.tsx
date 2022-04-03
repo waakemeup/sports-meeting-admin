@@ -219,7 +219,10 @@ const Opening: React.FC<Props> = (props: Props) => {
                   theme={openingItem.theme}
                   setChangeData={(data2) => setData(data2)}
                 />
-                <DeleteOpening id={openingItem.id} />
+                <DeleteOpening
+                  id={openingItem.id}
+                  setDeleteData={(data2) => setData(data2)}
+                />
               </Space>
             )}
           />
