@@ -2,10 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { useParams, useNavigate } from "react-router-dom";
-import { Card, Descriptions, Button, Table } from "antd";
+import { Card, Descriptions, Button, Table, Input } from "antd";
 import { OpeningInfo } from "../manage/Opening";
+import { ProjectInfo } from "../../types.d";
 import axios from "../../api";
 import { observer } from "mobx-react-lite";
+import qs from "qs";
+import DetailProject from "../../components/project/DetailProject";
+import { SearchOutlined } from "@ant-design/icons";
 
 // TODO: 还差项目信息
 
@@ -19,11 +23,21 @@ const tabListNoTitle = [
 ];
 
 const OpeningDetail = observer((props: Props) => {
+  const [activeTabKey1, setActiveTabKey1] = useState<string>("项目信息");
+
+  const onTab1Change = (key: any) => {
+    setActiveTabKey1(key);
+  };
+
   const [data, setData] = useState<OpeningInfo[]>([]);
+  const [projectData, setProjectData] = useState<ProjectInfo[]>([]);
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
   const [info, setInfo] = useState<OpeningInfo>();
   // const [name, setName] = useState("default");
   const navigate = useNavigate();
   const { id } = useParams();
+
+  // const queryId = qs.stringify({ sport_id: id });
 
   useEffect(() => {
     const FetchData = async () => {
@@ -35,6 +49,34 @@ const OpeningDetail = observer((props: Props) => {
           },
         })
         .then((res) => res.data);
+
+      const result2 = await axios
+        .get<ProjectInfo[]>(`/getcurevents`, {
+          params: {
+            sport_id: id,
+          },
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result3 = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      // @ts-ignore
+      setOpeningData(result3.data);
+
+      // @ts-ignore
+      setProjectData(result2.data);
+
       // @ts-ignore
       setData(result.data);
       // console.log(data);
@@ -57,6 +99,133 @@ const OpeningDetail = observer((props: Props) => {
       theme = data[i].theme;
     }
   }
+
+  const tabList = [
+    {
+      key: "项目信息",
+      tab: "项目信息",
+    },
+    {
+      key: "成绩信息",
+      tab: "成绩信息",
+    },
+  ];
+
+  const contentList = {
+    项目信息: (
+      <>
+        <Table
+          dataSource={projectData}
+          rowKey={(record) => record.id}
+          scroll={{ x: 600 }}
+          pagination={{
+            position: ["bottomRight"],
+            pageSize: 5,
+            total: projectData.length,
+          }}
+        >
+          <Table.Column
+            title={"序号"}
+            dataIndex={"id"}
+            render={(value): JSX.Element => {
+              return (
+                <>
+                  {(() => {
+                    const selected = projectData.filter(
+                      (item) => item.id === value
+                    );
+
+                    return projectData.indexOf(selected[0]) + 1;
+                  })()}
+                </>
+              );
+            }}
+          />
+          <Table.Column
+            title={"届时"}
+            dataIndex={"sportId"}
+            render={(value) => (
+              <>
+                {data.filter((single) => single.id === value)[0]?.name ??
+                  "未找到运动会"}
+              </>
+            )}
+          />
+          <Table.Column
+            title={"项目名称"}
+            dataIndex={"name"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.name.toLowerCase().includes(value.toLowerCase());
+            }}
+          />
+          <Table.Column
+            title={"项目性别限制"}
+            dataIndex={"limit"}
+            render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
+          />
+          <Table.Column title={"项目举办地点"} dataIndex={"location"} />
+          <Table.Column title={"项目举办日期"} dataIndex={"start"} />
+          <Table.Column title={"报名开始日期"} dataIndex={"signStart"} />
+          <Table.Column title={"报名结束日期"} dataIndex={"signEnd"} />
+          <Table.Column
+            title={"操作"}
+            render={(eventInfo: ProjectInfo) => (
+              <DetailProject id={eventInfo.id} />
+            )}
+          />
+        </Table>
+      </>
+    ),
+    成绩信息: <>成绩信息</>, //TODO:这个现在还做不了
+  };
 
   return (
     <>
@@ -86,6 +255,19 @@ const OpeningDetail = observer((props: Props) => {
           <Descriptions.Item label="结束时间">{enddate}</Descriptions.Item>
           <Descriptions.Item label="主题">{theme}</Descriptions.Item>
         </Descriptions>
+      </Card>
+      <Card
+        className="my-8 border-t-4 rounded-sm border-t-blue-300"
+        tabList={tabList}
+        activeTabKey={activeTabKey1}
+        onTabChange={(key) => {
+          onTab1Change(key);
+        }}
+      >
+        {
+          // @ts-ignore
+          contentList[activeTabKey1]
+        }
       </Card>
     </>
   );

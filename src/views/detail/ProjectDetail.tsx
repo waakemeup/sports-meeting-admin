@@ -4,19 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Card, Descriptions, Button, Table } from "antd";
 import ProjectUserList from "../../components/project/ProjectUserList";
-
-interface ProjectInfo {
-  sport_id: string;
-  name: string;
-  limit: number; //性别限制 0男 1女
-  start: string;
-  signStart: string;
-  signEnd: string;
-  refereeId: string;
-  unit: string;
-  id: number; //TODO:也许要把这个改名 eventId 或者 event_id
-  location: string;
-}
+import { ProjectInfo } from "../../types.d";
 
 interface Props {}
 
@@ -37,9 +25,9 @@ const _tabListNoTitle = [
 const ProjectDetail = (props: Props) => {
   // TODO: 此处应该改为Axios
   const project: ProjectInfo = {
-    id: 0,
+    id: "0",
     limit: 0,
-    sport_id: "2022",
+    sportId: "2022",
     name: "100m接力赛",
     start: "2022-03-23 00:00:00",
     signStart: "2022-03-15 13:28:01",
@@ -47,6 +35,7 @@ const ProjectDetail = (props: Props) => {
     refereeId: "1",
     unit: "秒",
     location: "西区操场",
+    rule: "任意",
   };
 
   const navigate = useNavigate();
@@ -71,7 +60,7 @@ const ProjectDetail = (props: Props) => {
       >
         <Descriptions bordered>
           <Descriptions.Item label="届时">
-            {project.sport_id + "届"}
+            {project.sportId + "届"}
           </Descriptions.Item>
           <Descriptions.Item label="项目名称">{project.name}</Descriptions.Item>
           <Descriptions.Item label="项目举办地点">
