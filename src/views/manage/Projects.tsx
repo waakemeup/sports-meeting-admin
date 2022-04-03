@@ -1,12 +1,13 @@
 import { SearchOutlined } from "@ant-design/icons";
 import { Button, Card, Input, Space, Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ProjectModal from "../../components/modal/ProjectModal";
 import DeleteProject from "../../components/project/DeleteProject";
 import DetailProject from "../../components/project/DetailProject";
 import EditProject from "../../components/project/EditProject";
+import axios from "../../api";
 
 interface ProjectInfo {
   sport_id: string;
@@ -24,44 +25,25 @@ interface ProjectInfo {
 interface Props {}
 
 const Projects = (props: Props) => {
-  const projectList: ProjectInfo[] = [
-    {
-      id: 0,
-      limit: 0,
-      sport_id: "2022",
-      name: "100m接力赛",
-      start: "2022-03-23 00:00:00",
-      signStart: "2022-03-15 13:28:01",
-      signEnd: "2022-03-25 00:33:00",
-      refereeId: "1",
-      unit: "秒",
-      location: "西区操场",
-    },
-    {
-      id: 1,
-      limit: 1,
-      sport_id: "2022",
-      name: "射击",
-      start: "2022-03-23 00:00:00",
-      signStart: "2022-03-15 13:28:01",
-      signEnd: "2022-03-25 00:33:00",
-      refereeId: "1",
-      unit: "分",
-      location: "西区操场",
-    },
-    {
-      id: 2,
-      limit: 0,
-      sport_id: "2022",
-      name: "三级跳远",
-      start: "2022-03-23 00:00:01",
-      signStart: "2022-04-10 13:28:01",
-      signEnd: "2022-04-22 00:33:00",
-      refereeId: "1",
-      unit: "米",
-      location: "东区操场",
-    },
-  ];
+  const [data, setData] = useState<ProjectInfo[]>([]);
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setData(result.data);
+
+      console.log(data);
+    };
+    FetchData();
+  }, []);
 
   return (
     <>
@@ -86,13 +68,13 @@ const Projects = (props: Props) => {
         </div>
 
         <Table
-          dataSource={projectList}
+          dataSource={data}
           rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
             pageSize: 10,
-            total: projectList.length,
+            total: data.length,
           }}
         >
           <Table.Column

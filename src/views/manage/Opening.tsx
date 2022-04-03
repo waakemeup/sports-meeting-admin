@@ -36,7 +36,7 @@ const Opening: React.FC<Props> = (props: Props) => {
       // @ts-ignore
       setData(result.data);
 
-      console.log(data);
+      // console.log(data);
     };
     FetchData();
   }, []);

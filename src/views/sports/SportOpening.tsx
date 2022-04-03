@@ -1,20 +1,14 @@
 import { Button, Card, Input, Space, Table } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
 import { useNavigate } from "react-router-dom";
-import { OpeningInfo } from "../../types.d";
+// import { OpeningInfo } from "../../types.d";
+import { OpeningInfo } from "../manage/Opening";
 import { SearchOutlined } from "@ant-design/icons";
-
-// interface OpeningInfo {
-//   name: string;
-//   theme: string;
-//   startDate: string;
-//   endDate: string;
-//   id: number;
-//   key?: number; //TODO:也许应该把这个删了
-// }
+import axios from "../../api";
+import clsx from "clsx";
 
 interface Props {
   openingList?: OpeningInfo[];
@@ -23,32 +17,25 @@ interface Props {
 const SportOpening = ({ openingList }: Props) => {
   const navigate = useNavigate();
 
-  openingList = [
-    {
-      // key: 1,
-      id: "1",
-      name: "第一届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-18 21:09:33",
-    },
-    {
-      // key: 2,
-      id: "2",
-      name: "第二届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-19 21:09:33",
-    },
-    {
-      // key: 3,
-      id: "3",
-      name: "第三届",
-      theme: "快乐运动会",
-      startDate: "2022-03-01 21:09:32",
-      endDate: "2022-03-20 21:09:33",
-    },
-  ];
+  const [data, setData] = useState<OpeningInfo[]>([]);
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setData(result.data);
+
+      // console.log(data);
+    };
+    FetchData();
+  }, []);
 
   return (
     <>
@@ -62,68 +49,28 @@ const SportOpening = ({ openingList }: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <Table
-          dataSource={openingList}
+          dataSource={data}
           rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
             pageSize: 5,
-            total: openingList.length,
+            total: data.length,
           }}
         >
           <Table.Column
             title={"序号"}
             dataIndex={"id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
+            render={(value): JSX.Element => {
               return (
                 <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
+                  {(() => {
+                    const selected = data.filter((item) => item.id === value);
+
+                    return data.indexOf(selected[0]) + 1;
+                  })()}
                 </>
               );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.id === Number(value);
             }}
           />
           <Table.Column
@@ -182,13 +129,20 @@ const SportOpening = ({ openingList }: Props) => {
             }}
           />
           <Table.Column title={"运动会主题"} dataIndex={"theme"} />
-          <Table.Column title={"举办时间"} dataIndex={"startDate"} />
+          <Table.Column title={"举办时间"} dataIndex={"startdate"} />
           <Table.Column
             title={"状态"}
             render={(openingItem: OpeningInfo) => (
-              // TODO: 修改
-              // @ts-ignore
-              <ChangeOpeningState id={openingItem.id} />
+              <Button
+                className={clsx(
+                  openingItem.status && ["bg-teal-400", "hover:bg-teal-600"],
+                  !openingItem.status && ["bg-red-400", "hover:bg-red-600"],
+                  "rounded-2xl",
+                  "font-bold"
+                )}
+              >
+                {openingItem.status ? "正在开展中..." : "已经结束啦!!!"}
+              </Button>
             )}
           />
           <Table.Column
@@ -196,7 +150,7 @@ const SportOpening = ({ openingList }: Props) => {
             render={(openingItem: OpeningInfo) => (
               <Space>
                 <Button
-                  className="bg-green-300"
+                  className="bg-green-300 hover:bg-green-400 hover:text-white"
                   onClick={() =>
                     navigate(`/admin/detail/opening/${openingItem.id}`)
                   }

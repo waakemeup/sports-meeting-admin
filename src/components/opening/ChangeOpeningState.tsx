@@ -29,7 +29,7 @@ const ChangeOpeningState = ({ id, status }: Props) => {
   };
 
   function cancel(e: any) {
-    console.log(e);
+    // console.log(e);
     message.error("取消了呢");
   }
 

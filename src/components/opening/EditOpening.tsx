@@ -102,7 +102,10 @@ const EditOpening = ({
 
   return (
     <>
-      <Button className="bg-cyan-300" onClick={showModal}>
+      <Button
+        className="bg-cyan-300 hover:bg-cyan-400 hover:text-white"
+        onClick={showModal}
+      >
         编辑
       </Button>
       <Modal
