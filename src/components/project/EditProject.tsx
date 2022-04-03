@@ -2,7 +2,7 @@ import { Button, DatePicker, Form, Input, message, Modal, Select } from "antd";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import axios from "../../api";
-import { OpeningInfo, RefereeInfo } from "../../types";
+import { OpeningInfo, RefereeInfo, ProjectInfo } from "../../types";
 import qs from "qs";
 
 const { Option } = Select;
@@ -19,6 +19,7 @@ interface Props {
   id: string;
   location: string;
   rule: string;
+  setChangeData: (data2: ProjectInfo[]) => void;
 }
 
 const EditProject = ({
@@ -33,6 +34,7 @@ const EditProject = ({
   unit,
   location,
   rule,
+  setChangeData,
 }: Props) => {
   const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
   const [refereeData, setRefereeData] = useState<RefereeInfo[]>([]);
@@ -153,6 +155,18 @@ const EditProject = ({
       .catch((err) => {
         console.log(err);
         message.error("出了一些小问题...");
+      })
+      .finally(async () => {
+        const result = await axios
+          .get<ProjectInfo[]>(`/getevents`, {
+            headers: {
+              // @ts-ignore
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((res) => res.data);
+        // @ts-ignore
+        setChangeData(result.data);
       });
   };
 

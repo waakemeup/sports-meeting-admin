@@ -193,6 +193,7 @@ const Projects = (props: Props) => {
                   unit={project.unit}
                   location={project.location}
                   rule={project.rule}
+                  setChangeData={(data2) => setData(data2)}
                 />
                 <DeleteProject eventId={project.id} />
               </Space>
