@@ -8,11 +8,8 @@ import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
 import DeleteOpening from "../../components/opening/DeleteOpening";
 import EditOpening from "../../components/opening/EditOpening";
 import { SearchOutlined } from "@ant-design/icons";
-import { AxiosResponse } from "axios";
 
-const { Column, ColumnGroup } = Table;
-
-interface OpeningInfo {
+export interface OpeningInfo {
   name: string;
   them: string;
   startDate: string;
@@ -55,7 +52,7 @@ const Opening: React.FC<Props> = (props: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <div id="buttons" className="mb-4">
-          <FormModal />
+          <FormModal setPostData={(data2) => setData(data2)} />
           <Button
             onClick={() => {
               window.location.reload();
@@ -77,56 +74,16 @@ const Opening: React.FC<Props> = (props: Props) => {
           <Table.Column
             title={"序号"}
             dataIndex={"id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
+            render={(value): JSX.Element => {
               return (
                 <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
+                  {(() => {
+                    const selected = data.filter((item) => item.id === value);
+
+                    return data.indexOf(selected[0]) + 1;
+                  })()}
                 </>
               );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.id === Number(value);
             }}
           />
           <Table.Column

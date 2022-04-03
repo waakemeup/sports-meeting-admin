@@ -4,10 +4,13 @@ import axios from "../../api";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
+import { OpeningInfo } from "../../views/manage/Opening";
 
-interface Props {}
+interface Props {
+  setPostData: (data2: OpeningInfo[]) => void;
+}
 
-const FormModal = (props: Props) => {
+const FormModal = ({ setPostData }: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -37,7 +40,7 @@ const FormModal = (props: Props) => {
     console.log({ name, them, startDate, endDate }); // TODO: it's ok
 
     const postData = qs.stringify({ name, them, startDate, endDate });
-    console.log(postData);
+    // console.log(postData);
 
     await axios
       .post(`/createsport`, postData, {
@@ -54,6 +57,7 @@ const FormModal = (props: Props) => {
             setVisible(false);
             form.resetFields();
           }, 1500);
+          // window.location.reload();
         } else {
           message.error(res.data.message ?? "发生了意外的错误...");
         }
@@ -61,6 +65,18 @@ const FormModal = (props: Props) => {
       .catch((err) => {
         console.log(err);
         message.error("出了一些小问题...");
+      })
+      .finally(async () => {
+        const result = await axios
+          .get<OpeningInfo[]>(`/getsportlist`, {
+            headers: {
+              // @ts-ignore
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((res) => res.data);
+        // @ts-ignore
+        setPostData(result.data);
       });
   };
 
