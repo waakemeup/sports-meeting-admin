@@ -11,9 +11,9 @@ import { SearchOutlined } from "@ant-design/icons";
 
 export interface OpeningInfo {
   name: string;
-  them: string;
-  startDate: string;
-  endDate: string;
+  theme: string;
+  startdate: string;
+  enddate: string;
   id: string;
   status: number;
 }
@@ -214,9 +214,10 @@ const Opening: React.FC<Props> = (props: Props) => {
                 <EditOpening
                   id={openingItem.id}
                   name={openingItem.name}
-                  endDate={openingItem.endDate}
-                  startDate={openingItem.startDate}
-                  theme={openingItem.them}
+                  endDate={openingItem.enddate}
+                  startDate={openingItem.startdate}
+                  theme={openingItem.theme}
+                  setChangeData={(data2) => setData(data2)}
                 />
                 <DeleteOpening id={openingItem.id} />
               </Space>

@@ -3,6 +3,8 @@ import { Modal, Button, message, Form, Input, DatePicker } from "antd";
 import axios from "../../api";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import qs from "qs";
+import { OpeningInfo } from "../../views/manage/Opening";
 
 interface Props {
   id: string;
@@ -10,9 +12,17 @@ interface Props {
   startDate: string;
   endDate: string;
   name: string;
+  setChangeData: (data2: OpeningInfo[]) => void;
 }
 
-const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
+const EditOpening = ({
+  id,
+  name,
+  endDate,
+  startDate,
+  theme,
+  setChangeData,
+}: Props) => {
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -37,18 +47,27 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
     console.log("Success:", values);
     const { name, theme, dates } = values;
     let [startDate, endDate] = dates;
-    startDate = moment(startDate).format("YYYY-MM-DD HH:mm:ss");
-    endDate = moment(endDate).format("YYYY-MM-DD HH:mm:ss");
+    startDate = moment(startDate).format("yyyy-MM-DD HH:mm:ss");
+    endDate = moment(endDate).format("yyyy-MM-DD HH:mm:ss");
     console.log({ name, theme, startDate, endDate, id }); // TODO: it's ok
+
+    const editPostData = qs.stringify({
+      id,
+      name,
+      them: theme,
+      startDate,
+      endDate,
+    });
+
     await axios
-      .post(`/updatesport`, {
-        id,
-        name,
-        theme,
-        startDate,
-        endDate,
+      .post(`/updatesport`, editPostData, {
+        headers: {
+          // @ts-ignore
+          token: localStorage.getItem("token"),
+        },
       })
       .then((res) => {
+        console.log("Edit Res:", res);
         if (res.status === 200) {
           message.success("修改成功", 1);
           setTimeout(() => {
@@ -62,6 +81,18 @@ const EditOpening = ({ id, name, endDate, startDate, theme }: Props) => {
       .catch((err) => {
         console.log(err);
         message.error("出了一些小问题...");
+      })
+      .finally(async () => {
+        const result = await axios
+          .get<OpeningInfo[]>(`/getsportlist`, {
+            headers: {
+              // @ts-ignore
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((res) => res.data);
+        // @ts-ignore
+        setChangeData(result.data);
       });
   };
 
