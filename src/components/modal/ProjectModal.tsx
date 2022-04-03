@@ -189,9 +189,9 @@ const ProjectModal = ({ setPostData }: Props) => {
           <Form.Item
             name="limit"
             label="性别"
-            rules={[{ required: true, message: "请选择你的性别!" }]}
+            rules={[{ required: true, message: "请选择项目性别限制!" }]}
           >
-            <Select placeholder="选择你的性别">
+            <Select placeholder="选择项目性别限制">
               <Option value={0}>男</Option>
               <Option value={1}>女</Option>
             </Select>

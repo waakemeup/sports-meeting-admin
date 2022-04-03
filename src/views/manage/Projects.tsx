@@ -8,6 +8,7 @@ import DeleteProject from "../../components/project/DeleteProject";
 import DetailProject from "../../components/project/DetailProject";
 import EditProject from "../../components/project/EditProject";
 import axios from "../../api";
+import { OpeningInfo } from "../../types";
 
 interface ProjectInfo {
   sport_id: string;
@@ -26,6 +27,7 @@ interface Props {}
 
 const Projects = (props: Props) => {
   const [data, setData] = useState<ProjectInfo[]>([]);
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
 
   useEffect(() => {
     const FetchData = async () => {
@@ -37,10 +39,21 @@ const Projects = (props: Props) => {
           },
         })
         .then((res) => res.data);
+
+      const result2 = await axios
+        .get<ProjectInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
       // @ts-ignore
       setData(result.data);
 
-      console.log(data);
+      // @ts-ignore
+      setOpeningData(result2.data);
+      // console.log(data);
     };
     FetchData();
   }, []);
@@ -73,121 +86,34 @@ const Projects = (props: Props) => {
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
-            pageSize: 10,
+            pageSize: 5,
             total: data.length,
           }}
         >
           <Table.Column
             title={"序号"}
             dataIndex={"id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
+            render={(value): JSX.Element => {
               return (
                 <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
+                  {(() => {
+                    const selected = data.filter((item) => item.id === value);
+
+                    return data.indexOf(selected[0]) + 1;
+                  })()}
                 </>
               );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.id === Number(value);
             }}
           />
           <Table.Column
             title={"届时"}
-            dataIndex={"sport_id"}
-            filterDropdown={({
-              setSelectedKeys,
-              selectedKeys,
-              confirm,
-              clearFilters,
-            }) => {
-              return (
-                <>
-                  <Input
-                    autoFocus
-                    placeholder="Type Text Here"
-                    value={selectedKeys[0]}
-                    onChange={(e) => {
-                      setSelectedKeys(e.target.value ? [e.target.value] : []);
-                      confirm({
-                        closeDropdown: false,
-                      });
-                    }}
-                    onPressEnter={() => {
-                      confirm();
-                    }}
-                    onBlur={() => {
-                      confirm();
-                    }}
-                  ></Input>
-                  <div className="flex items-center justify-between flex-grow">
-                    <Button
-                      onClick={() => confirm()}
-                      type="primary"
-                      className="bg-blue-400"
-                    >
-                      Search
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        clearFilters!();
-                        confirm();
-                      }}
-                      type="ghost"
-                      className="bg-yellow-400"
-                    >
-                      Reset
-                    </Button>
-                  </div>
-                </>
-              );
-            }}
-            filterIcon={() => <SearchOutlined />}
-            onFilter={(value: any, record: any) => {
-              return record.sport_id
-                .toLowerCase()
-                .includes(value.toLowerCase());
-            }}
+            dataIndex={"sportId"}
+            render={(value) => (
+              <>
+                {openingData.filter((single) => single.id === value)[0]?.name ??
+                  "未找到运动会"}
+              </>
+            )}
           />
           <Table.Column
             title={"项目名称"}
@@ -246,9 +172,8 @@ const Projects = (props: Props) => {
           />
           <Table.Column
             title={"项目性别限制"}
-            render={(project: ProjectInfo) => (
-              <>{project.limit ? "女" : "男"}</>
-            )}
+            dataIndex={"limit"}
+            render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
           />
           <Table.Column title={"项目举办日期"} dataIndex={"start"} />
           <Table.Column
