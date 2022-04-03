@@ -3,7 +3,7 @@ import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-  id: number;
+  id: string;
 }
 
 const DetailProject = ({ id }: Props) => {
@@ -11,7 +11,7 @@ const DetailProject = ({ id }: Props) => {
 
   return (
     <Button
-      className="bg-teal-400"
+      className="bg-teal-400 hover:bg-teal-500 hover:text-white"
       onClick={() => navigate(`/admin/detail/project/${id}`)}
     >
       详情

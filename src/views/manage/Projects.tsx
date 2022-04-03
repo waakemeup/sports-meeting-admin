@@ -11,16 +11,17 @@ import axios from "../../api";
 import { OpeningInfo } from "../../types";
 
 interface ProjectInfo {
-  sport_id: string;
+  sportId: string;
   name: string;
-  limit: number; //性别限制 0男 1女
+  limit: number;
   start: string;
   signStart: string;
   signEnd: string;
   refereeId: string;
   unit: string;
-  id: number; //TODO:也许要把这个改名 eventId 或者 event_id
+  id: string;
   location: string;
+  rule: string;
 }
 
 interface Props {}
@@ -180,10 +181,9 @@ const Projects = (props: Props) => {
             title={"操作"}
             render={(project: ProjectInfo) => (
               <Space>
-                <DetailProject id={project.id} />
                 <EditProject
                   id={project.id}
-                  sport_id={project.sport_id}
+                  sport_id={project.sportId}
                   limit={project.limit}
                   name={project.name}
                   refereeId={project.refereeId}
@@ -192,6 +192,7 @@ const Projects = (props: Props) => {
                   start={project.start}
                   unit={project.unit}
                   location={project.location}
+                  rule={project.rule}
                 />
                 <DeleteProject eventId={project.id} />
               </Space>

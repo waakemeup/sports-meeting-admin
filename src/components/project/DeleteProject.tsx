@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "../../api";
 
 interface Props {
-  eventId: number;
+  eventId: string;
 }
 
 const DeleteProject = ({ eventId }: Props) => {

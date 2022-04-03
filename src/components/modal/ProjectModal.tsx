@@ -169,7 +169,7 @@ const ProjectModal = ({ setPostData }: Props) => {
           <Form.Item
             label="届时"
             name="sport_id"
-            rules={[{ required: true, message: "请选择你的性别!" }]}
+            rules={[{ required: true, message: "请选择是哪届运动会!" }]}
           >
             <Select placeholder="选择运动会届时">
               {openingData.map((singleData) => (
