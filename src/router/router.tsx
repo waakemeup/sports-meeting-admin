@@ -23,6 +23,9 @@ import {
   PlusSquareOutlined,
   SkinFilled,
   UserSwitchOutlined,
+  TrophyOutlined,
+  UnorderedListOutlined,
+  ScheduleOutlined,
 } from "@ant-design/icons";
 import Register from "../views/register/Register";
 
@@ -58,6 +61,8 @@ const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
 const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
 const User = lazy(() => import("../views/manage/system/User"));
 const Role = lazy(() => import("../views/manage/system/Role"));
+const EventList = lazy(() => import("../views/participate/EventList"));
+const MyEvent = lazy(() => import("../views/participate/MyEvent"));
 // const Test = lazy(() => import("../components/layout/AppLayout"));
 
 const router: ARouter[] = [
@@ -230,6 +235,31 @@ const router: ARouter[] = [
         component: <Role />,
         icon: <UserSwitchOutlined />,
         limit: ["0"],
+      },
+    ],
+  },
+  {
+    path: "/admin/participate",
+    key: "participate",
+    title: "参加比赛",
+    icon: <TrophyOutlined />,
+    limit: ["2", "3"],
+    children: [
+      {
+        path: "/admin/participate/eventlist",
+        key: "eventlist",
+        title: "项目列表",
+        icon: <UnorderedListOutlined />,
+        component: <EventList />,
+        limit: ["2", "3"],
+      },
+      {
+        path: "/admin/participate/myevent",
+        key: "myevent",
+        title: "我的参赛",
+        icon: <ScheduleOutlined />,
+        component: <MyEvent />,
+        limit: ["2", "3"],
       },
     ],
   },

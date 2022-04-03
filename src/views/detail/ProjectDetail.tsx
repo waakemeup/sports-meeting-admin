@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { useParams, useNavigate } from "react-router-dom";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Card, Descriptions, Button, Table } from "antd";
 import ProjectUserList from "../../components/project/ProjectUserList";
-import { ProjectInfo } from "../../types.d";
+import { ProjectInfo, OpeningInfo, RefereeInfo } from "../../types.d";
+import axios from "../../api";
 
 interface Props {}
 
@@ -23,24 +24,55 @@ const _tabListNoTitle = [
 ];
 
 const ProjectDetail = (props: Props) => {
-  // TODO: 此处应该改为Axios
-  const project: ProjectInfo = {
-    id: "0",
-    limit: 0,
-    sportId: "2022",
-    name: "100m接力赛",
-    start: "2022-03-23 00:00:00",
-    signStart: "2022-03-15 13:28:01",
-    signEnd: "2022-03-25 00:33:00",
-    refereeId: "1",
-    unit: "秒",
-    location: "西区操场",
-    rule: "任意",
-  };
+  const [info, setInfo] = useState<ProjectInfo>();
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+  const [refereeData, setRefereeData] = useState<RefereeInfo[]>([]);
 
   const navigate = useNavigate();
 
   let { id } = useParams();
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<ProjectInfo[]>(`/event/getdetail`, {
+          params: { id },
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result2 = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result3 = await axios
+        .get<RefereeInfo[]>(`/referee/referees`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      // @ts-ignore
+      setRefereeData(result3.data);
+
+      // @ts-ignore
+      setOpeningData(result2.data);
+
+      // @ts-ignore
+      setInfo(result.data);
+    };
+    FetchData();
+  }, [id]);
 
   return (
     <>
@@ -60,26 +92,32 @@ const ProjectDetail = (props: Props) => {
       >
         <Descriptions bordered>
           <Descriptions.Item label="届时">
-            {project.sportId + "届"}
+            {
+              openingData.filter((single) => single.id === info?.sportId)[0]
+                ?.name
+            }
           </Descriptions.Item>
-          <Descriptions.Item label="项目名称">{project.name}</Descriptions.Item>
+          <Descriptions.Item label="项目名称">{info?.name}</Descriptions.Item>
           <Descriptions.Item label="项目举办地点">
-            {project.location}
+            {info?.location}
           </Descriptions.Item>
           <Descriptions.Item label="项目性别限制">
-            {project.limit ? "女" : "男"}
+            {info?.limit ? "女" : "男"}
           </Descriptions.Item>
           <Descriptions.Item label="项目举办日期">
-            {project.start}
+            {info?.start}
           </Descriptions.Item>
           <Descriptions.Item label="报名开始时间">
-            {project.signStart}
+            {info?.signStart}
           </Descriptions.Item>
           <Descriptions.Item label="报名结束时间">
-            {project.signEnd}
+            {info?.signEnd}
           </Descriptions.Item>
           <Descriptions.Item label="项目裁判">
-            {project.refereeId}
+            {
+              refereeData.filter((single) => single.id === info?.refereeId)[0]
+                ?.name
+            }
           </Descriptions.Item>
         </Descriptions>
       </Card>
