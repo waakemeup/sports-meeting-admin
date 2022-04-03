@@ -1,5 +1,5 @@
 import { Button, Card, Input, Space, Table } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import ChangeOpeningState from "../../components/opening/ChangeOpeningState";
@@ -9,15 +9,19 @@ import { OpeningInfo } from "../manage/Opening";
 import { SearchOutlined } from "@ant-design/icons";
 import axios from "../../api";
 import clsx from "clsx";
+import { observer } from "mobx-react-lite";
+import { OpeningStoreContext } from "../../store/OpeningStore";
 
 interface Props {
   openingList?: OpeningInfo[];
 }
 
-const SportOpening = ({ openingList }: Props) => {
+const SportOpening = observer(({ openingList }: Props) => {
   const navigate = useNavigate();
 
   const [data, setData] = useState<OpeningInfo[]>([]);
+
+  const openingStore = useContext(OpeningStoreContext);
 
   useEffect(() => {
     const FetchData = async () => {
@@ -31,7 +35,8 @@ const SportOpening = ({ openingList }: Props) => {
         .then((res) => res.data);
       // @ts-ignore
       setData(result.data);
-
+      // @ts-ignore
+      openingStore.setOpeningList(result.data);
       // console.log(data);
     };
     FetchData();
@@ -164,6 +169,6 @@ const SportOpening = ({ openingList }: Props) => {
       </Card>
     </>
   );
-};
+});
 
 export default SportOpening;

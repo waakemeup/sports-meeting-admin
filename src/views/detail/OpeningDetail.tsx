@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, Descriptions, Button, Table } from "antd";
-import { OpeningInfo } from "../../types.d";
+import { OpeningInfo } from "../manage/Opening";
+import axios from "../../api";
+import { observer } from "mobx-react-lite";
 
 interface Props {}
 
@@ -14,19 +16,45 @@ const tabListNoTitle = [
   },
 ];
 
-const OpeningDetail = (props: Props) => {
+const OpeningDetail = observer((props: Props) => {
+  const [data, setData] = useState<OpeningInfo[]>([]);
+  const [info, setInfo] = useState<OpeningInfo>();
+  // const [name, setName] = useState("default");
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const opening: OpeningInfo = {
-    id: "1",
-    endDate: "2022-03-25 00:33:00",
-    startDate: "2022-03-10 00:33:00",
-    location: "体育馆",
-    name: "快乐运动会",
-    sport_id: "2020",
-    status: true,
-    theme: "快乐",
-  };
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+      // @ts-ignore
+      setData(result.data);
+      // console.log(data);
+    };
+    FetchData();
+  }, []);
+
+  let name = "未能查找到";
+  let startdate = "未能查找到";
+  let enddate = "未能查找到";
+  let status: number = 0;
+  let theme = "未能查找到";
+
+  for (let i = 0; i < data?.length; i++) {
+    if (data[i].id === id) {
+      name = data[i].name;
+      startdate = data[i].startdate;
+      enddate = data[i].enddate;
+      status = data[i].status;
+      theme = data[i].theme;
+    }
+  }
 
   return (
     <>
@@ -47,30 +75,18 @@ const OpeningDetail = (props: Props) => {
         tabList={tabListNoTitle}
       >
         <Descriptions bordered>
-          <Descriptions.Item label="届时">
-            {opening.sport_id + "届"}
+          <Descriptions.Item label="名称">{name}</Descriptions.Item>
+          <Descriptions.Item label="状态">
+            {status ? "开启" : "结束"}
           </Descriptions.Item>
-          <Descriptions.Item label="名称">{opening.name}</Descriptions.Item>
-          <Descriptions.Item label="举办地点">
-            {opening.location}
-          </Descriptions.Item>
-          <Descriptions.Item label="举办时间">
-            {opening.startDate}
-          </Descriptions.Item>
-          <Descriptions.Item label="开始时间">
-            {opening.startDate}
-          </Descriptions.Item>
-          <Descriptions.Item label="结束时间">
-            {opening.endDate}
-          </Descriptions.Item>
-          <Descriptions.Item label="举办地">
-            {opening.location}
-          </Descriptions.Item>
-          <Descriptions.Item label="主题">{opening.theme}</Descriptions.Item>
+          <Descriptions.Item label="举办时间">{startdate}</Descriptions.Item>
+          <Descriptions.Item label="开始时间">{startdate}</Descriptions.Item>
+          <Descriptions.Item label="结束时间">{enddate}</Descriptions.Item>
+          <Descriptions.Item label="主题">{theme}</Descriptions.Item>
         </Descriptions>
       </Card>
     </>
   );
-};
+});
 
 export default OpeningDetail;
