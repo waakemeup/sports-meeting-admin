@@ -1,10 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Helmet } from "react-helmet";
 import { Card, Descriptions, Table } from "antd";
 import * as bcrypt from "bcryptjs";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../store/AdminStore";
+import { StudentInfo } from "../../types";
+import axios from "../../api";
+import getDepartment from "../../utils/getDepartment";
 
 interface UserProjectInfo {
   id: number;
@@ -94,6 +97,8 @@ const JoinProject = () => {
 const MeInfo = observer((props: Props) => {
   const adminStore = useContext(AdminStoreContext);
 
+  const [studentInfo, setStudentInfo] = useState<StudentInfo>();
+
   const arr: string[] = ["0", "1", "2", "3", "4"];
 
   let adminRole: undefined | string = undefined;
@@ -103,6 +108,24 @@ const MeInfo = observer((props: Props) => {
       adminRole = item;
       break;
     }
+  }
+
+  if (adminRole === "3") {
+    useEffect(() => {
+      const FetchData = async () => {
+        const result = await axios
+          .get<StudentInfo[]>(`/user/getdetail`, {
+            headers: {
+              // @ts-ignore
+              token: localStorage.getItem("token"),
+            },
+          })
+          .then((res) => res.data);
+        // @ts-ignore
+        setStudentInfo(result.data);
+      };
+      FetchData();
+    }, []);
   }
 
   return (
@@ -116,22 +139,40 @@ const MeInfo = observer((props: Props) => {
         className="my-8 border-t-4 rounded-sm border-t-blue-300"
         tabList={tabListNoTitle}
       >
-        <Descriptions bordered>
-          <Descriptions.Item label="标识">
-            {adminRole === "0"
-              ? "管理员"
-              : adminRole === "1"
-              ? "裁判"
-              : adminRole === "2"
-              ? "学院账号"
-              : adminRole === "3"
-              ? "学生"
-              : "未知账号"}
-          </Descriptions.Item>
-          <Descriptions.Item label="名称">
-            {adminStore.admin.username}
-          </Descriptions.Item>
-        </Descriptions>
+        {adminRole !== "3" ? (
+          <Descriptions bordered>
+            <Descriptions.Item label="标识">
+              {adminRole === "0"
+                ? "管理员"
+                : adminRole === "1"
+                ? "裁判"
+                : adminRole === "2"
+                ? "学院账号"
+                : adminRole === "3"
+                ? "学生"
+                : "未知账号"}
+            </Descriptions.Item>
+            <Descriptions.Item label="名称">
+              {adminStore.admin.username}
+            </Descriptions.Item>
+          </Descriptions>
+        ) : (
+          <Descriptions bordered>
+            <Descriptions.Item label="标识">学生</Descriptions.Item>
+            <Descriptions.Item label="名称">
+              {studentInfo?.name}
+            </Descriptions.Item>
+            <Descriptions.Item label="性别">
+              {studentInfo?.gender ? "女" : "男"}
+            </Descriptions.Item>
+            <Descriptions.Item label="学号">
+              {studentInfo?.no}
+            </Descriptions.Item>
+            <Descriptions.Item label="院系">
+              {getDepartment(studentInfo?.dep as number)}
+            </Descriptions.Item>
+          </Descriptions>
+        )}
       </Card>
       {adminRole === "3" && <JoinProject />}
     </>

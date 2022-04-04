@@ -39,7 +39,7 @@ const EventList = memo((props: Props) => {
       </Helmet>
       <ContentHeader info={"参加比赛"} info2={"项目列表"} replace={true} />
       <Card
-        title="展示正在进行的运动会"
+        title="正在进行的运动会"
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <Table
