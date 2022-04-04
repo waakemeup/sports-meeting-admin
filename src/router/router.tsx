@@ -59,6 +59,12 @@ const ManageOpening = lazy(() => import("../views/manage/Opening"));
 const ManageProjects = lazy(() => import("../views/manage/Projects"));
 const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
 const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
+const RefereeScoreList = lazy(
+  () => import("../views/manage/score/refereescore/RefereeScoreList")
+);
+const RefereeScoreRecord = lazy(
+  () => import("../views/manage/score/refereescore/RefereeScoreRecord")
+);
 const User = lazy(() => import("../views/manage/system/User"));
 const Role = lazy(() => import("../views/manage/system/Role"));
 const EventList = lazy(() => import("../views/participate/EventList"));
@@ -193,7 +199,7 @@ const router: ARouter[] = [
     title: "成绩管理",
     key: "managescore",
     icon: <BarChartOutlined />,
-    limit: ["0", "1"],
+    limit: ["0"],
     children: [
       {
         path: "/admin/manage/score/list",
@@ -201,7 +207,7 @@ const router: ARouter[] = [
         key: "scorelist",
         component: <ScoreList />,
         icon: <OrderedListOutlined />,
-        limit: ["0", "1"],
+        limit: ["0"],
       },
       {
         path: "/admin/manage/score/record",
@@ -209,7 +215,32 @@ const router: ARouter[] = [
         key: "scorerecord",
         component: <ScoreRecord />,
         icon: <PlusSquareOutlined />,
-        limit: ["0", "1"],
+        limit: ["0"],
+      },
+    ],
+  },
+  {
+    path: "/admin/manage/score",
+    title: "成绩管理",
+    key: "managescore",
+    icon: <BarChartOutlined />,
+    limit: ["1"],
+    children: [
+      {
+        path: "/admin/manage/score/referee/list",
+        title: "成绩列表",
+        key: "scorelist",
+        component: <RefereeScoreList />,
+        icon: <OrderedListOutlined />,
+        limit: ["1"],
+      },
+      {
+        path: "/admin/manage/score/referee/record",
+        title: "成绩录入",
+        key: "scorerecord",
+        component: <RefereeScoreRecord />,
+        icon: <PlusSquareOutlined />,
+        limit: ["1"],
       },
     ],
   },
