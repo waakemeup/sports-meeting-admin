@@ -118,9 +118,6 @@ const MeInfo = observer((props: Props) => {
       >
         <Descriptions bordered>
           <Descriptions.Item label="标识">
-            {adminStore.admin.username}
-          </Descriptions.Item>
-          <Descriptions.Item label="名称">
             {adminRole === "0"
               ? "管理员"
               : adminRole === "1"
@@ -131,9 +128,12 @@ const MeInfo = observer((props: Props) => {
               ? "学生"
               : "未知账号"}
           </Descriptions.Item>
+          <Descriptions.Item label="名称">
+            {adminStore.admin.username}
+          </Descriptions.Item>
         </Descriptions>
       </Card>
-      <JoinProject />
+      {adminRole === "3" && <JoinProject />}
     </>
   );
 });

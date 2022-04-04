@@ -37,3 +37,12 @@ export interface ProjectInfo {
   location: string;
   rule: string;
 }
+
+export interface StudentInfo {
+  id: string;
+  name: string;
+  gender: boolean;
+  dep: number;
+  no: string;
+  userId: string;
+}
