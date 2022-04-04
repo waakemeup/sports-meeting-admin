@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Helmet } from "react-helmet";
 import { Card, Descriptions, Table } from "antd";
+import * as bcrypt from "bcryptjs";
+import { observer } from "mobx-react-lite";
+import { AdminStoreContext } from "../../store/AdminStore";
 
 interface UserProjectInfo {
   id: number;
@@ -11,6 +14,13 @@ interface UserProjectInfo {
   take_time: string; //参赛时间
   grade?: string; //成绩
 }
+
+// "id": "a02aa42640904b76975a238aed3e0d10",
+// "name": "别叫醒我",
+// "gender": true,
+// "dep": 14,
+// "no": "201906120421",
+// "userId": "55a4d367e4574dde8e576f749ef49a4b"
 
 interface Props {}
 
@@ -81,7 +91,20 @@ const JoinProject = () => {
   );
 };
 
-const MeInfo = (props: Props) => {
+const MeInfo = observer((props: Props) => {
+  const adminStore = useContext(AdminStoreContext);
+
+  const arr: string[] = ["0", "1", "2", "3", "4"];
+
+  let adminRole: undefined | string = undefined;
+
+  for (let item of arr) {
+    if (bcrypt.compareSync(item, adminStore.admin.role as string)) {
+      adminRole = item;
+      break;
+    }
+  }
+
   return (
     <>
       <Helmet>
@@ -94,13 +117,25 @@ const MeInfo = (props: Props) => {
         tabList={tabListNoTitle}
       >
         <Descriptions bordered>
-          <Descriptions.Item label="标识">{"admin"}</Descriptions.Item>
-          <Descriptions.Item label="名称">{"管理员"}</Descriptions.Item>
+          <Descriptions.Item label="标识">
+            {adminStore.admin.username}
+          </Descriptions.Item>
+          <Descriptions.Item label="名称">
+            {adminRole === "0"
+              ? "管理员"
+              : adminRole === "1"
+              ? "裁判"
+              : adminRole === "2"
+              ? "学院账号"
+              : adminRole === "3"
+              ? "学生"
+              : "未知账号"}
+          </Descriptions.Item>
         </Descriptions>
       </Card>
       <JoinProject />
     </>
   );
-};
+});
 
 export default MeInfo;
