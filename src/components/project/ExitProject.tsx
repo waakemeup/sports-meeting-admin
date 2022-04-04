@@ -29,7 +29,7 @@ const ExitProject = ({ id, setDeleteData }: Props) => {
         } else {
           message.error("出现了未知错误...");
         }
-        console.log("删除的ID:", id);
+        // console.log("删除的ID:", id);
       })
       .catch((err) => {
         console.log(err);

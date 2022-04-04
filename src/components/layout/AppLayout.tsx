@@ -82,7 +82,14 @@ const AppLayout: React.FC<Props> = observer(({ children }) => {
             </Popover>
           </Header>
           {/* <div>HAHHA</div> */}
-          <Content style={{ margin: "24px 16px 0" }}>
+          <Content
+            style={{
+              // TODO:先这样改着吧
+              // margin: "24px 16px 0",
+              marginTop: "24px",
+              height: "100vh",
+            }}
+          >
             <div
               // TODO: maybe this need to change
               className=" !bg-system-gray border-gray-200 drop-shadow-2xl rounded-2xl p-12"

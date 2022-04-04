@@ -17,7 +17,7 @@ interface Props {
   operation?: boolean;
 }
 
-const ProjectUserList = ({ id, operation = true }: Props) => {
+const ProjectUserList = ({ id, operation = false }: Props) => {
   // const [data, setData] = useState();
 
   // useEffect(() => {
