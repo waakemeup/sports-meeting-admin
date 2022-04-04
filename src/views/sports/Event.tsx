@@ -27,8 +27,9 @@ const Event = (props: Props) => {
         })
         .then((res) => res.data);
 
+      // TODO:这里改动了一下
       const result2 = await axios
-        .get<ProjectInfo[]>(`/getsportlist`, {
+        .get<OpeningInfo[]>(`/getsportlist`, {
           headers: {
             // @ts-ignore
             token: localStorage.getItem("token"),
