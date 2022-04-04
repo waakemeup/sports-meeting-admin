@@ -14,6 +14,7 @@ import * as bcrypt from "bcryptjs";
 import { AdminStoreContext } from "../store/AdminStore";
 import { observer } from "mobx-react-lite";
 import UnAuth from "./unauth/UnAuth";
+import SelectEvent from "../views/participate/SelectEvent";
 
 interface Props {}
 
@@ -36,6 +37,18 @@ const View = observer((props: Props) => {
     <Router>
       <Routes>
         <Route path="/" element={<Navigate replace to={"admin/main"} />} />
+        <Route path="/admin/events">
+          <Route path="select">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <SelectEvent />
+                </AppLayout>
+              }
+            />
+          </Route>
+        </Route>
         <Route path="/admin/detail">
           <Route path="project">
             <Route

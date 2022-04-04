@@ -1,24 +1,27 @@
-import React, { useEffect, useState, memo } from "react";
+import { Button, Card, Input, Table } from "antd";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
+import { useParams } from "react-router-dom";
+import { ProjectInfo } from "../../types.d";
 import axios from "../../api";
-import { useNavigate } from "react-router-dom";
-import { OpeningInfo } from "../../types";
-import { Button, Card, Input, Space, Table } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
-import clsx from "clsx";
+import JoinEvent from "../../components/participate/JoinEvent";
 
 interface Props {}
 
-const EventList = memo((props: Props) => {
-  const navigate = useNavigate();
+const SelectEvent = (props: Props) => {
+  const { id } = useParams();
 
-  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+  const [projectData, setProjectData] = useState<ProjectInfo[]>([]);
 
   useEffect(() => {
     const FetchData = async () => {
       const result = await axios
-        .get<OpeningInfo[]>(`/getsportlist`, {
+        .get<ProjectInfo[]>(`/user/getpartic`, {
+          params: {
+            sportMeeting: id,
+          },
           headers: {
             // @ts-ignore
             token: localStorage.getItem("token"),
@@ -26,7 +29,7 @@ const EventList = memo((props: Props) => {
         })
         .then((res) => res.data);
       // @ts-ignore
-      setOpeningData(result.data);
+      setProjectData(result.data);
     };
     FetchData();
   }, []);
@@ -34,22 +37,22 @@ const EventList = memo((props: Props) => {
   return (
     <>
       <Helmet>
-        <title>参加比赛 - 项目列表</title>
-        <meta name="description" content="参加比赛项目列表" />
+        <title>参加比赛 - 选择参赛项目</title>
+        <meta name="description" content="参加比赛选择参赛项目" />
       </Helmet>
       <ContentHeader info={"参加比赛"} info2={"项目列表"} replace={true} />
       <Card
-        title="展示正在进行的运动会"
+        title="可参加项目"
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <Table
-          dataSource={openingData.filter((opening) => opening.status == 1)}
+          dataSource={projectData}
           rowKey={(record) => record.id}
           scroll={{ x: 600 }}
           pagination={{
             position: ["bottomRight"],
             pageSize: 5,
-            total: openingData.length,
+            total: projectData.length,
           }}
         >
           <Table.Column
@@ -59,18 +62,18 @@ const EventList = memo((props: Props) => {
               return (
                 <>
                   {(() => {
-                    const selected = openingData.filter(
+                    const selected = projectData.filter(
                       (item) => item.id === value
                     );
 
-                    return openingData.indexOf(selected[0]) + 1;
+                    return projectData.indexOf(selected[0]) + 1;
                   })()}
                 </>
               );
             }}
           />
           <Table.Column
-            title={"运动会名称"}
+            title={"项目名称"}
             dataIndex={"name"}
             filterDropdown={({
               setSelectedKeys,
@@ -124,42 +127,29 @@ const EventList = memo((props: Props) => {
               return record.name.toLowerCase().includes(value.toLowerCase());
             }}
           />
-          <Table.Column title={"运动会主题"} dataIndex={"theme"} />
-          <Table.Column title={"举办时间"} dataIndex={"startdate"} />
           <Table.Column
-            title={"状态"}
-            render={(openingItem: OpeningInfo) => (
-              <Button
-                className={clsx(
-                  openingItem.status && ["bg-teal-400", "hover:bg-teal-600"],
-                  !openingItem.status && ["bg-red-400", "hover:bg-red-600"],
-                  "rounded-2xl",
-                  "font-bold"
-                )}
-              >
-                {openingItem.status ? "正在开展中..." : "已经结束啦!!!"}
-              </Button>
-            )}
+            title={"项目性别限制"}
+            dataIndex={"limit"}
+            render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
           />
+          <Table.Column title={"项目举办地点"} dataIndex={"location"} />
+          <Table.Column title={"项目举办日期"} dataIndex={"start"} />
+          <Table.Column title={"报名开始日期"} dataIndex={"signStart"} />
+          <Table.Column title={"报名结束日期"} dataIndex={"signEnd"} />
           <Table.Column
             title={"操作"}
-            render={(openingItem: OpeningInfo) => (
-              <Space>
-                <Button
-                  className="bg-green-300 hover:bg-green-400 hover:text-white"
-                  onClick={() =>
-                    navigate(`/admin/events/select/${openingItem.id}`)
-                  }
-                >
-                  查看选择项目
-                </Button>
-              </Space>
+            render={(eventInfo: ProjectInfo) => (
+              <JoinEvent
+                id={eventInfo.id}
+                sport_id={eventInfo.sportId}
+                setPostData={(data2) => setProjectData(data2)}
+              />
             )}
           />
         </Table>
       </Card>
     </>
   );
-});
+};
 
-export default EventList;
+export default SelectEvent;
