@@ -1,4 +1,4 @@
-import { Button, Card, Input, Table } from "antd";
+import { Button, Card, Input, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
@@ -6,6 +6,8 @@ import { OpeningInfo, ProjectInfo } from "../../types";
 import axios from "../../api";
 import { SearchOutlined } from "@ant-design/icons";
 import DetailProject from "../../components/project/DetailProject";
+import qs from "qs";
+import ExitProject from "../../components/project/ExitProject";
 
 interface Props {}
 
@@ -154,7 +156,13 @@ const MyEvent = (props: Props) => {
           <Table.Column
             title={"操作"}
             render={(eventInfo: ProjectInfo) => (
-              <DetailProject id={eventInfo.id} />
+              <Space>
+                <DetailProject id={eventInfo.id} />
+                <ExitProject
+                  id={eventInfo.id}
+                  setDeleteData={(data2) => setMyListData(data2)}
+                />
+              </Space>
             )}
           />
         </Table>

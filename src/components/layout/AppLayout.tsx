@@ -86,6 +86,7 @@ const AppLayout: React.FC<Props> = observer(({ children }) => {
             <div
               // TODO: maybe this need to change
               className=" !bg-system-gray border-gray-200 drop-shadow-2xl rounded-2xl p-12"
+              // className=" !bg-red-400 border-gray-200 drop-shadow-2xl rounded-2xl p-12"
               style={{ padding: 24, minHeight: "100%" }}
             >
               {/* <ContentHeader info={"test"} /> */}
