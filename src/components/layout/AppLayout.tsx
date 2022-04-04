@@ -71,9 +71,11 @@ const AppLayout: React.FC<Props> = observer(({ children }) => {
             >
               <div
                 id="popover"
-                className="flex items-center justify-center hover:bg-sky-800 xxm:hidden hover:cursor-pointer"
+                className="flex items-center justify-center hover:bg-cyan-300 hover:rounded-3xl hover:drop-shadow-2xl xxm:hidden hover:cursor-pointer"
               >
-                <Avatar className="ml-2" />
+                <Avatar className="ml-2" size={40}>
+                  {adminStore.admin.username.slice(0, 2)}
+                </Avatar>
                 {/* TODO: pass username */}
                 <div className="pr-2 ml-2 text-white">
                   {adminStore.admin.username}
