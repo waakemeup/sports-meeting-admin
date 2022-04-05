@@ -44,13 +44,13 @@ const ChangeOpeningState = ({ id, status }: Props) => {
     >
       <Button
         className={clsx(
-          !status1 && ["bg-teal-400", "hover:bg-teal-600"],
-          status1 && ["bg-red-400", "hover:bg-red-600"],
+          status1 && ["bg-teal-400", "hover:bg-teal-600"],
+          !status1 && ["bg-red-400", "hover:bg-red-600"],
           "rounded-2xl",
           "font-bold"
         )}
       >
-        {status1 ? "关闭" : "开启"}
+        {status1 ? "开启" : "关闭"}
       </Button>
     </Popconfirm>
   );

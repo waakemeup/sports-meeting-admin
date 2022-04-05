@@ -1,32 +1,26 @@
-import { lazy, ReactNode } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import {
-  DashboardOutlined,
-  HomeOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-  KeyOutlined,
-  TableOutlined,
-  CheckCircleTwoTone,
-  HourglassTwoTone,
-  ReconciliationTwoTone,
-  HddTwoTone,
-  RobotFilled,
-  IdcardFilled,
-  TeamOutlined,
-  HddFilled,
-  SnippetsOutlined,
   ApartmentOutlined,
   BarChartOutlined,
+  CheckCircleTwoTone,
+  HddFilled,
+  HddTwoTone,
+  HomeOutlined,
+  HourglassTwoTone,
+  KeyOutlined,
+  LaptopOutlined,
   OrderedListOutlined,
   PlusSquareOutlined,
+  RobotFilled,
+  ScheduleOutlined,
   SkinFilled,
-  UserSwitchOutlined,
+  SnippetsOutlined,
+  TableOutlined,
   TrophyOutlined,
   UnorderedListOutlined,
-  ScheduleOutlined,
+  UserOutlined,
+  UserSwitchOutlined,
 } from "@ant-design/icons";
+import { lazy, ReactNode } from "react";
 import Register from "../views/register/Register";
 
 export interface ARouter {
@@ -42,23 +36,23 @@ export interface ARouter {
 
 const Login = lazy(() => import("../views/login/Login"));
 const Page404 = lazy(() => import("../views/404/Page404"));
-const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
+// const Dashboard = lazy(() => import("../views/dashboard/Dashboard"));
 const Main = lazy(() => import("../views/main/Main"));
 const MeInfo = lazy(() => import("../views/user/MeInfo"));
 const ChangePassword = lazy(() => import("../views/user/ChangePassword"));
 const Opening = lazy(() => import("../views/sports/SportOpening"));
 const Event = lazy(() => import("../views/sports/Event"));
-const MatchResult = lazy(() => import("../views/sports/MatchResult"));
+// const MatchResult = lazy(() => import("../views/sports/MatchResult"));
 const StudentsInfo = lazy(() => import("../views/departments/StudentsInfo"));
-const TeachersInfo = lazy(() => import("../views/departments/TeachersInfo"));
-const ClassInfo = lazy(() => import("../views/departments/ClassInfo"));
+// const TeachersInfo = lazy(() => import("../views/departments/TeachersInfo"));
+// const ClassInfo = lazy(() => import("../views/departments/ClassInfo"));
 const DepartmentInfo = lazy(
   () => import("../views/departments/DepartmentInfo")
 );
 const ManageOpening = lazy(() => import("../views/manage/Opening"));
 const ManageProjects = lazy(() => import("../views/manage/Projects"));
-const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
-const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
+// const ScoreList = lazy(() => import("../views/manage/score/ScoreList"));
+// const ScoreRecord = lazy(() => import("../views/manage/score/ScoreRecord"));
 const RefereeScoreList = lazy(
   () => import("../views/manage/score/refereescore/RefereeScoreList")
 );
@@ -129,14 +123,14 @@ const router: ARouter[] = [
         component: <Event />,
         limit: ["0", "1", "2", "3"],
       },
-      {
-        path: "/admin/sportsinfo/matches",
-        title: "比赛成绩信息",
-        key: "matchresult",
-        icon: <ReconciliationTwoTone twoToneColor="#57cbd3" />,
-        component: <MatchResult />,
-        limit: ["0", "1", "2"],
-      },
+      // {
+      //   path: "/admin/sportsinfo/matches",
+      //   title: "比赛成绩信息",
+      //   key: "matchresult",
+      //   icon: <ReconciliationTwoTone twoToneColor="#57cbd3" />,
+      //   component: <MatchResult />,
+      //   limit: ["0", "1", "2"],
+      // },
     ],
   },
   {
@@ -194,31 +188,31 @@ const router: ARouter[] = [
     icon: <ApartmentOutlined />,
     limit: ["0"],
   },
-  {
-    path: "/admin/manage/score",
-    title: "成绩管理",
-    key: "managescore",
-    icon: <BarChartOutlined />,
-    limit: ["0"],
-    children: [
-      {
-        path: "/admin/manage/score/list",
-        title: "成绩列表",
-        key: "scorelist",
-        component: <ScoreList />,
-        icon: <OrderedListOutlined />,
-        limit: ["0"],
-      },
-      {
-        path: "/admin/manage/score/record",
-        title: "成绩录入",
-        key: "scorerecord",
-        component: <ScoreRecord />,
-        icon: <PlusSquareOutlined />,
-        limit: ["0"],
-      },
-    ],
-  },
+  // {
+  //   path: "/admin/manage/score",
+  //   title: "成绩管理",
+  //   key: "managescore",
+  //   icon: <BarChartOutlined />,
+  //   limit: ["0"],
+  //   children: [
+  //     {
+  //       path: "/admin/manage/score/list",
+  //       title: "成绩列表",
+  //       key: "scorelist",
+  //       component: <ScoreList />,
+  //       icon: <OrderedListOutlined />,
+  //       limit: ["0"],
+  //     },
+  //     {
+  //       path: "/admin/manage/score/record",
+  //       title: "成绩录入",
+  //       key: "scorerecord",
+  //       component: <ScoreRecord />,
+  //       icon: <PlusSquareOutlined />,
+  //       limit: ["0"],
+  //     },
+  //   ],
+  // },
   {
     path: "/admin/manage/score",
     title: "成绩管理",

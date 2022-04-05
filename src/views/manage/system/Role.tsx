@@ -16,17 +16,7 @@ const Role = (props: Props) => {
       <Card
         title="角色列表"
         className="border-t-4 rounded-sm border-t-blue-300"
-      >
-        <div id="buttons" className="mb-4">
-          <Button
-            onClick={() => {
-              window.location.reload();
-            }}
-          >
-            刷新
-          </Button>
-        </div>
-      </Card>
+      ></Card>
     </>
   );
 };

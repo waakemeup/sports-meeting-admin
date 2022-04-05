@@ -105,10 +105,10 @@ const OpeningDetail = observer((props: Props) => {
       key: "项目信息",
       tab: "项目信息",
     },
-    {
-      key: "成绩信息",
-      tab: "成绩信息",
-    },
+    // {
+    //   key: "成绩信息",
+    //   tab: "成绩信息",
+    // },
   ];
 
   const contentList = {
@@ -224,7 +224,7 @@ const OpeningDetail = observer((props: Props) => {
         </Table>
       </>
     ),
-    成绩信息: <>成绩信息</>, //TODO:这个现在还做不了
+    // 成绩信息: <>成绩信息</>,
   };
 
   return (

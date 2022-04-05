@@ -95,7 +95,7 @@ const View = observer((props: Props) => {
               }
             />
           </Route>
-          <Route path="grade">
+          {/* <Route path="grade">
             <Route
               path=":id"
               element={
@@ -104,7 +104,7 @@ const View = observer((props: Props) => {
                 </AppLayout>
               }
             />
-          </Route>
+          </Route> */}
           <Route path="eventinfo">
             <Route
               path=":id" //参赛项目ID

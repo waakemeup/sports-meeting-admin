@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, message } from "antd";
 import React, { useContext } from "react";
 import { NavigateFunction } from "react-router-dom";
 import { AdminStoreContext } from "../../store/AdminStore";
@@ -33,6 +33,7 @@ const MyContent = observer(({ navigate }: Props) => {
             localStorage.clear();
             authStore.changeAuth();
             adminStore.logout();
+            message.success("登出成功");
             navigate("/login");
           }}
         >
