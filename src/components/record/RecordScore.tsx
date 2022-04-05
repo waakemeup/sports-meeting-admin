@@ -5,6 +5,7 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import qs from "qs";
 import { ProjectTokenInfo } from "../../types.d";
+import clsx from "clsx";
 
 interface Props {
   athletesId: string;
@@ -108,10 +109,15 @@ const RecordScore = ({
   return (
     <>
       <Button
-        className="bg-cyan-300 hover:bg-cyan-400 hover:text-white"
+        className={clsx(
+          score && ["bg-cyan-300 hover:bg-cyan-400 hover:text-white"],
+          !score && ["bg-rose-300 hover:bg-rose-400 hover:text-white"],
+          "font-bold",
+          "rounded-2xl"
+        )}
         onClick={showModal}
       >
-        编辑/录入
+        {score === null ? "录入" : "编辑"}
       </Button>
       <Modal
         title="编辑或录入运动员成绩"
@@ -147,10 +153,20 @@ const RecordScore = ({
           <Form.Item label="参赛项目">
             <Input placeholder={eventName} disabled={true} />
           </Form.Item>
-          <Form.Item label="排名" name="record" initialValue={record}>
+          <Form.Item
+            label="排名"
+            name="record"
+            initialValue={record}
+            rules={[{ required: true, message: "请输入运动员排名!" }]}
+          >
             <Input placeholder="运动员排名" />
           </Form.Item>
-          <Form.Item label="成绩" name="score" initialValue={score}>
+          <Form.Item
+            label="成绩"
+            name="score"
+            initialValue={score}
+            rules={[{ required: true, message: "请输入运动员成绩!" }]}
+          >
             <Input placeholder="运动员比赛成绩" />
           </Form.Item>
           <Form.Item label="单位" initialValue={unit}>

@@ -17,6 +17,7 @@ import UnAuth from "./unauth/UnAuth";
 import SelectEvent from "../views/participate/SelectEvent";
 import RecordScoreByEvent from "../views/manage/score/refereescore/RecordScoreByEvent";
 import EventInfoDetail from "../views/detail/EventInfoDetail";
+import WatchScoreByEvent from "../views/manage/score/refereescore/WatchScoreByEvent";
 
 interface Props {}
 
@@ -58,6 +59,16 @@ const View = observer((props: Props) => {
               element={
                 <AppLayout>
                   <RecordScoreByEvent />
+                </AppLayout>
+              }
+            />
+          </Route>
+          <Route path="watch">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <WatchScoreByEvent />
                 </AppLayout>
               }
             />
