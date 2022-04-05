@@ -2,7 +2,7 @@ import { Button, Card, Input, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import ContentHeader from "../../components/contentheader/CotentHeader";
-import { OpeningInfo, ProjectInfo } from "../../types";
+import { ProjectInfo, ProjectTokenInfo, OpeningInfo } from "../../types";
 import axios from "../../api";
 import { SearchOutlined } from "@ant-design/icons";
 import DetailProject from "../../components/project/DetailProject";
@@ -12,13 +12,14 @@ import ExitProject from "../../components/project/ExitProject";
 interface Props {}
 
 const MyEvent = (props: Props) => {
-  const [myListData, setMyListData] = useState<ProjectInfo[]>([]);
+  const [myListData, setMyListData] = useState<ProjectTokenInfo[]>([]);
+  const [eventData, setEventData] = useState<ProjectInfo[]>([]);
   const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
 
   useEffect(() => {
     const FetchData = async () => {
       const result = await axios
-        .get<ProjectInfo[]>(`/user/getparticed`, {
+        .get<ProjectTokenInfo[]>(`/user/getparticed`, {
           headers: {
             // @ts-ignore
             token: localStorage.getItem("token"),
@@ -27,6 +28,15 @@ const MyEvent = (props: Props) => {
         .then((res) => res.data);
 
       const result2 = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result3 = await axios
         .get<OpeningInfo[]>(`/getsportlist`, {
           headers: {
             // @ts-ignore
@@ -34,11 +44,15 @@ const MyEvent = (props: Props) => {
           },
         })
         .then((res) => res.data);
+
       // @ts-ignore
       setMyListData(result.data);
 
       // @ts-ignore
-      setOpeningData(result2.data);
+      setEventData(result2.data);
+
+      // @ts-ignore
+      setOpeningData(result3.data);
     };
     FetchData();
   }, []);
@@ -55,7 +69,7 @@ const MyEvent = (props: Props) => {
         className="border-t-4 rounded-sm border-t-blue-300"
       >
         <Table
-          rowKey={(record) => record.id}
+          rowKey={(record) => record.eventId}
           dataSource={myListData}
           scroll={{ x: 600 }}
           pagination={{
@@ -66,13 +80,13 @@ const MyEvent = (props: Props) => {
         >
           <Table.Column
             title={"序号"}
-            dataIndex={"id"}
+            dataIndex={"eventId"}
             render={(value): JSX.Element => {
               return (
                 <>
                   {(() => {
                     const selected = myListData.filter(
-                      (item) => item.id === value
+                      (item) => item.eventId === value
                     );
 
                     return myListData.indexOf(selected[0]) + 1;
@@ -83,17 +97,23 @@ const MyEvent = (props: Props) => {
           />
           <Table.Column
             title={"届时"}
-            dataIndex={"sportId"}
+            dataIndex={"eventId"}
             render={(value) => (
               <>
-                {openingData.filter((single) => single.id === value)[0]?.name ??
-                  "未找到运动会"}
+                {
+                  openingData.filter(
+                    (opening) =>
+                      opening.id ===
+                      eventData.filter((single) => single.id === value)[0]
+                        ?.sportId
+                  )[0]?.name
+                }
               </>
             )}
           />
           <Table.Column
             title={"项目名称"}
-            dataIndex={"name"}
+            dataIndex={"eventName"}
             filterDropdown={({
               setSelectedKeys,
               selectedKeys,
@@ -143,27 +163,78 @@ const MyEvent = (props: Props) => {
             }}
             filterIcon={() => <SearchOutlined />}
             onFilter={(value: any, record: any) => {
-              return record.name.toLowerCase().includes(value.toLowerCase());
+              return record.eventName
+                .toLowerCase()
+                .includes(value.toLowerCase());
             }}
           />
           <Table.Column
             title={"项目性别限制"}
-            dataIndex={"limit"}
-            render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
+            dataIndex={"eventId"}
+            render={(value) => (
+              <>
+                {eventData.filter((single) => single.id === value)[0]?.limit
+                  ? "女"
+                  : "男"}
+              </>
+            )}
           />
-          <Table.Column title={"项目举办地点"} dataIndex={"location"} />
-          <Table.Column title={"项目举办日期"} dataIndex={"start"} />
+          <Table.Column
+            title={"项目举办地点"}
+            dataIndex={"eventId"}
+            render={(value) => (
+              <>
+                {eventData.filter((single) => single.id === value)[0]
+                  ?.location ?? "未找到地址"}
+              </>
+            )}
+          />
+          <Table.Column
+            title={"项目举办日期"}
+            dataIndex={"eventId"}
+            render={(value) => (
+              <>
+                {eventData.filter((single) => single.id === value)[0]?.start ??
+                  "未找到举办日期"}
+              </>
+            )}
+          />
+          <Table.Column
+            title={"分组信息"}
+            dataIndex={"group"}
+            render={(value) => <>{value ?? "暂未分组"}</>}
+          />
+          <Table.Column
+            title={"比赛成绩"}
+            render={(eventTokenInfo: ProjectTokenInfo) => (
+              <>
+                {eventTokenInfo.score === null
+                  ? "未录入"
+                  : eventTokenInfo.score + " " + eventTokenInfo.unit}
+              </>
+            )}
+          />
+          <Table.Column
+            title={"比赛排名"}
+            dataIndex={"rank"}
+            render={(value) => <>{value ?? "暂未排名"}</>}
+          />
           <Table.Column
             title={"操作"}
-            render={(eventInfo: ProjectInfo) => (
-              <Space>
-                <DetailProject id={eventInfo.id} />
-                <ExitProject
-                  id={eventInfo.id}
-                  setDeleteData={(data2) => setMyListData(data2)}
-                />
-              </Space>
-            )}
+            render={(eventTokenInfo: ProjectTokenInfo) => {
+              const id = eventData.filter(
+                (single) => single.id === eventTokenInfo.eventId
+              )[0]?.id;
+              return (
+                <Space>
+                  <DetailProject id={id} />
+                  <ExitProject
+                    id={id}
+                    setDeleteData={(data2) => setMyListData(data2)}
+                  />
+                </Space>
+              );
+            }}
           />
         </Table>
       </Card>

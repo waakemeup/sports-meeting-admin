@@ -1,12 +1,12 @@
 import { Button, message, Popconfirm } from "antd";
 import React, { useState } from "react";
 import axios from "../../api";
-import { ProjectInfo } from "../../types.d";
+import { ProjectInfo, ProjectTokenInfo } from "../../types.d";
 import qs from "qs";
 
 interface Props {
   id: string;
-  setDeleteData: (data2: ProjectInfo[]) => void;
+  setDeleteData: (data2: ProjectTokenInfo[]) => void;
 }
 
 const ExitProject = ({ id, setDeleteData }: Props) => {
@@ -24,10 +24,10 @@ const ExitProject = ({ id, setDeleteData }: Props) => {
       })
       .then((res) => {
         console.log(res);
-        if (res.status === 200) {
+        if (res.data.code === 200) {
           message.success("退赛成功");
         } else {
-          message.error("出现了未知错误...");
+          message.warn(res.data.data ?? "出现了未知错误...");
         }
         // console.log("删除的ID:", id);
       })
