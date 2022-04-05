@@ -14,6 +14,7 @@ import {
 import axios from "../../api";
 import getDepartment from "../../utils/getDepartment";
 import { SearchOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 interface UserProjectInfo {
   id: number;
@@ -47,11 +48,12 @@ const _tabListNoTitle = [
   },
 ];
 
-// TODO:只有学生有这个
 const JoinProject = memo(() => {
   const [myEventData, setMyEventData] = useState<ProjectTokenInfo[]>([]);
   const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
   const [eventData, setEventData] = useState<ProjectInfo[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const FetchData = async () => {
@@ -219,9 +221,25 @@ const JoinProject = memo(() => {
         />
         <Table.Column
           title={"操作"}
-          render={() => (
+          render={(projectToken: ProjectTokenInfo) => (
             // TODO:这里加一个详情页
-            <Button className="font-bold bg-indigo-300 shadow-lg rounded-2xl shadow-indigo-300/50 hover:bg-indigo-300 hover:text-white">
+            <Button
+              onClick={() =>
+                navigate(`/admin/detail/eventinfo/${projectToken.eventId}`, {
+                  state: {
+                    studentNo: projectToken.studentNo,
+                    studentName: projectToken.studentName,
+                    score: projectToken.score,
+                    rank: projectToken.rank,
+                    unit: projectToken.unit,
+                    eventInfo: eventData.filter(
+                      (event) => event.id === projectToken.eventId
+                    )[0],
+                  },
+                })
+              }
+              className="font-bold bg-indigo-300 shadow-lg rounded-2xl shadow-indigo-300/50 hover:bg-indigo-300 hover:text-white"
+            >
               详情
             </Button>
           )}

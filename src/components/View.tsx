@@ -16,6 +16,7 @@ import { observer } from "mobx-react-lite";
 import UnAuth from "./unauth/UnAuth";
 import SelectEvent from "../views/participate/SelectEvent";
 import RecordScoreByEvent from "../views/manage/score/refereescore/RecordScoreByEvent";
+import EventInfoDetail from "../views/detail/EventInfoDetail";
 
 interface Props {}
 
@@ -89,6 +90,16 @@ const View = observer((props: Props) => {
               element={
                 <AppLayout>
                   <PlayerGradeDetail />
+                </AppLayout>
+              }
+            />
+          </Route>
+          <Route path="eventinfo">
+            <Route
+              path=":id" //参赛项目ID
+              element={
+                <AppLayout>
+                  <EventInfoDetail />
                 </AppLayout>
               }
             />

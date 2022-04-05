@@ -135,7 +135,7 @@ const router: ARouter[] = [
         key: "matchresult",
         icon: <ReconciliationTwoTone twoToneColor="#57cbd3" />,
         component: <MatchResult />,
-        limit: ["0", "1", "2", "3"],
+        limit: ["0", "1", "2"],
       },
     ],
   },
