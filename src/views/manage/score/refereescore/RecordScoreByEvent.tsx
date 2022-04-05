@@ -105,8 +105,11 @@ const RecordScoreByEvent = observer((props: Props) => {
           />
           <Table.Column
             title={"成绩"}
-            dataIndex={"score"}
-            render={(value) => <>{value === null ? "未录入" : value}</>}
+            render={(data: ProjectTokenInfo) => (
+              <>
+                {data.score === null ? "未录入" : data.score + " " + data.unit}
+              </>
+            )}
           />
           <Table.Column
             title={"排名"}
