@@ -38,7 +38,7 @@ const View = observer((props: Props) => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate replace to={"admin/main"} />} />
+        <Route path="/" element={<Navigate replace to={"login"} />} />
         <Route path="/admin/events">
           <Route path="select">
             <Route
