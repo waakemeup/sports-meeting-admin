@@ -126,7 +126,7 @@ const ProjectDetail = (props: Props) => {
         tabList={_tabListNoTitle}
       >
         {/* <FormModal /> */}
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <Button
             onClick={() => {
               window.location.reload();
@@ -134,7 +134,7 @@ const ProjectDetail = (props: Props) => {
           >
             刷新
           </Button>
-        </div>
+        </div> */}
         <ProjectUserList id={id as string} />
       </Card>
     </>

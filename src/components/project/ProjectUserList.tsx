@@ -1,16 +1,7 @@
 import { Button, Divider, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "../../api";
-
-interface PlayerInfo {
-  id: number; //序号
-  card_id: number; //学号
-  name: string;
-  project: string;
-  line?: string; //分道信息
-  grade?: string; //成绩信息
-  rank?: string;
-}
+import { ProjectTokenInfo } from "../../types.d";
 
 interface Props {
   id: string;
@@ -18,72 +9,76 @@ interface Props {
 }
 
 const ProjectUserList = ({ id, operation = false }: Props) => {
-  // const [data, setData] = useState();
+  const [userData, setUserData] = useState<ProjectTokenInfo[]>([]);
 
-  // useEffect(() => {
-  //   const FetchData = async () => {
-  //     const result = await axios
-  //       .get(`/event/getparticuser`, {
-  //         params: {
-  //           id,
-  //         },
-  //       })
-  //       .then((res) => res.data);
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<ProjectTokenInfo[]>(`/event/getmatch`, {
+          params: {
+            eventId: id,
+          },
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
 
-  //     setData(result);
-  //   };
-  //   FetchData();
-  // }, [id]);
-
-  const userList: PlayerInfo[] = [
-    {
-      id: 1,
-      name: "司楠",
-      card_id: 201624131202,
-      project: "射击",
-      grade: "12",
-      line: "123",
-      rank: "未排名",
-    },
-    {
-      id: 2,
-      name: "测试",
-      card_id: 201624131202,
-      project: "射击",
-      grade: "12",
-      line: "暂未分道",
-      rank: "未排名",
-    },
-    {
-      id: 3,
-      name: "岳彩娥",
-      card_id: 201624131202,
-      project: "射击",
-      grade: "54",
-      rank: "12",
-      line: "暂未分道",
-    },
-  ];
+      // @ts-ignore
+      setUserData(result.data);
+    };
+    FetchData();
+  }, []);
 
   return (
     <>
       <Table
-        dataSource={userList}
-        rowKey={(record) => record.id}
+        dataSource={userData}
+        rowKey={(record) => record.athletesId}
         scroll={{ x: 600 }}
         pagination={{
           position: ["bottomRight"],
           pageSize: 10,
-          total: userList.length,
+          total: userData.length,
         }}
       >
-        <Table.Column title={"序号"} dataIndex={"id"} />
-        <Table.Column title={"参赛人学号"} dataIndex={"card_id"} />
-        <Table.Column title={"参赛人姓名"} dataIndex={"name"} />
-        <Table.Column title={"参赛项目"} dataIndex={"project"} />
-        <Table.Column title={"分道信息"} dataIndex={"line"} />
-        <Table.Column title={"成绩"} dataIndex={"grade"} />
-        <Table.Column title={"排名"} dataIndex={"rank"} />
+        <Table.Column
+          title={"序号"}
+          dataIndex={"athletesId"}
+          render={(value): JSX.Element => {
+            return (
+              <>
+                {(() => {
+                  const selected = userData.filter(
+                    (item) => item.athletesId === value
+                  );
+
+                  return userData.indexOf(selected[0]) + 1;
+                })()}
+              </>
+            );
+          }}
+        />
+        <Table.Column title={"参赛人学号"} dataIndex={"studentNo"} />
+        <Table.Column title={"参赛人姓名"} dataIndex={"studentName"} />
+        <Table.Column title={"参赛项目"} dataIndex={"eventName"} />
+        <Table.Column
+          title={"分道信息"}
+          dataIndex={"group"}
+          render={(value) => <>{value ?? "暂未分道"}</>}
+        />
+        <Table.Column
+          title={"成绩"}
+          render={(data: ProjectTokenInfo) => (
+            <>{data.score === null ? "未录入" : data.score + " " + data.unit}</>
+          )}
+        />
+        <Table.Column
+          title={"排名"}
+          dataIndex={"rank"}
+          render={(value) => <>{value ?? "暂未排名"}</>}
+        />
         <Table.Column
           title={"操作"}
           render={() => (

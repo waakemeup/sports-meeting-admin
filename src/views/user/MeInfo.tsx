@@ -1,13 +1,19 @@
 import React, { useContext, useEffect, useState, memo } from "react";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Helmet } from "react-helmet";
-import { Button, Card, Descriptions, Table } from "antd";
+import { Button, Card, Descriptions, Input, Table } from "antd";
 import * as bcrypt from "bcryptjs";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../store/AdminStore";
-import { OpeningInfo, ProjectInfo, StudentInfo } from "../../types";
+import {
+  OpeningInfo,
+  ProjectInfo,
+  StudentInfo,
+  ProjectTokenInfo,
+} from "../../types";
 import axios from "../../api";
 import getDepartment from "../../utils/getDepartment";
+import { SearchOutlined } from "@ant-design/icons";
 
 interface UserProjectInfo {
   id: number;
@@ -43,13 +49,14 @@ const _tabListNoTitle = [
 
 // TODO:只有学生有这个
 const JoinProject = memo(() => {
-  const [myEventData, setMyEventData] = useState<ProjectInfo[]>([]);
+  const [myEventData, setMyEventData] = useState<ProjectTokenInfo[]>([]);
   const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+  const [eventData, setEventData] = useState<ProjectInfo[]>([]);
 
   useEffect(() => {
     const FetchData = async () => {
       const result = await axios
-        .get<ProjectInfo[]>(`/user/getparticed`, {
+        .get<ProjectTokenInfo[]>(`/user/getparticed`, {
           headers: {
             // @ts-ignore
             token: localStorage.getItem("token"),
@@ -66,6 +73,17 @@ const JoinProject = memo(() => {
         })
         .then((res) => res.data);
 
+      const result3 = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      // @ts-ignore
+      setEventData(result3.data);
       // @ts-ignore
       setOpeningData(result2.data);
       // @ts-ignore
@@ -83,7 +101,7 @@ const JoinProject = memo(() => {
     >
       <Table
         dataSource={myEventData}
-        rowKey={(record) => record.id}
+        rowKey={(record) => record.eventId}
         scroll={{ x: 600 }}
         pagination={{
           position: ["bottomRight"],
@@ -93,15 +111,14 @@ const JoinProject = memo(() => {
       >
         <Table.Column
           title={"序号"}
-          dataIndex={"id"}
+          dataIndex={"eventId"}
           render={(value): JSX.Element => {
             return (
               <>
                 {(() => {
                   const selected = myEventData.filter(
-                    (item) => item.id === value
+                    (item) => item.eventId === value
                   );
-
                   return myEventData.indexOf(selected[0]) + 1;
                 })()}
               </>
@@ -110,28 +127,101 @@ const JoinProject = memo(() => {
         />
         <Table.Column
           title={"届时"}
-          dataIndex={"sportId"}
+          dataIndex={"eventId"}
           render={(value) => (
             <>
-              {openingData.filter((single) => single.id === value)[0]?.name ??
-                "未找到运动会"}
+              {
+                openingData.filter(
+                  (opening) =>
+                    opening.id ===
+                    eventData.filter((single) => single.id === value)[0]
+                      ?.sportId
+                )[0]?.name
+              }
             </>
           )}
         />
-        <Table.Column title={"参赛项目"} dataIndex={"name"} />
-        <Table.Column title={"参赛时间"} dataIndex={"start"} />
+        <Table.Column
+          title={"参赛项目"}
+          dataIndex={"eventName"}
+          filterDropdown={({
+            setSelectedKeys,
+            selectedKeys,
+            confirm,
+            clearFilters,
+          }) => {
+            return (
+              <>
+                <Input
+                  autoFocus
+                  placeholder="Type Text Here"
+                  value={selectedKeys[0]}
+                  onChange={(e) => {
+                    setSelectedKeys(e.target.value ? [e.target.value] : []);
+                    confirm({
+                      closeDropdown: false,
+                    });
+                  }}
+                  onPressEnter={() => {
+                    confirm();
+                  }}
+                  onBlur={() => {
+                    confirm();
+                  }}
+                ></Input>
+                <div className="flex items-center justify-between flex-grow">
+                  <Button
+                    onClick={() => confirm()}
+                    type="primary"
+                    className="bg-blue-400"
+                  >
+                    Search
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      clearFilters!();
+                      confirm();
+                    }}
+                    type="ghost"
+                    className="bg-yellow-400"
+                  >
+                    Reset
+                  </Button>
+                </div>
+              </>
+            );
+          }}
+          filterIcon={() => <SearchOutlined />}
+          onFilter={(value: any, record: any) => {
+            return record.eventName.toLowerCase().includes(value.toLowerCase());
+          }}
+        />
+        <Table.Column
+          title={"参赛时间"}
+          dataIndex={"eventId"}
+          render={(value) => (
+            <>
+              {eventData.filter((single) => single.id === value)[0]?.start ??
+                "未找到举办日期"}
+            </>
+          )}
+        />
         <Table.Column
           title={"成绩"}
-          dataIndex={"grade"}
-          render={(value) => (
-            <>{typeof value === "undefined" ? "成绩未录入" : value}</>
+          render={(data: ProjectTokenInfo) => (
+            <>{data.score === null ? "未录入" : data.score + " " + data.unit}</>
           )}
+        />
+        <Table.Column
+          title={"排名"}
+          dataIndex={"rank"}
+          render={(value) => <>{value ?? "暂未排名"}</>}
         />
         <Table.Column
           title={"操作"}
           render={() => (
             // TODO:这里加一个详情页
-            <Button className="bg-emerald-500 hover:bg-emerald-600 hover:text-white">
+            <Button className="font-bold bg-indigo-300 shadow-lg rounded-2xl shadow-indigo-300/50 hover:bg-indigo-300 hover:text-white">
               详情
             </Button>
           )}
