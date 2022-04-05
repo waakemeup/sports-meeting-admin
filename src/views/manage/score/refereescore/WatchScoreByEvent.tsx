@@ -7,10 +7,8 @@ import { ProjectTokenInfo } from "../../../../types";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../../../store/AdminStore";
 import * as bcrypt from "bcryptjs";
-// import UnAuth from "../../../../components/unauth/UnAuth";
 import UnAuth2 from "../../../../components/unauth/UnAuth2";
-import { Button, Card, Space, Table } from "antd";
-import RecordScore from "../../../../components/record/RecordScore";
+import { Card, Table, Tag } from "antd";
 
 interface Props {}
 
@@ -115,6 +113,23 @@ const WatchScoreByEvent = observer((props: Props) => {
             title={"排名"}
             dataIndex={"rank"}
             render={(value) => <>{value === null ? "未排名" : value}</>}
+          />
+          <Table.Column
+            title={"提示"}
+            render={(value: ProjectTokenInfo) => (
+              <>
+                {value.score === null || "" ? (
+                  <Tag color={"volcano"}>成绩未录入</Tag>
+                ) : (
+                  <Tag color={"green"}>成绩已录入</Tag>
+                )}
+                {value.rank === null || "" ? (
+                  <Tag color={"volcano"}>排名未录入</Tag>
+                ) : (
+                  <Tag color={"green"}>排名已录入</Tag>
+                )}
+              </>
+            )}
           />
         </Table>
       </Card>

@@ -151,6 +151,61 @@ const RefereeScoreRecord = (props: Props) => {
             title={"项目性别限制"}
             dataIndex={"limit"}
             render={(value: string) => <>{parseInt(value) ? "女" : "男"}</>}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return value === "女"
+                ? "1" === record.limit
+                : value === "男"
+                ? "0" === record.limit
+                : false;
+            }}
           />
           <Table.Column title={"项目举办日期"} dataIndex={"start"} />
           <Table.Column

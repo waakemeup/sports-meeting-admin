@@ -7,7 +7,6 @@ import { ProjectTokenInfo } from "../../../../types";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../../../store/AdminStore";
 import * as bcrypt from "bcryptjs";
-// import UnAuth from "../../../../components/unauth/UnAuth";
 import UnAuth2 from "../../../../components/unauth/UnAuth2";
 import { Button, Card, Space, Table } from "antd";
 import RecordScore from "../../../../components/record/RecordScore";
