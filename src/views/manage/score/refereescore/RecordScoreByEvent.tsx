@@ -8,8 +8,9 @@ import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../../../store/AdminStore";
 import * as bcrypt from "bcryptjs";
 import UnAuth2 from "../../../../components/unauth/UnAuth2";
-import { Button, Card, Space, Table } from "antd";
+import { Button, Card, Input, Space, Table } from "antd";
 import RecordScore from "../../../../components/record/RecordScore";
+import { SearchOutlined } from "@ant-design/icons";
 
 interface Props {}
 
@@ -95,8 +96,120 @@ const RecordScoreByEvent = observer((props: Props) => {
               );
             }}
           />
-          <Table.Column title={"参赛人学号"} dataIndex={"studentNo"} />
-          <Table.Column title={"参赛人姓名"} dataIndex={"studentName"} />
+          <Table.Column
+            title={"参赛人学号"}
+            dataIndex={"studentNo"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.studentNo
+                .toLowerCase()
+                .includes(value.toLowerCase());
+            }}
+          />
+          <Table.Column
+            title={"参赛人姓名"}
+            dataIndex={"studentName"}
+            filterDropdown={({
+              setSelectedKeys,
+              selectedKeys,
+              confirm,
+              clearFilters,
+            }) => {
+              return (
+                <>
+                  <Input
+                    autoFocus
+                    placeholder="Type Text Here"
+                    value={selectedKeys[0]}
+                    onChange={(e) => {
+                      setSelectedKeys(e.target.value ? [e.target.value] : []);
+                      confirm({
+                        closeDropdown: false,
+                      });
+                    }}
+                    onPressEnter={() => {
+                      confirm();
+                    }}
+                    onBlur={() => {
+                      confirm();
+                    }}
+                  ></Input>
+                  <div className="flex items-center justify-between flex-grow">
+                    <Button
+                      onClick={() => confirm()}
+                      type="primary"
+                      className="bg-blue-400"
+                    >
+                      Search
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        clearFilters!();
+                        confirm();
+                      }}
+                      type="ghost"
+                      className="bg-yellow-400"
+                    >
+                      Reset
+                    </Button>
+                  </div>
+                </>
+              );
+            }}
+            filterIcon={() => <SearchOutlined />}
+            onFilter={(value: any, record: any) => {
+              return record.studentName
+                .toLowerCase()
+                .includes(value.toLowerCase());
+            }}
+          />
           <Table.Column
             title={"分道信息"}
             dataIndex={"group"}
