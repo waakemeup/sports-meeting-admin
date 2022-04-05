@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, memo } from "react";
 import ContentHeader from "../../components/contentheader/CotentHeader";
 import { Helmet } from "react-helmet";
-import { Card, Descriptions, Table } from "antd";
+import { Button, Card, Descriptions, Table } from "antd";
 import * as bcrypt from "bcryptjs";
 import { observer } from "mobx-react-lite";
 import { AdminStoreContext } from "../../store/AdminStore";
-import { StudentInfo } from "../../types";
+import { OpeningInfo, ProjectInfo, StudentInfo } from "../../types";
 import axios from "../../api";
 import getDepartment from "../../utils/getDepartment";
 
@@ -42,25 +42,39 @@ const _tabListNoTitle = [
 ];
 
 // TODO:只有学生有这个
-const JoinProject = () => {
-  const takePartList: UserProjectInfo[] = [
-    {
-      id: 1,
-      sport_id: "2020",
-      name: "测试",
-      game_name: "射击",
-      take_time: "2020-01-18 15:24:47",
-      grade: undefined,
-    },
-    {
-      id: 2,
-      sport_id: "2020",
-      name: "测试",
-      game_name: "三级跳远",
-      take_time: "2020-01-18 15:24:47",
-      grade: "100",
-    },
-  ];
+const JoinProject = memo(() => {
+  const [myEventData, setMyEventData] = useState<ProjectInfo[]>([]);
+  const [openingData, setOpeningData] = useState<OpeningInfo[]>([]);
+
+  useEffect(() => {
+    const FetchData = async () => {
+      const result = await axios
+        .get<ProjectInfo[]>(`/user/getparticed`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      const result2 = await axios
+        .get<OpeningInfo[]>(`/getsportlist`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      // @ts-ignore
+      setOpeningData(result2.data);
+      // @ts-ignore
+      setMyEventData(result.data);
+    };
+    FetchData();
+  }, []);
+
+  // console.log("myEventData:", myEventData);
 
   return (
     <Card
@@ -68,20 +82,44 @@ const JoinProject = () => {
       tabList={_tabListNoTitle}
     >
       <Table
-        dataSource={takePartList}
+        dataSource={myEventData}
         rowKey={(record) => record.id}
         scroll={{ x: 600 }}
         pagination={{
           position: ["bottomRight"],
           pageSize: 5,
-          total: 1,
+          total: myEventData.length,
         }}
       >
-        <Table.Column title={"序号"} dataIndex={"id"} />
-        <Table.Column title={"参加届时"} dataIndex={"sport_id"} />
-        <Table.Column title={"参赛人"} dataIndex={"name"} />
-        <Table.Column title={"参赛项目"} dataIndex={"game_name"} />
-        <Table.Column title={"参赛时间"} dataIndex={"take_time"} />
+        <Table.Column
+          title={"序号"}
+          dataIndex={"id"}
+          render={(value): JSX.Element => {
+            return (
+              <>
+                {(() => {
+                  const selected = myEventData.filter(
+                    (item) => item.id === value
+                  );
+
+                  return myEventData.indexOf(selected[0]) + 1;
+                })()}
+              </>
+            );
+          }}
+        />
+        <Table.Column
+          title={"届时"}
+          dataIndex={"sportId"}
+          render={(value) => (
+            <>
+              {openingData.filter((single) => single.id === value)[0]?.name ??
+                "未找到运动会"}
+            </>
+          )}
+        />
+        <Table.Column title={"参赛项目"} dataIndex={"name"} />
+        <Table.Column title={"参赛时间"} dataIndex={"start"} />
         <Table.Column
           title={"成绩"}
           dataIndex={"grade"}
@@ -89,10 +127,19 @@ const JoinProject = () => {
             <>{typeof value === "undefined" ? "成绩未录入" : value}</>
           )}
         />
+        <Table.Column
+          title={"操作"}
+          render={() => (
+            // TODO:这里加一个详情页
+            <Button className="bg-emerald-500 hover:bg-emerald-600 hover:text-white">
+              详情
+            </Button>
+          )}
+        />
       </Table>
     </Card>
   );
-};
+});
 
 const MeInfo = observer((props: Props) => {
   const adminStore = useContext(AdminStoreContext);

@@ -15,6 +15,7 @@ import { AdminStoreContext } from "../store/AdminStore";
 import { observer } from "mobx-react-lite";
 import UnAuth from "./unauth/UnAuth";
 import SelectEvent from "../views/participate/SelectEvent";
+import RecordScoreByEvent from "../views/manage/score/refereescore/RecordScoreByEvent";
 
 interface Props {}
 
@@ -44,6 +45,18 @@ const View = observer((props: Props) => {
               element={
                 <AppLayout>
                   <SelectEvent />
+                </AppLayout>
+              }
+            />
+          </Route>
+        </Route>
+        <Route path="/admin/manage/referee">
+          <Route path="record">
+            <Route
+              path=":id"
+              element={
+                <AppLayout>
+                  <RecordScoreByEvent />
                 </AppLayout>
               }
             />

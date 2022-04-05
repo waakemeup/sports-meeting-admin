@@ -46,3 +46,16 @@ export interface StudentInfo {
   no: string;
   userId: string;
 }
+
+export interface ProjectTokenInfo {
+  athletesId: string;
+  eventId: string;
+  eventName: string;
+  group: string;
+  matchId: string;
+  rank: string;
+  score: string;
+  studentName: string;
+  studentNo: string;
+  unit: string;
+}
