@@ -1,7 +1,8 @@
 import { Button, Divider, Space, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import axios from "../../api";
-import { ProjectTokenInfo } from "../../types.d";
+import { ProjectInfo, ProjectTokenInfo } from "../../types.d";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
@@ -10,6 +11,8 @@ interface Props {
 
 const ProjectUserList = ({ id, operation = false }: Props) => {
   const [userData, setUserData] = useState<ProjectTokenInfo[]>([]);
+  const [eventData, setEventData] = useState<ProjectInfo[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const FetchData = async () => {
@@ -24,6 +27,18 @@ const ProjectUserList = ({ id, operation = false }: Props) => {
           },
         })
         .then((res) => res.data);
+
+      const result2 = await axios
+        .get<ProjectInfo[]>(`/getevents`, {
+          headers: {
+            // @ts-ignore
+            token: localStorage.getItem("token"),
+          },
+        })
+        .then((res) => res.data);
+
+      // @ts-ignore
+      setEventData(result2.data);
 
       // @ts-ignore
       setUserData(result.data);
@@ -81,9 +96,25 @@ const ProjectUserList = ({ id, operation = false }: Props) => {
         />
         <Table.Column
           title={"操作"}
-          render={() => (
+          render={(projectToken: ProjectTokenInfo) => (
             <Space>
-              <Button className="bg-teal-300 rounded-2xl hover:bg-teal-500 hover:text-white">
+              <Button
+                onClick={() =>
+                  navigate(`/admin/detail/eventinfo/${projectToken.eventId}`, {
+                    state: {
+                      studentNo: projectToken.studentNo,
+                      studentName: projectToken.studentName,
+                      score: projectToken.score,
+                      rank: projectToken.rank,
+                      unit: projectToken.unit,
+                      eventInfo: eventData.filter(
+                        (event) => event.id === projectToken.eventId
+                      )[0],
+                    },
+                  })
+                }
+                className="bg-teal-300 rounded-2xl hover:bg-teal-500 hover:text-white"
+              >
                 详细
               </Button>
               {operation && (

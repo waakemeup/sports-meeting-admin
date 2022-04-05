@@ -222,7 +222,6 @@ const JoinProject = memo(() => {
         <Table.Column
           title={"操作"}
           render={(projectToken: ProjectTokenInfo) => (
-            // TODO:这里加一个详情页
             <Button
               onClick={() =>
                 navigate(`/admin/detail/eventinfo/${projectToken.eventId}`, {
