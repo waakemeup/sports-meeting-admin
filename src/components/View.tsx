@@ -18,11 +18,13 @@ import SelectEvent from "../views/participate/SelectEvent";
 import RecordScoreByEvent from "../views/manage/score/refereescore/RecordScoreByEvent";
 import EventInfoDetail from "../views/detail/EventInfoDetail";
 import WatchScoreByEvent from "../views/manage/score/refereescore/WatchScoreByEvent";
+import { AuthStoreContext } from "../store/AuthStore";
 
 interface Props {}
 
 const View = observer((props: Props) => {
   const adminStore = useContext(AdminStoreContext);
+  const authStore = useContext(AuthStoreContext);
   const arr: string[] = ["0", "1", "2", "3", "4"];
 
   let adminRole: undefined | string = undefined;
@@ -39,7 +41,12 @@ const View = observer((props: Props) => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate replace to={"login"} />} />
+        <Route
+          path="/"
+          element={
+            <Navigate replace to={authStore.isAuth ? "admin/main" : "login"} />
+          }
+        />
         <Route path="/admin/events">
           <Route path="select">
             <Route

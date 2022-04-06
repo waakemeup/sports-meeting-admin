@@ -12,12 +12,12 @@ interface AAdmin {
 class AdminStore {
   @observable
   public admin: AAdmin = {
-    role: bcrypt.hashSync("4", 12),
+    role: bcrypt.hashSync("4", 4),
     username: "username",
   };
 
   constructor(
-    admin: AAdmin = { username: "username", role: bcrypt.hashSync("4", 12) }
+    admin: AAdmin = { username: "username", role: bcrypt.hashSync("4", 4) }
   ) {
     this.admin = admin;
     makeAutoObservable(this);
@@ -37,7 +37,7 @@ class AdminStore {
   @action
   logout() {
     this.admin = {
-      role: bcrypt.hashSync("4", 12),
+      role: bcrypt.hashSync("4", 4),
       // role: null,
       username: "unAuthUser",
     };

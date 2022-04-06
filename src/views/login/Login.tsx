@@ -34,12 +34,12 @@ const Login = observer((props: Props) => {
           authStore.changeAuth();
           adminStore.login(
             res.data.data.user.nikName,
-            bcrypt.hashSync(res.data.data.user.role, 12)
+            bcrypt.hashSync(res.data.data.user.role, 4)
           );
 
           setTimeout(() => {
             navigate("/admin/main");
-          }, 2200);
+          }, 1200);
         } else {
           message.warn("学号或密码错误");
         }
@@ -63,11 +63,11 @@ const Login = observer((props: Props) => {
       <div
         className={`flex flex-col items-center  justify-center w-screen h-screen bg-sky-300 ${styles["bgImg"]}`}
       >
-        <p className="top-0 font-mono text-5xl font-bold text-rose-400">
+        <p className="top-0 font-mono text-5xl font-bold text-white">
           运动会信息管理系统
         </p>
         <Divider />
-        <p className="top-0 mb-8 font-mono text-xl font-bold text-fuchsia-600">
+        <p className="top-0 mb-8 font-mono text-xl font-bold text-white">
           An information management system for university sports meeting
         </p>
         <Form
